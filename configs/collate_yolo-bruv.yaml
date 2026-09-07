@@ -1,0 +1,23 @@
+name: yolo-bruv
+uid_prefix: yolo-bruv
+empty_genus: Botryllus
+source_root: "N:/marineai/dataset/raw/yolo-bruv"
+output_json: "N:/marineai/dataset/collated/seavision.json"
+output_image_dir: "N:/marineai/dataset/collated/images"
+taxon_map_csv: "D:/marineai/classification-experiments/sw/taxon_maps/yolo-bruv.csv"
+review_csv: "N:/marineai/dataset/collated/logs/yolo-bruv_review.csv"
+dataset_meta:
+  id: 1
+  name: yolo-bruv
+  continent: Europe
+  countries: [Scotland]
+  ocean_basins: ["North Sea"]
+  habitat: null
+  license_id: null
+export_pairs:
+  - ["Annotations/EMOutputs/Raw/Pre_Points.txt",             "Annotations/PreAnnotatedMethod/Images"]
+  - ["Annotations/EMOutputs/Raw/1000MEOW_Points.txt",        "Annotations/1000Frames_MEOW/Training"]
+  - ["Annotations/EMOutputs/Raw/1000ScotW_Train_Points.txt", "Annotations/1000Frames_ScotW/Training"]
+  - ["Annotations/EMOutputs/Raw/1000ScotW_Test_Points.txt",  "Annotations/1000Frames_ScotW/Testing"]
+  - ["Annotations/EMOutputs/Raw/Empty_Points.txt",           "Annotations/EmptyFrames/Training"]
+  - ["Annotations/EMOutputs/Raw/AFID_Points.txt",            "Annotations/SamAfid/Images"]
