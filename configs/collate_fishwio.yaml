@@ -1,0 +1,35 @@
+name: fishwio
+uid_prefix: fishwio
+
+source_root: "N:/marineai/dataset/raw/fishwio"
+image_root_rel: "data_paper_dataset"
+metadata_html: "metadata.html"
+species_html: "species.html"
+
+output_json: "N:/marineai/dataset/collated/seavision.json"
+output_image_dir: "N:/marineai/dataset/collated/images"
+taxon_map_csv: "D:/marineai/classification-experiments/sw/taxon_maps/fishwio.csv"
+lineage_cache: "D:/marineai/classification-experiments/sw/taxon_maps/worms_lineage_cache.json"
+review_csv: "N:/marineai/dataset/collated/logs/fishwio_review.csv"
+
+crop_provenance: pre_cropped
+pixel_scale_known: true
+gear: fixed camera
+
+variant_suffixes: [female, male, juvenile, juv, adu]
+background_prefix: "_"
+
+licenses:
+  - id: 2
+    name: "CC BY 4.0 (Zenodo record 17297730)"
+    url: "https://creativecommons.org/licenses/by/4.0/"
+    redistributable: true
+
+dataset_meta:
+  id: 2
+  name: fishwio
+  continent: Africa
+  countries: [Mayotte]
+  ocean_basins: ["Western Indian Ocean"]
+  habitat: null
+  license_id: 2
