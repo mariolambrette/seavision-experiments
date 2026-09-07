@@ -1,0 +1,8 @@
+name: smoke_test
+model: vit_base_patch14_reg4_dinov2.lvd142m
+image_dir: "C:/Users/ml673/University of Exeter/MarineAI - Documents/SeaVision/annotations/data/seavision_images"
+output_dir: "D:/marineai/classification-experiments/embeddings/smoke_test"
+n_images: 400
+image_size: 224
+batch_size: 32
+devices: [0, 1]
