@@ -1,11 +1,24 @@
 name: yolo-bruv
 uid_prefix: yolo-bruv
 empty_genus: Botryllus
+
 source_root: "N:/marineai/dataset/raw/yolo-bruv"
 output_json: "N:/marineai/dataset/collated/seavision.json"
 output_image_dir: "N:/marineai/dataset/collated/images"
 taxon_map_csv: "D:/marineai/classification-experiments/sw/taxon_maps/yolo-bruv.csv"
+lineage_cache: "D:/marineai/classification-experiments/sw/taxon_maps/worms_lineage_cache.json"
 review_csv: "N:/marineai/dataset/collated/logs/yolo-bruv_review.csv"
+
+crop_provenance: frame
+pixel_scale_known: true
+gear: BRUV
+
+licenses:
+  - id: 1
+    name: "TBC - under discussion with supervisors"
+    url: null
+    redistributable: false
+
 dataset_meta:
   id: 1
   name: yolo-bruv
@@ -13,7 +26,8 @@ dataset_meta:
   countries: [Scotland]
   ocean_basins: ["North Sea"]
   habitat: null
-  license_id: null
+  license_id: 1
+
 export_pairs:
   - ["Annotations/EMOutputs/Raw/Pre_Points.txt",             "Annotations/PreAnnotatedMethod/Images"]
   - ["Annotations/EMOutputs/Raw/1000MEOW_Points.txt",        "Annotations/1000Frames_MEOW/Training"]

@@ -20,7 +20,8 @@ Three subcommands, each driven by a YAML config (``--config``):
     coco        Using the *reviewed* taxon map, enumerate images, copy each to
                 a shared store under a hashed UID, read its real width/height,
                 attach annotations, and emit / merge the COCO JSON. Needs the
-                .txt files, the image directories, and network.
+                .txt files and the image directories; needs the network only
+                for taxa not already in the lineage cache.
 
 Design decisions (yolo-bruv), fixed during design review:
   * An image marked ``Styelidae / Botryllus / spp`` is EMPTY: it gets zero
@@ -53,6 +54,26 @@ Changed in WP0b (September 2026):
     harmless once a detector is evaluated against it.
   * Every build writes ``build_manifest.json`` beside the output, recording the
     git commit, the config and the resulting counts.
+
+Changed in WP1 (September 2026):
+  * Schema v1.1 fields: crop_provenance, pixel_scale_known, gear, groups,
+    group_sources, datetime, depth_m, source_meta on images; individual_id and
+    track_id on annotations; licences registered from the config.
+  * ``opcode`` demoted from a top-level image field into ``source_meta``. The
+    master file carries no source-specific conventions; the validator enforces
+    it by rejecting unknown keys.
+  * Grouping is a dict of levels (site, deployment, ...) rather than one field,
+    because yolo-bruv genuinely has two nested levels and the split ladder
+    needs both. A source populates only the levels it really has; an absent
+    level means that split is not available for that source, which is the
+    honest failure rather than a remembered caveat.
+  * Config loading is strict: duplicate YAML keys raise instead of silently
+    keeping the last one, and dataset_meta / licence references are checked
+    before any work starts.
+  * WoRMS lineages are cached to a committed JSON file, and every request
+    retries with backoff and tolerates a non-JSON body. Lineages are stable
+    reference data; re-fetching them on every build made the build fail
+    whenever the service was slow.
 """
 
 from __future__ import annotations
@@ -76,8 +97,9 @@ import yaml
 # Constants that are genuinely fixed (everything else lives in the config)
 # ---------------------------------------------------------------------------
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"
 WORMS = "https://www.marinespecies.org/rest"
+WORMS_UA = "SeaVision-collation/1.1 (University of Exeter)"
 LINEAGE_RANKS = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
 
 _CLEAN_TOKEN = re.compile(r"^[A-Za-z]+$")   # a single, plain scientific token
@@ -90,18 +112,51 @@ _CLEAN_TOKEN = re.compile(r"^[A-Za-z]+$")   # a single, plain scientific token
 REQUIRED_KEYS = [
     "name", "uid_prefix", "empty_genus", "source_root", "output_json",
     "output_image_dir", "taxon_map_csv", "review_csv", "dataset_meta",
-    "export_pairs",
+    "export_pairs", "crop_provenance", "pixel_scale_known", "gear",
 ]
+REQUIRED_DATASET_META = ["id", "name", "license_id"]
+
+
+class _StrictLoader(yaml.SafeLoader):
+    """SafeLoader that refuses duplicate mapping keys instead of silently
+    keeping the last one - which is how a config can lose half its content."""
+
+
+def _no_duplicates(loader, node, deep=False):
+    mapping = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=True)
+        if key in mapping:
+            raise yaml.constructor.ConstructorError(
+                None, None, f"duplicate key {key!r}", key_node.start_mark)
+        mapping[key] = loader.construct_object(value_node, deep=True)
+    return mapping
+
+
+_StrictLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _no_duplicates)
 
 
 def load_config(path):
-    """Read the YAML config and expand the export pairs to absolute paths."""
+    """Read the YAML config, check it, and expand export pairs to full paths."""
     with open(path, encoding="utf-8") as fh:
-        cfg = yaml.safe_load(fh)
+        try:
+            cfg = yaml.load(fh, Loader=_StrictLoader)
+        except yaml.constructor.ConstructorError as exc:
+            sys.exit(f"config {path}: {exc}")
 
     missing = [k for k in REQUIRED_KEYS if k not in cfg]
     if missing:
         sys.exit(f"config {path} is missing required keys: {missing}")
+
+    missing = [k for k in REQUIRED_DATASET_META if k not in cfg["dataset_meta"]]
+    if missing:
+        sys.exit(f"config {path}: dataset_meta is missing {missing}")
+
+    lic_ids = {l["id"] for l in cfg.get("licenses", [])}
+    if cfg["dataset_meta"]["license_id"] not in lic_ids | {None}:
+        sys.exit(f"config {path}: dataset_meta.license_id "
+                 f"{cfg['dataset_meta']['license_id']} is not defined in licenses")
 
     root = cfg["source_root"]
     cfg["exports"] = [
@@ -215,19 +270,46 @@ def _requests():
     return requests
 
 
+def _worms_json(url, params=None, tries=4, timeout=60):
+    """
+    GET and parse JSON, with retries and exponential backoff.
+
+    Returns the parsed object, or None for 'no such record' and for persistent
+    failure. A non-JSON body is treated as a failure and retried: an
+    intercepting proxy or an error page should not surface as a
+    JSONDecodeError three hundred lines into a traceback.
+    """
+    requests = _requests()
+    delay = 2
+    for attempt in range(1, tries + 1):
+        try:
+            resp = requests.get(
+                url, params=params, timeout=timeout,
+                headers={"User-Agent": WORMS_UA, "Accept": "application/json"})
+            if resp.status_code in (204, 404):
+                return None
+            if resp.status_code != 200:
+                print(f"    ! WoRMS HTTP {resp.status_code} ({attempt}/{tries}) {url}")
+            else:
+                try:
+                    return resp.json()
+                except ValueError:
+                    print(f"    ! WoRMS non-JSON ({attempt}/{tries}): "
+                          f"{resp.headers.get('content-type')} {resp.text[:120]!r}")
+        except Exception as exc:                    # noqa: BLE001
+            print(f"    ! WoRMS {type(exc).__name__} ({attempt}/{tries}) {url}")
+        if attempt < tries:
+            time.sleep(delay)
+            delay *= 2
+    return None
+
+
 def worms_by_name(name):
     """Return (aphia_id, valid_name, rank) for an exact accepted match, or None."""
-    requests = _requests()
-    url = f"{WORMS}/AphiaRecordsByName/{name}"
-    try:
-        resp = requests.get(url, params={"like": "false", "marine_only": "true"},
-                            timeout=30)
-    except Exception as exc:                       # noqa: BLE001
-        print(f"    ! WoRMS error for {name!r}: {exc}")
+    records = _worms_json(f"{WORMS}/AphiaRecordsByName/{name}",
+                          params={"like": "false", "marine_only": "true"})
+    if not records:
         return None
-    if resp.status_code != 200:
-        return None
-    records = resp.json() or []
     accepted = [r for r in records if r.get("status") == "accepted"]
     pool = accepted or records
     if len(pool) != 1:                              # 0 or ambiguous -> manual
@@ -236,18 +318,57 @@ def worms_by_name(name):
     return r["AphiaID"], r.get("valid_name") or r.get("scientificname"), r.get("rank")
 
 
-def worms_lineage(aphia_id):
-    """Return (rank, valid_name, {rank_lower: name}) for a given AphiaID."""
-    requests = _requests()
-    rec = requests.get(f"{WORMS}/AphiaRecordByAphiaID/{aphia_id}", timeout=30).json()
-    cls = requests.get(f"{WORMS}/AphiaClassificationByAphiaID/{aphia_id}", timeout=30).json()
+def load_lineage_cache(path):
+    if path and os.path.exists(path):
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh)
+    return {}
+
+
+def save_lineage_cache(path, cache):
+    if not path:
+        return
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(cache, fh, indent=2, sort_keys=True)
+
+
+def worms_lineage(aphia_id, cache=None):
+    """
+    (rank, valid_name, {rank_lower: name}) for an AphiaID.
+
+    Cached locally. Lineages are stable reference data, so re-fetching them on
+    every build only creates a network dependency the build does not need. The
+    cache is committed, which makes rebuilds offline and versions the taxonomy
+    snapshot alongside the taxon map. Entries carry the date they were fetched;
+    delete the file to force a refresh.
+    """
+    key = str(aphia_id)
+    if cache is not None and key in cache:
+        e = cache[key]
+        return e["rank"], e["valid_name"], e["lineage"]
+
+    rec = _worms_json(f"{WORMS}/AphiaRecordByAphiaID/{aphia_id}")
+    cls = _worms_json(f"{WORMS}/AphiaClassificationByAphiaID/{aphia_id}")
+    if rec is None or cls is None:
+        raise RuntimeError(
+            f"WoRMS lookup failed for AphiaID {aphia_id} - either the service is "
+            f"unreachable, or that ID does not exist (check the taxon map). "
+            f"Re-run when it responds; cached taxa are skipped.")
+
     lineage = {}
     node = cls
     while node:
         if node.get("rank") in LINEAGE_RANKS:
             lineage[node["rank"].lower()] = node["scientificname"]
         node = node.get("child")
-    return rec.get("rank"), rec.get("valid_name") or rec.get("scientificname"), lineage
+
+    rank = rec.get("rank")
+    valid = rec.get("valid_name") or rec.get("scientificname")
+    if cache is not None:
+        cache[key] = {"rank": rank, "valid_name": valid, "lineage": lineage,
+                      "fetched": datetime.date.today().isoformat()}
+    return rank, valid, lineage
 
 
 def propose_name(family, genus, species):
@@ -270,6 +391,11 @@ def cmd_taxon_map(args, cfg):
         for r in annot_rows:
             triples[triple_of(r)] += 1
 
+    out = cfg["taxon_map_csv"]
+    if os.path.exists(out):
+        sys.exit(f"{out} already exists. It holds manual decisions - refusing to "
+                 f"overwrite. Move it aside deliberately if you mean to rebuild it.")
+
     rows = []
     for (family, genus, species), n in triples.most_common():
         name, auto = propose_name(family, genus, species)
@@ -287,11 +413,7 @@ def cmd_taxon_map(args, cfg):
             "rank": rank, "status": status,
         })
 
-    out = cfg["taxon_map_csv"]
     os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
-    if os.path.exists(out):
-        sys.exit(f"{out} already exists. It holds manual decisions - refusing to "
-                 f"overwrite. Move it aside deliberately if you mean to rebuild it.")
     with open(out, "w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
         writer.writeheader()
@@ -318,6 +440,20 @@ def load_taxon_map(path):
             aid = row.get("aphia_id", "").strip()
             mapping[key] = int(aid) if aid else None
     return mapping
+
+
+def groups_from_opcode(opcode):
+    """
+    'MET01_03_BRUV_3' -> site MET01, deployment MET01_03.
+    Returns ({level: value}, {level: raw field it came from}).
+    """
+    if not opcode:
+        return {}, {}
+    parts = opcode.split("_")
+    if len(parts) < 2:
+        return {}, {}
+    return ({"site": parts[0], "deployment": f"{parts[0]}_{parts[1]}"},
+            {"site": "opcode", "deployment": "opcode"})
 
 
 def uid_for(source_path, source_root, uid_prefix):
@@ -365,24 +501,39 @@ def cmd_coco(args, cfg):
         next_img = next_ann = 1
         cat_ids, seen_uid, ds_ids = set(), set(), set()
 
+    # -- licences and dataset -------------------------------------------------
+    for lic in cfg.get("licenses", []):
+        if lic["id"] not in {l["id"] for l in coco["licenses"]}:
+            coco["licenses"].append(dict(lic))
+
     if dataset_meta["id"] not in ds_ids:
         coco["datasets"].append(dict(dataset_meta))
 
     # -- categories: one per unique AphiaID in the (reviewed) map -------------
-    for aid in sorted({a for a in taxon_map.values() if a}):
-        if aid in cat_ids:
-            continue
-        rank, valid, lineage = worms_lineage(aid)
-        time.sleep(0.3)
-        coco["categories"].append({
-            "id": aid,
-            "name": valid,
-            "rank": rank,
-            "supercategory": lineage.get("family", ""),
-            "aphia_id": aid,
-            "lineage": lineage,
-        })
-        cat_ids.add(aid)
+    # The cache is saved in a finally block so a network failure part way
+    # through leaves the fetched taxa cached, and a re-run resumes.
+    cache_path = cfg.get("lineage_cache")
+    lineage_cache = load_lineage_cache(cache_path)
+    try:
+        for aid in sorted({a for a in taxon_map.values() if a}):
+            if aid in cat_ids:
+                continue
+            was_cached = str(aid) in lineage_cache
+            rank, valid, lineage = worms_lineage(aid, lineage_cache)
+            if not was_cached:
+                print(f"  fetched lineage for {aid} ({valid})")
+                time.sleep(0.3)
+            coco["categories"].append({
+                "id": aid,
+                "name": valid,
+                "rank": rank,
+                "supercategory": lineage.get("family", ""),
+                "aphia_id": aid,
+                "lineage": lineage,
+            })
+            cat_ids.add(aid)
+    finally:
+        save_lineage_cache(cache_path, lineage_cache)
 
     review = []
     os.makedirs(output_image_dir, exist_ok=True)
@@ -468,16 +619,25 @@ def cmd_coco(args, cfg):
             dest = os.path.join(output_image_dir, f"{uid}.jpg")
             if not os.path.exists(dest):
                 _copy(source_path, dest)
+
+            groups, group_sources = groups_from_opcode(opcode)
             coco["images"].append({
                 "id": image_id,
                 "file_name": f"{uid}.jpg",
                 "width": width,
                 "height": height,
                 "dataset_id": dataset_meta["id"],
-                "opcode": opcode,
+                "crop_provenance": cfg["crop_provenance"],
+                "pixel_scale_known": cfg["pixel_scale_known"],
+                "gear": cfg["gear"],
+                "groups": groups,
+                "group_sources": group_sources,
+                "has_unlabelled_animal": has_unlabelled_animal,
                 "lat": None,
                 "lon": None,
-                "has_unlabelled_animal": has_unlabelled_animal,
+                "datetime": None,
+                "depth_m": None,
+                "source_meta": {"opcode": opcode},
             })
 
             for row, aid in pending:
@@ -490,6 +650,8 @@ def cmd_coco(args, cfg):
                     "bbox": [x, y, w, h],
                     "area": w * h,
                     "iscrowd": 0,
+                    "individual_id": None,
+                    "track_id": None,
                 })
                 next_ann += 1
 
@@ -560,7 +722,7 @@ def main():
     for name, help_text, fn in [
         ("validate",  "parse exports and print a tally (offline)", cmd_validate),
         ("taxon-map", "write the taxon map for review (needs WoRMS)", cmd_taxon_map),
-        ("coco",      "build/merge the COCO JSON (needs images + WoRMS)", cmd_coco),
+        ("coco",      "build/merge the COCO JSON (needs images; WoRMS if uncached)", cmd_coco),
     ]:
         p = sub.add_parser(name, help=help_text)
         p.add_argument("--config", required=True, help="path to the YAML config")
