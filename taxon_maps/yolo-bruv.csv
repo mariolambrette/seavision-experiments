@@ -1,0 +1,23 @@
+family,genus,species,n_rows,proposed_name,aphia_id,valid_name,rank,status
+Pleuronectidae,Limanda-Platichthys,limanda-flesus,7992,,125579,,,UNRESOLVED
+Gadidae,Melanogrammus,aeglefinus,3516,Melanogrammus aeglefinus,126437,Melanogrammus aeglefinus,Species,AUTO
+Paguridae,Pagurus,bernhardus,2024,Pagurus bernhardus,107232,Pagurus bernhardus,Species,AUTO
+Pleuronectiformes spp,Pleuronectiformes spp,Pleuronectiformes spp,1472,,125579,,,UNRESOLVED
+Asteriidae,Asterias,rubens,639,Asterias rubens,123776,Asterias rubens,Species,AUTO
+Gobiidae,,minutus,85,,126446,,,UNRESOLVED
+Cottidae,Myoxocephalus,scorpius,44,Myoxocephalus scorpius,127203,Myoxocephalus scorpius,Species,AUTO
+Triglidae,Eutrigla,gurnardus,31,Eutrigla gurnardus,150637,Eutrigla gurnardus,Species,AUTO
+Scyliorhinidae,Scyliorhinus,canicula,30,Scyliorhinus canicula,105814,Scyliorhinus canicula,Species,AUTO
+Pleuronectidae,Pleuronectes,platessa,28,Pleuronectes platessa,127143,Pleuronectes platessa,Species,AUTO
+Buccinidae,Buccinum,undatum,18,Buccinum undatum,138878,Buccinum undatum,Species,AUTO
+Callionymidae,Callionymus,lyra,18,Callionymus lyra,126792,Callionymus lyra,Species,AUTO
+Gadidae,Gadus,morhua,12,Gadus morhua,126436,Gadus morhua,Species,AUTO
+Cancridae,Cancer,pagurus,11,Cancer pagurus,107276,Cancer pagurus,Species,AUTO
+,,minutus,8,,126446,,,UNRESOLVED
+Gadidae,Merlangius,merlangus,4,Merlangius merlangus,126438,Merlangius merlangus,Species,AUTO
+Lotidae,Molva,molva,4,Molva molva,126461,Molva molva,Species,AUTO
+Ophiuridae,Ophiura,albida,4,Ophiura albida,124913,Ophiura albida,Species,AUTO
+Rajidae,Dipturus,intermedius,3,Dipturus intermedius,711846,Dipturus intermedius,Species,AUTO
+Gadidae,Trisopterus,minutus,1,Trisopterus minutus,126446,Trisopterus minutus,Species,AUTO
+,,vulgaris,1,,,,,UNRESOLVED
+Pleuronectidae,Limanda,limanda,1,Limanda limanda,127139,Limanda limanda,Species,AUTO
