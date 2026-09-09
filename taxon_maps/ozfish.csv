@@ -1,0 +1,621 @@
+family,genus,species,n_rows,proposed_name,rank_intent,aphia_id,valid_name,rank,status
+Lethrinidae,Lethrinus,punctulatus,6095,Lethrinus punctulatus,species,278637,Lethrinus lentjan,Species,AUTO
+Caesionidae,Pterocaesio,digramma,3172,Pterocaesio digramma,species,213657,Pterocaesio digramma,Species,AUTO
+Lethrinidae,Lethrinus,atkinsoni,2635,Lethrinus atkinsoni,species,278632,Lethrinus atkinsoni,Species,AUTO
+Lutjanidae,Lutjanus,sebae,2338,Lutjanus sebae,species,218499,Lutjanus sebae,Species,AUTO
+Labridae,Thalassoma,lutescens,2007,Thalassoma lutescens,species,273585,Thalassoma lutescens,Species,AUTO
+Lethrinidae,Lethrinus,rubrioperculatus,1782,Lethrinus rubrioperculatus,species,212077,Lethrinus rubrioperculatus,Species,AUTO
+Labridae,Thalassoma,lunare,1725,Thalassoma lunare,species,212209,Thalassoma lunare,Species,AUTO
+Pomacentridae,Pomacentrus,coelestis,1693,Pomacentrus coelestis,species,277145,Pomacentrus coelestis,Species,AUTO
+Lutjanidae,Lutjanus,vitta,1435,Lutjanus vitta,species,218483,Lutjanus vitta,Species,AUTO
+Balistidae,Melichthys,niger,1338,Melichthys niger,species,219881,Melichthys niger,Species,AUTO
+Labridae,Cirrhilabrus,temminckii,1256,Cirrhilabrus temminckii,species,277870,Cirrhilabrus temminckii,Species,AUTO
+Carangidae,Carangoides,gymnostethus,1202,Carangoides gymnostethus,species,218392,Turrum gymnostethus,Species,AUTO
+Carangidae,Carangoides,fulvoguttatus,1153,Carangoides fulvoguttatus,species,218385,Turrum fulvoguttatum,Species,AUTO
+Siganidae,Siganus,fuscescens,1142,Siganus fuscescens,species,273912,Siganus fuscescens,Species,AUTO
+Acanthuridae,Acanthurus,triostegus,1088,Acanthurus triostegus,species,219630,Acanthurus triostegus,Species,AUTO
+Serranidae,Epinephelus,areolatus,998,Epinephelus areolatus,species,218204,Epinephelus areolatus,Species,AUTO
+Nemipteridae,Pentapodus,porosus,930,Pentapodus porosus,species,282209,Pentapodus porosus,Species,AUTO
+Caesionidae,Pterocaesio,tile,846,Pterocaesio tile,species,213656,Pterocaesio tile,Species,AUTO
+Pomacentridae,Chromis,viridis,754,Chromis viridis,species,212811,Chromis viridis,Species,AUTO
+Serranidae,Epinephelus,multinotatus,675,Epinephelus multinotatus,species,218237,Epinephelus multinotatus,Species,AUTO
+Acanthuridae,Acanthurus,grammoptilus,674,Acanthurus grammoptilus,species,272961,Acanthurus grammoptilus,Species,AUTO
+Acanthuridae,Ctenochaetus,striatus,664,Ctenochaetus striatus,species,219659,Ctenochaetus striatus,Species,AUTO
+Lethrinidae,Lethrinus,nebulosus,650,Lethrinus nebulosus,species,212081,Lethrinus nebulosus,Species,AUTO
+Siganidae,Siganus,argenteus,633,Siganus argenteus,species,219686,Siganus argenteus,Species,AUTO
+Scaridae,Chlorurus,sordidus,619,Chlorurus sordidus,species,219082,Chlorurus sordidus,Species,AUTO
+Labridae,Coris,caudimacula,616,Coris caudimacula,species,218959,Coris caudimacula,Species,AUTO
+Pomacentridae,Abudefduf,sexfasciatus,606,Abudefduf sexfasciatus,species,159289,Abudefduf sexfasciatus,Species,AUTO
+Labridae,Labroides,dimidiatus,578,Labroides dimidiatus,species,219014,Labroides dimidiatus,Species,AUTO
+Nemipteridae,Nemipterus,spp,566,Nemipterus,genus,205457,Nemipterus,Genus,UNRESOLVED
+Labridae,Thalassoma,amblycephalum,549,Thalassoma amblycephalum,species,212216,Thalassoma amblycephalum,Species,AUTO
+Balistidae,Abalistes,stellatus,543,Abalistes stellatus,species,219873,Abalistes stellatus,Species,AUTO
+Labridae,Pseudojuloides,severnsi,512,Pseudojuloides severnsi,species,276709,Pseudojuloides severnsi,Species,AUTO
+Nemipteridae,Pentapodus,nagasakiensis,511,Pentapodus nagasakiensis,species,282207,Pentapodus nagasakiensis,Species,AUTO
+Mullidae,Parupeneus,multifasciatus,472,Parupeneus multifasciatus,species,277820,Parupeneus multifasciatus,Species,AUTO
+Scaridae,,sp10,446,Scaridae,family,151787,Scarinae,Subfamily,UNRESOLVED
+Lutjanidae,Lutjanus,bohar,438,Lutjanus bohar,species,218479,Lutjanus bohar,Species,AUTO
+Carangidae,Atule,mate,437,Atule mate,species,218384,Atule mate,Species,AUTO
+Lethrinidae,Lethrinus,spp,435,Lethrinus spp,species,206059,Lethrinus,Genus,UNRESOLVED
+Scaridae,Scarus,prasiognathos,433,Scarus prasiognathos,species,219093,Scarus prasiognathos,Species,AUTO
+Carcharhinidae,Carcharhinus,melanopterus,426,Carcharhinus melanopterus,species,105795,Carcharhinus melanopterus,Species,AUTO
+Scombridae,Scomberomorus,spp,422,Scomberomorus spp,species,126064,Scomberomorus,Genus,UNRESOLVED
+Labridae,Cirrhilabrus,morrisoni,421,Cirrhilabrus morrisoni,species,277859,Cirrhilabrus morrisoni,Species,AUTO
+Mullidae,Mulloidichthys,flavolineatus,414,Mulloidichthys flavolineatus,species,218647,Mulloidichthys flavolineatus,Species,AUTO
+Carangidae,Alepes,vari,402,Alepes vari,species,218383,Alepes vari,Species,AUTO
+Chaetodontidae,Chaetodon,auriga,396,Chaetodon auriga,species,218730,Chaetodon auriga,Species,AUTO
+Balistidae,Sufflamen,fraenatum,371,Sufflamen fraenatum,species,276852,Sufflamen fraenatum,Species,AUTO
+Labridae,Choerodon,cyanodus,366,Choerodon cyanodus,species,277267,Choerodon cyanodus,Species,AUTO
+Carangidae,Carangoides,orthogrammus,354,Carangoides orthogrammus,species,218393,Ferdauia orthogrammus,Species,AUTO
+Serranidae,Plectropomus,maculatus,348,Plectropomus maculatus,species,218267,Plectropomus maculatus,Species,AUTO
+Acanthuridae,Naso,annulatus,346,Naso annulatus,species,219673,Naso annulatus,Species,AUTO
+Balistidae,Odonus,niger,342,Odonus niger,species,219883,Odonus niger,Species,AUTO
+Mullidae,Parupeneus,cyclostomus,323,Parupeneus cyclostomus,species,218665,Parupeneus cyclostomus,Species,AUTO
+Carcharhinidae,Carcharhinus,amblyrhynchos,320,Carcharhinus amblyrhynchos,species,217337,Carcharhinus amblyrhynchos,Species,AUTO
+Mullidae,Parupeneus,indicus,320,Parupeneus indicus,species,218658,Parupeneus indicus,Species,AUTO
+Scaridae,Scarus,schlegeli,309,Scarus schlegeli,species,276060,Scarus schlegeli,Species,AUTO
+Serranidae,Epinephelus,fasciatus,307,Epinephelus fasciatus,species,218207,Epinephelus fasciatus,Species,AUTO
+Pomacentridae,Chromis,fumea,301,Chromis fumea,species,273728,Chromis fumea,Species,AUTO
+Serranidae,Epinephelus,rivulatus,298,Epinephelus rivulatus,species,218216,Epinephelus rivulatus,Species,AUTO
+Acanthuridae,Naso,lituratus,296,Naso lituratus,species,219665,Naso lituratus,Species,AUTO
+Carangidae,Caranx,melampygus,294,Caranx melampygus,species,218419,Caranx melampygus,Species,AUTO
+Carangidae,Trachurus,novaezelandiae,292,Trachurus novaezelandiae,species,273304,Trachurus novaezelandiae,Species,AUTO
+Labridae,Choerodon,cauteroma,290,Choerodon cauteroma,species,277265,Choerodon cauteroma,Species,AUTO
+Labridae,Bodianus,solatus,288,Bodianus solatus,species,398565,Bodianus solatus,Species,AUTO
+Carangidae,Selaroides,leptolepis,286,Selaroides leptolepis,species,282745,Selaroides leptolepis,Species,AUTO
+Acanthuridae,Acanthurus,olivaceus,284,Acanthurus olivaceus,species,219625,Acanthurus olivaceus,Species,AUTO
+Carangidae,Gnathanodon,speciosus,284,Gnathanodon speciosus,species,218429,Gnathanodon speciosus,Species,AUTO
+Acanthuridae,Naso,unicornis,282,Naso unicornis,species,219668,Naso unicornis,Species,AUTO
+Tetraodontidae,Lagocephalus,sceleratus,280,Lagocephalus sceleratus,species,219954,Lagocephalus sceleratus,Species,AUTO
+Lethrinidae,Lethrinus,variegatus,276,Lethrinus variegatus,species,212076,Lethrinus variegatus,Species,AUTO
+Lutjanidae,Lutjanus,lutjanus,268,Lutjanus lutjanus,species,218495,Lutjanus lutjanus,Species,AUTO
+Mullidae,Parupeneus,spilurus,264,Parupeneus spilurus,species,277825,Parupeneus spilurus,Species,AUTO
+Synodontidae,Saurida,undosquamis,264,Saurida undosquamis,species,126371,Saurida undosquamis,Species,AUTO
+Labridae,Coris,aygula,260,Coris aygula,species,218957,Coris aygula,Species,AUTO
+Lutjanidae,Lutjanus,carponotatus,258,Lutjanus carponotatus,species,276528,Lutjanus carponotatus,Species,AUTO
+Pomacentridae,Chromis,weberi,256,Chromis weberi,species,212817,Chromis weberi,Species,AUTO
+Echeneidae,Echeneis,naucrates,252,Echeneis naucrates,species,126848,Echeneis naucrates,Species,AUTO
+Pomacentridae,Chromis,margaritifer,252,Chromis margaritifer,species,273739,Pycnochromis margaritifer,Species,AUTO
+Nemipteridae,Scolopsis,bilineata,244,Scolopsis bilineata,species,209219,Scolopsis bilineata,Species,AUTO
+Chaetodontidae,Chaetodon,assarius,242,Chaetodon assarius,species,273325,Chaetodon assarius,Species,AUTO
+Nemipteridae,Scolopsis,xenochrous,240,Scolopsis xenochrous,species,276792,Scolopsis xenochrous,Species,AUTO
+Labridae,Hologymnosus,annulatus,237,Hologymnosus annulatus,species,219003,Hologymnosus annulatus,Species,AUTO
+Scaridae,Scarus,ghobban,236,Scarus ghobban,species,219127,Scarus ghobban,Species,AUTO
+Scaridae,Scarus,sp3,232,Scarus,genus,159299,Scarus,Genus,AUTO
+Mullidae,Parupeneus,barberinoides,226,Parupeneus barberinoides,species,277810,Parupeneus barberinoides,Species,AUTO
+Labridae,Halichoeres,hortulanus,220,Halichoeres hortulanus,species,218985,Halichoeres hortulanus,Species,AUTO
+Caesionidae,Caesio,teres,212,Caesio teres,species,219996,Caesio teres,Species,AUTO
+Balistidae,Sufflamen,chrysopterum,210,Sufflamen chrysopterum,species,276851,Sufflamen chrysopterum,Species,AUTO
+Scaridae,Scarus,rivulatus,208,Scarus rivulatus,species,367210,Scarus rivulatus,Species,AUTO
+Labridae,Halichoeres,trimaculatus,207,Halichoeres trimaculatus,species,275804,Halichoeres trimaculatus,Species,AUTO
+Acanthuridae,Naso,brevirostris,206,Naso brevirostris,species,219671,Naso brevirostris,Species,AUTO
+Pinguipedidae,Parapercis,clathrata,206,Parapercis clathrata,species,276987,Parapercis clathrata,Species,AUTO
+Scaridae,Chlorurus,capistratoides,202,Chlorurus capistratoides,species,219080,Chlorurus capistratoides,Species,AUTO
+Chaetodontidae,Chaetodon,plebeius,202,Chaetodon plebeius,species,273354,Chaetodon plebeius,Species,AUTO
+Pomacentridae,Dascyllus,aruanus,201,Dascyllus aruanus,species,212843,Dascyllus aruanus,Species,AUTO
+Acanthuridae,Acanthurus,dussumieri,190,Acanthurus dussumieri,species,219641,Acanthurus dussumieri,Species,AUTO
+Caesionidae,Caesio,cuning,190,Caesio cuning,species,278536,Caesio cuning,Species,AUTO
+Pomacentridae,Dascyllus,trimaculatus,186,Dascyllus trimaculatus,species,212846,Dascyllus trimaculatus,Species,AUTO
+Carangidae,Carangoides,caeruleopinnatus,186,Carangoides caeruleopinnatus,species,218400,Turrum coeruleopinnatum,Species,AUTO
+Carangidae,Carangoides,ferdau,184,Carangoides ferdau,species,218395,Ferdauia ferdau,Species,AUTO
+Scaridae,Scarus,rubroviolaceus,184,Scarus rubroviolaceus,species,219124,Scarus rubroviolaceus,Species,AUTO
+Pomacentridae,Pristotis,obtusirostris,184,Pristotis obtusirostris,species,277180,Pristotis obtusirostris,Species,AUTO
+Labridae,Halichoeres,nebulosus,182,Halichoeres nebulosus,species,218986,Halichoeres nebulosus,Species,AUTO
+Lethrinidae,Lethrinus,amboinensis,180,Lethrinus amboinensis,species,278631,Lethrinus amboinensis,Species,AUTO
+Labridae,Halichoeres,zeylonicus,178,Halichoeres zeylonicus,species,218979,Halichoeres zeylonicus,Species,AUTO
+Pomacentridae,Pomacentrus,vaiuli,176,Pomacentrus vaiuli,species,277176,Pomacentrus vaiuli,Species,AUTO
+Nemipteridae,Scolopsis,monogramma,176,Scolopsis monogramma,species,276788,Scolopsis monogramma,Species,AUTO
+Serranidae,Epinephelus,bilobatus,174,Epinephelus bilobatus,species,273837,Epinephelus bilobatus,Species,AUTO
+Pomacentridae,Abudefduf,bengalensis,174,Abudefduf bengalensis,species,212885,Abudefduf bengalensis,Species,AUTO
+Lethrinidae,Lethrinus,ravus,172,Lethrinus ravus,species,278638,Lethrinus ravus,Species,AUTO
+Serranidae,Plectropomus,spp,171,Plectropomus spp,species,205015,Plectropomus,Genus,UNRESOLVED
+Carcharhinidae,Triaenodon,obesus,165,Triaenodon obesus,species,214557,Triaenodon obesus,Species,AUTO
+Lethrinidae,Lethrinus,olivaceus,164,Lethrinus olivaceus,species,212069,Lethrinus olivaceus,Species,AUTO
+Lutjanidae,Symphorus,nematophorus,159,Symphorus nematophorus,species,282915,Symphorus nematophorus,Species,AUTO
+Labridae,Choerodon,schoenleinii,159,Choerodon schoenleinii,species,218951,Choerodon schoenleinii,Species,AUTO
+Lethrinidae,Gymnocranius,grandoculis,156,Gymnocranius grandoculis,species,218579,Gymnocranius grandoculis,Species,AUTO
+Sphyraenidae,Sphyraena,qenie,156,Sphyraena qenie,species,212049,Sphyraena qenie,Species,AUTO
+Acanthuridae,Naso,thynnoides,152,Naso thynnoides,species,219670,Naso thynnoides,Species,AUTO
+Lutjanidae,Lutjanus,erythropterus,152,Lutjanus erythropterus,species,276534,Lutjanus erythropterus,Species,AUTO
+Acanthuridae,Zebrasoma,desjardinii,152,Zebrasoma desjardinii,species,277555,Zebrasoma desjardinii,Species,AUTO
+Pomacentridae,Chromis,atripectoralis,152,Chromis atripectoralis,species,212812,Chromis atripectoralis,Species,AUTO
+Acanthuridae,Acanthurus,mata,150,Acanthurus mata,species,219651,Acanthurus mata,Species,AUTO
+Caesionidae,Pterocaesio,chrysozona,148,Pterocaesio chrysozona,species,213662,Pterocaesio chrysozona,Species,AUTO
+Pomacentridae,Stegastes,fasciolatus,142,Stegastes fasciolatus,species,218850,Plectroglyphidodon fasciolatus,Species,AUTO
+Mullidae,Parupeneus,pleurostigma,140,Parupeneus pleurostigma,species,218656,Parupeneus pleurostigma,Species,AUTO
+Lutjanidae,Lutjanus,fulviflamma,140,Lutjanus fulviflamma,species,218490,Lutjanus fulviflamma,Species,AUTO
+Pomacentridae,Abudefduf,vaigiensis,140,Abudefduf vaigiensis,species,212879,Abudefduf vaigiensis,Species,AUTO
+Labridae,Leptojulis,cyanopleura,136,Leptojulis cyanopleura,species,281319,Leptojulis cyanopleura,Species,AUTO
+Chaetodontidae,Chaetodon,citrinellus,134,Chaetodon citrinellus,species,218744,Chaetodon citrinellus,Species,AUTO
+Nemipteridae,Pentapodus,emeryii,132,Pentapodus emeryii,species,282206,Pentapodus emeryii,Species,AUTO
+Labridae,Stethojulis,bandanensis,132,Stethojulis bandanensis,species,277106,Stethojulis bandanensis,Species,AUTO
+Chaetodontidae,Chaetodon,trifascialis,130,Chaetodon trifascialis,species,218719,Chaetodon trifascialis,Species,AUTO
+Kyphosidae,Kyphosus,vaigiensis,130,Kyphosus vaigiensis,species,218706,Kyphosus vaigiensis,Species,AUTO
+Zanclidae,Zanclus,cornutus,128,Zanclus cornutus,species,220083,Zanclus cornutus,Species,AUTO
+Chaetodontidae,Chaetodon,ulietensis,128,Chaetodon ulietensis,species,218717,Chaetodon ulietensis,Species,AUTO
+Lutjanidae,Lutjanus,fulvus,127,Lutjanus fulvus,species,218475,Lutjanus fulvus,Species,AUTO
+Pomacanthidae,Apolemichthys,trimaculatus,126,Apolemichthys trimaculatus,species,211787,Apolemichthys trimaculatus,Species,AUTO
+Lutjanidae,Lutjanus,gibbus,126,Lutjanus gibbus,species,218480,Lutjanus gibbus,Species,AUTO
+Labridae,Cirrhilabrus,exquisitus,126,Cirrhilabrus exquisitus,species,218954,Cirrhilabrus exquisitus,Species,AUTO
+Acanthuridae,Zebrasoma,scopas,124,Zebrasoma scopas,species,219679,Zebrasoma scopas,Species,AUTO
+Labridae,Gomphosus,varius,123,Gomphosus varius,species,218975,Gomphosus varius,Species,AUTO
+Chaetodontidae,Chaetodon,lunula,122,Chaetodon lunula,species,218733,Chaetodon lunula,Species,AUTO
+Sphyraenidae,Sphyraena,obtusata,122,Sphyraena obtusata,species,212056,Sphyraena obtusata,Species,AUTO
+Lutjanidae,Lutjanus,rivulatus,120,Lutjanus rivulatus,species,218494,Lutjanus rivulatus,Species,AUTO
+Haemulidae,Diagramma,pictum,120,Diagramma pictum,species,218536,Diagramma pictum,Species,AUTO
+Pomacentridae,Stegastes,nigricans,120,Stegastes nigricans,species,218849,Stegastes nigricans,Species,AUTO
+Mullidae,Parupeneus,heptacanthus,118,Parupeneus heptacanthus,species,218657,Parupeneus heptacantha,Species,AUTO
+Balistidae,Melichthys,vidua,118,Melichthys vidua,species,219879,Melichthys vidua,Species,AUTO
+Labridae,Cheilio,inermis,118,Cheilio inermis,species,218948,Cheilio inermis,Species,AUTO
+Nemipteridae,Pentapodus,vitta,118,Pentapodus vitta,species,282212,Pentapodus vitta,Species,AUTO
+Labridae,Oxycheilinus,bimaculatus,116,Oxycheilinus bimaculatus,species,219039,Oxycheilinus bimaculatus,Species,AUTO
+Pomacanthidae,Pomacanthus,semicirculatus,116,Pomacanthus semicirculatus,species,220003,Pomacanthus semicirculatus,Species,AUTO
+Serranidae,Cephalopholis,argus,113,Cephalopholis argus,species,218174,Cephalopholis argus,Species,AUTO
+Labridae,Hemigymnus,melapterus,112,Hemigymnus melapterus,species,218998,Hemigymnus melapterus,Species,AUTO
+Serranidae,Variola,albimarginata,108,Variola albimarginata,species,218305,Variola albimarginata,Species,AUTO
+Labridae,Cheilinus,chlorourus,108,Cheilinus chlorourus,species,218941,Cheilinus chlorourus,Species,AUTO
+Acanthuridae,Acanthurus,leucocheilus,106,Acanthurus leucocheilus,species,219629,Acanthurus leucocheilus,Species,AUTO
+Pomacanthidae,Pomacanthus,imperator,106,Pomacanthus imperator,species,220001,Pomacanthus imperator,Species,AUTO
+Scaridae,Scarus,frenatus,106,Scarus frenatus,species,219113,Scarus frenatus,Species,AUTO
+Balistidae,Rhinecanthus,aculeatus,106,Rhinecanthus aculeatus,species,219890,Rhinecanthus aculeatus,Species,AUTO
+Fistulariidae,Fistularia,commersonii,104,Fistularia commersonii,species,217966,Fistularia commersonii,Species,AUTO
+Labridae,Cirrhilabrus,sp10,102,Cirrhilabrus,genus,204972,Cirrhilabrus,Genus,AUTO
+Labridae,Oxycheilinus,rhodochrous,102,Oxycheilinus rhodochrous,species,278001,Oxycheilinus orientalis,Species,AUTO
+Lethrinidae,Lethrinus,genivittatus,102,Lethrinus genivittatus,species,212078,Lethrinus genivittatus,Species,AUTO
+Labridae,Cheilinus,trilobatus,101,Cheilinus trilobatus,species,218944,Cheilinus trilobatus,Species,AUTO
+Acanthuridae,Acanthurus,nigricans,100,Acanthurus nigricans,species,219638,Acanthurus nigricans,Species,AUTO
+Lethrinidae,Lethrinus,miniatus,100,Lethrinus miniatus,species,212062,Lethrinus miniatus,Species,AUTO
+Serranidae,Variola,louti,98,Variola louti,species,218304,Variola louti,Species,AUTO
+Acanthuridae,Naso,hexacanthus,96,Naso hexacanthus,species,219667,Naso hexacanthus,Species,AUTO
+Serranidae,Cephalopholis,urodeta,96,Cephalopholis urodeta,species,218181,Cephalopholis urodeta,Species,AUTO
+Chaetodontidae,Chaetodon,kleinii,96,Chaetodon kleinii,species,218738,Chaetodon kleinii,Species,AUTO
+Pomacentridae,Stegastes,obreptus,96,Stegastes obreptus,species,276675,Plectroglyphidodon obreptus,Species,AUTO
+Siganidae,Siganus,doliatus,93,Siganus doliatus,species,273911,Siganus doliatus,Species,AUTO
+Pomacanthidae,Centropyge,tibicen,92,Centropyge tibicen,species,278851,Centropyge tibicen,Species,AUTO
+Lethrinidae,Gnathodentex,aureolineatus,91,Gnathodentex aureolineatus,species,218574,Gnathodentex aureolineatus,Species,AUTO
+Labridae,Bodianus,axillaris,91,Bodianus axillaris,species,218933,Bodianus axillaris,Species,AUTO
+Pomacentridae,Chromis,nigrura,90,Chromis nigrura,species,212799,Pycnochromis nigrurus,Species,AUTO
+Chaetodontidae,Heniochus,acuminatus,88,Heniochus acuminatus,species,218765,Heniochus acuminatus,Species,AUTO
+Pomacentridae,Chromis,cinerascens,88,Chromis cinerascens,species,212815,Chromis cinerascens,Species,AUTO
+Carangidae,Seriolina,nigrofasciata,88,Seriolina nigrofasciata,species,218438,Seriolina nigrofasciata,Species,AUTO
+Labridae,Choerodon,jordani,88,Choerodon jordani,species,277272,Choerodon jordani,Species,AUTO
+Pomacanthidae,Chaetodontoplus,personifer,87,Chaetodontoplus personifer,species,280123,Chaetodontoplus personifer,Species,AUTO
+Acanthuridae,Naso,vlamingii,86,Naso vlamingii,species,219672,Naso vlamingii,Species,AUTO
+Lutjanidae,Lutjanus,lemniscatus,86,Lutjanus lemniscatus,species,218485,Lutjanus lemniscatus,Species,AUTO
+Lethrinidae,Lethrinus,obsoletus,85,Lethrinus obsoletus,species,212085,Lethrinus obsoletus,Species,AUTO
+Labridae,Labroides,bicolor,84,Labroides bicolor,species,219015,Labroides bicolor,Species,AUTO
+Acanthuridae,Acanthurus,xanthopterus,82,Acanthurus xanthopterus,species,219634,Acanthurus xanthopterus,Species,AUTO
+Chaetodontidae,Chaetodon,unimaculatus,82,Chaetodon unimaculatus,species,218753,Chaetodon unimaculatus,Species,AUTO
+Pomacanthidae,Chaetodontoplus,duboulayi,82,Chaetodontoplus duboulayi,species,280118,Chaetodontoplus duboulayi,Species,AUTO
+Labridae,Cirrhilabrus,randalli,80,Cirrhilabrus randalli,species,277862,Cirrhilabrus randalli,Species,AUTO
+Acanthuridae,Naso,reticulatus,80,Naso reticulatus,species,278009,Naso reticulatus,Species,AUTO
+Lutjanidae,Lutjanus,quinquelineatus,80,Lutjanus quinquelineatus,species,218497,Lutjanus quinquelineatus,Species,AUTO
+Scaridae,Scarus,chameleon,78,Scarus chameleon,species,276040,Scarus chameleon,Species,AUTO
+Labridae,Coris,dorsomacula,78,Coris dorsomacula,species,273554,Coris dorsomacula,Species,AUTO
+Carangidae,Elagatis,bipinnulata,76,Elagatis bipinnulata,species,126809,Elagatis bipinnulata,Species,AUTO
+Serranidae,Epinephelus,tauvina,76,Epinephelus tauvina,species,218205,Epinephelus tauvina,Species,AUTO
+Mullidae,Upeneus,tragula,76,Upeneus tragula,species,218689,Upeneus tragula,Species,AUTO
+Pomacentridae,Amblyglyphidodon,aureus,75,Amblyglyphidodon aureus,species,277595,Amblyglyphidodon aureus,Species,AUTO
+Chaetodontidae,Chaetodon,aureofasciatus,74,Chaetodon aureofasciatus,species,273326,Chaetodon aureofasciatus,Species,AUTO
+Lutjanidae,Lutjanus,monostigma,72,Lutjanus monostigma,species,218474,Lutjanus monostigma,Species,AUTO
+Balistidae,Pseudobalistes,fuscus,71,Pseudobalistes fuscus,species,219885,Pseudobalistes fuscus,Species,AUTO
+Chaetodontidae,Chaetodon,ephippium,70,Chaetodon ephippium,species,273335,Chaetodon ephippium,Species,AUTO
+Chanidae,Chanos,chanos,70,Chanos chanos,species,217625,Chanos chanos,Species,AUTO
+Serranidae,Pseudanthias,cooperi,70,Pseudanthias cooperi,species,218275,Pseudanthias cooperi,Species,AUTO
+Labridae,Cheilinus,fasciatus,70,Cheilinus fasciatus,species,218940,Cheilinus fasciatus,Species,AUTO
+Pomacentridae,Dischistodus,prosopotaenia,70,Dischistodus prosopotaenia,species,280564,Dischistodus prosopotaenia,Species,AUTO
+Chaetodontidae,Chelmon,marginalis,70,Chelmon marginalis,species,278682,Chelmon marginalis,Species,AUTO
+Lethrinidae,Lethrinus,laticaudis,70,Lethrinus laticaudis,species,278635,Lethrinus laticaudis,Species,AUTO
+Cirrhitidae,Cyprinocirrhites,polyactis,69,Cyprinocirrhites polyactis,species,218864,Cyprinocirrhites polyactis,Species,AUTO
+Pomacentridae,Dascyllus,reticulatus,68,Dascyllus reticulatus,species,212844,Dascyllus reticulatus,Species,AUTO
+Acanthuridae,Naso,fageni,68,Naso fageni,species,219666,Naso fageni,Species,AUTO
+Labridae,Thalassoma,hardwicke,66,Thalassoma hardwicke,species,212217,Thalassoma hardwicke,Species,AUTO
+Serranidae,Plectropomus,areolatus,64,Plectropomus areolatus,species,218263,Plectropomus areolatus,Species,AUTO
+Lutjanidae,Aphareus,furca,64,Aphareus furca,species,218470,Aphareus furca,Species,AUTO
+Malacanthidae,Malacanthus,brevirostris,64,Malacanthus brevirostris,species,218378,Malacanthus brevirostris,Species,AUTO
+Acanthuridae,Naso,brachycentron,62,Naso brachycentron,species,219664,Naso brachycentron,Species,AUTO
+Serranidae,Epinephelus,polyphekadion,62,Epinephelus polyphekadion,species,218197,Epinephelus polyphekadion,Species,AUTO
+Pomacentridae,Neopomacentrus,filamentosus,62,Neopomacentrus filamentosus,species,278912,Neopomacentrus filamentosus,Species,AUTO
+Sparidae,Argyrops,spinifer,62,Argyrops spinifer,species,218590,Argyrops spinifer,Species,AUTO
+Lutjanidae,Aprion,virescens,61,Aprion virescens,species,212546,Aprion virescens,Species,AUTO
+Balistidae,Balistapus,undulatus,60,Balistapus undulatus,species,219874,Balistapus undulatus,Species,AUTO
+Pomacentridae,Pomacentrus,nagasakiensis,60,Pomacentrus nagasakiensis,species,277160,Pomacentrus nagasakiensis,Species,AUTO
+Scaridae,Chlorurus,strongylocephalus,60,Chlorurus strongylocephalus,species,219086,Chlorurus strongylocephalus,Species,AUTO
+Carangidae,Scomberoides,lysan,58,Scomberoides lysan,species,218434,Scomberoides lysan,Species,AUTO
+Pinguipedidae,Parapercis,nebulosa,58,Parapercis nebulosa,species,219154,Parapercis nebulosa,Species,AUTO
+Siganidae,Siganus,trispilos,58,Siganus trispilos,species,273924,Siganus trispilos,Species,AUTO
+Labridae,Epibulus,insidiator,57,Epibulus insidiator,species,218972,Epibulus insidiator,Species,AUTO
+Carangidae,Caranx,ignobilis,56,Caranx ignobilis,species,218414,Caranx ignobilis,Species,AUTO
+Monacanthidae,Cantherhines,pardalis,56,Cantherhines pardalis,species,220058,Cantherhines pardalis,Species,AUTO
+Carangidae,Caranx,papuensis,56,Caranx papuensis,species,218411,Caranx papuensis,Species,AUTO
+Scaridae,Scarus,oviceps,56,Scarus oviceps,species,219111,Scarus oviceps,Species,AUTO
+Chaetodontidae,Chaetodon,trifasciatus,56,Chaetodon trifasciatus,species,218741,Chaetodon trifasciatus,Species,AUTO
+Labridae,Hologymnosus,doliatus,54,Hologymnosus doliatus,species,219001,Hologymnosus doliatus,Species,AUTO
+Lethrinidae,Lethrinus,microdon,54,Lethrinus microdon,species,212071,Lethrinus microdon,Species,AUTO
+Balistidae,Abalistes,filamentosus,54,Abalistes filamentosus,species,276793,Abalistes filamentosus,Species,AUTO
+Haemulidae,Plectorhinchus,multivittatus,54,Plectorhinchus multivittatus,species,273492,Plectorhinchus multivittatus,Species,AUTO
+Lethrinidae,Monotaxis,grandoculis,52,Monotaxis grandoculis,species,218584,Monotaxis grandoculis,Species,AUTO
+Acanthuridae,Acanthurus,nigricauda,52,Acanthurus nigricauda,species,219626,Acanthurus nigricauda,Species,AUTO
+Chaetodontidae,Chaetodon,lineolatus,52,Chaetodon lineolatus,species,218734,Chaetodon lineolatus,Species,AUTO
+Labridae,Anampses,geographicus,52,Anampses geographicus,species,218916,Anampses geographicus,Species,AUTO
+Labridae,Anampses,lennardi,52,Anampses lennardi,species,279172,Anampses lennardi,Species,AUTO
+Cirrhitidae,Paracirrhites,forsteri,51,Paracirrhites forsteri,species,218867,Paracirrhites forsteri,Species,AUTO
+Atherinidae,,spp,50,Atherinidae,family,125438,Atherinidae,Family,AUTO
+Mullidae,Parupeneus,trifasciatus,49,Parupeneus trifasciatus,species,277826,Parupeneus trifasciatus,Species,AUTO
+Serranidae,Cephalopholis,miniata,48,Cephalopholis miniata,species,218184,Cephalopholis miniata,Species,AUTO
+Labridae,Oxycheilinus,digrammus,46,Oxycheilinus digrammus,species,219038,Oxycheilinus digramma,Species,AUTO
+Mullidae,Mulloidichthys,vanicolensis,46,Mulloidichthys vanicolensis,species,218648,Mulloidichthys vanicolensis,Species,AUTO
+Pomacentridae,Chromis,opercularis,46,Chromis opercularis,species,212798,Chromis opercularis,Species,AUTO
+Labridae,Halichoeres,claudia,46,Halichoeres claudia,species,474993,Halichoeres claudia,Species,AUTO
+Scaridae,Hipposcarus,harid,46,Hipposcarus harid,species,219090,Hipposcarus harid,Species,AUTO
+Pomacentridae,Pomacentrus,milleri,46,Pomacentrus milleri,species,277158,Pomacentrus milleri,Species,AUTO
+Carangidae,Carangoides,chrysophrys,46,Carangoides chrysophrys,species,218396,Platycaranx chrysophrys,Species,AUTO
+Chaetodontidae,Chaetodon,lunulatus,45,Chaetodon lunulatus,species,398549,Chaetodon lunulatus,Species,AUTO
+Labridae,Pseudocheilinus,evanidus,44,Pseudocheilinus evanidus,species,208917,Pseudocheilinus evanidus,Species,AUTO
+Acanthuridae,Zebrasoma,veliferum,44,Zebrasoma veliferum,species,219684,Zebrasoma velifer,Species,AUTO
+Sphyraenidae,Sphyraena,forsteri,44,Sphyraena forsteri,species,212047,Sphyraena forsteri,Species,AUTO
+Labridae,Coris,pictoides,44,Coris pictoides,species,273561,Coris pictoides,Species,AUTO
+Labridae,Halichoeres,nigrescens,44,Halichoeres nigrescens,species,218995,Halichoeres nigrescens,Species,AUTO
+Labridae,Choerodon,vitta,44,Choerodon vitta,species,277281,Choerodon vitta,Species,AUTO
+Scaridae,Scarus,spp,42,Scarus spp,species,159299,Scarus,Genus,UNRESOLVED
+Pomacentridae,Neoglyphidodon,melas,42,Neoglyphidodon melas,species,218833,Neoglyphidodon melas,Species,AUTO
+Labridae,Halichoeres,melanochir,42,Halichoeres melanochir,species,275774,Halichoeres melanochir,Species,AUTO
+Balistidae,Sufflamen,bursa,40,Sufflamen bursa,species,219894,Sufflamen bursa,Species,AUTO
+Mullidae,Parupeneus,barberinus,40,Parupeneus barberinus,species,218660,Parupeneus barberinus,Species,AUTO
+Microdesmidae,Gunnellichthys,pleurotaenia,40,Gunnellichthys pleurotaenia,species,278223,Gunnellichthys pleurotaenia,Species,AUTO
+Carangidae,Uraspis,secunda,40,Uraspis secunda,species,159658,Uraspis secunda,Species,AUTO
+Siganidae,Siganus,puellus,40,Siganus puellus,species,273920,Siganus puellus,Species,AUTO
+Serranidae,Epinephelus,fuscoguttatus,38,Epinephelus fuscoguttatus,species,218218,Epinephelus fuscoguttatus,Species,AUTO
+Scaridae,Scarus,sp10,38,Scarus,genus,159299,Scarus,Genus,AUTO
+Siganidae,Siganus,punctatus,38,Siganus punctatus,species,273922,Siganus punctatus,Species,AUTO
+Labridae,Hemigymnus,fasciatus,37,Hemigymnus fasciatus,species,218999,Hemigymnus fasciatus,Species,AUTO
+Scaridae,Chlorurus,microrhinos,36,Chlorurus microrhinos,species,277507,Chlorurus microrhinos,Species,AUTO
+Lutjanidae,Macolor,niger,36,Macolor niger,species,218501,Macolor niger,Species,AUTO
+Mugilidae,Crenimugil,crenilabis,36,Crenimugil crenilabis,species,151498,Moolgarda crenilabis,Species,AUTO
+Caesionidae,pterocaesio,tile,36,pterocaesio tile,species,213656,Pterocaesio tile,Species,AUTO
+Sphyraenidae,Sphyraena,barracuda,34,Sphyraena barracuda,species,345843,Sphyraena barracuda,Species,AUTO
+Pseudochromidae,Labracinus,lineatus,34,Labracinus lineatus,species,281243,Labracinus lineatus,Species,AUTO
+Carcharhinidae,Loxodon,macrorhinus,34,Loxodon macrorhinus,species,217355,Loxodon macrorhinus,Species,AUTO
+Labridae,Labrichthys,unilineatus,33,Labrichthys unilineatus,species,219013,Labrichthys unilineatus,Species,AUTO
+Pomacentridae,Chromis,amboinensis,32,Chromis amboinensis,species,273711,Pycnochromis amboinensis,Species,AUTO
+Acanthuridae,Naso,elegans,32,Naso elegans,species,278005,Naso elegans,Species,AUTO
+Labridae,Anampses,meleagrides,32,Anampses meleagrides,species,218923,Anampses meleagrides,Species,AUTO
+Labridae,Oxycheilinus,unifasciatus,32,Oxycheilinus unifasciatus,species,278002,Oxycheilinus unifasciatus,Species,AUTO
+Caesionidae,Caesio,caerulaurea,32,Caesio caerulaurea,species,219995,Caesio caerulaurea,Species,AUTO
+Carangidae,Decapterus,muroadsi,32,Decapterus muroadsi,species,273279,Decapterus muroadsi,Species,AUTO
+Lutjanidae,Macolor,macularis,31,Macolor macularis,species,218500,Macolor macularis,Species,AUTO
+Serranidae,Aethaloperca,rogaa,30,Aethaloperca rogaa,species,218168,Aethaloperca rogaa,Species,AUTO
+Chaetodontidae,Chaetodon,ornatissimus,30,Chaetodon ornatissimus,species,273352,Chaetodon ornatissimus,Species,AUTO
+Scaridae,Hipposcarus,longiceps,30,Hipposcarus longiceps,species,278899,Hipposcarus longiceps,Species,AUTO
+Lethrinidae,Lethrinus,erythropterus,30,Lethrinus erythropterus,species,212074,Lethrinus erythropterus,Species,AUTO
+Labridae,Bodianus,bilunulatus,30,Bodianus bilunulatus,species,218932,Bodianus bilunulatus,Species,AUTO
+Kyphosidae,Kyphosus,cinerascens,28,Kyphosus cinerascens,species,218708,Kyphosus cinerascens,Species,AUTO
+Carangidae,Decapterus,macarellus,28,Decapterus macarellus,species,126807,Decapterus macarellus,Species,AUTO
+Balistidae,Pseudobalistes,flavimarginatus,28,Pseudobalistes flavimarginatus,species,219884,Pseudobalistes flavimarginatus,Species,AUTO
+Aulostomidae,Aulostomus,chinensis,28,Aulostomus chinensis,species,217964,Aulostomus chinensis,Species,AUTO
+Scaridae,Hipposcarus,sp1,28,Hipposcarus,genus,206458,Hipposcarus,Genus,AUTO
+Chaetodontidae,Chaetodon,punctatofasciatus,28,Chaetodon punctatofasciatus,species,273355,Chaetodon punctatofasciatus,Species,AUTO
+Labridae,Choerodon,rubescens,28,Choerodon rubescens,species,277278,Choerodon rubescens,Species,AUTO
+Atherinidae,,sp10,28,Atherinidae,family,125438,Atherinidae,Family,AUTO
+Chaetodontidae,Heniochus,singularius,26,Heniochus singularius,species,218766,Heniochus singularius,Species,AUTO
+Scaridae,Scarus,psittacus,26,Scarus psittacus,species,219125,Scarus psittacus,Species,AUTO
+Labridae,Coris,gaimard,26,Coris gaimard,species,218960,Coris gaimard,Species,AUTO
+Pseudochromidae,Pseudochromis,fuscus,26,Pseudochromis fuscus,species,278179,Pseudochromis fuscus,Species,AUTO
+Labridae,Pseudodax,moluccanus,26,Pseudodax moluccanus,species,219046,Pseudodax moluccanus,Species,AUTO
+Tetraodontidae,Torquigener,pallimaculatus,26,Torquigener pallimaculatus,species,278269,Torquigener pallimaculatus,Species,AUTO
+Chaetodontidae,Parachaetodon,ocellatus,26,Parachaetodon ocellatus,species,282012,Parachaetodon ocellatus,Species,AUTO
+Balistidae,Balistoides,viridescens,24,Balistoides viridescens,species,219875,Balistoides viridescens,Species,AUTO
+Scaridae,Calotomus,carolinus,24,Calotomus carolinus,species,219076,Calotomus carolinus,Species,AUTO
+Acanthuridae,Naso,caesius,24,Naso caesius,species,278004,Naso caesius,Species,AUTO
+Mullidae,Parupeneus,chrysopleuron,24,Parupeneus chrysopleuron,species,277813,Parupeneus chrysopleuron,Species,AUTO
+Rachycentridae,Rachycentron,canadum,24,Rachycentron canadum,species,127006,Rachycentron canadum,Species,AUTO
+Pomacentridae,Pomacentrus,moluccensis,24,Pomacentrus moluccensis,species,277159,Pomacentrus moluccensis,Species,AUTO
+Tetraodontidae,Feroxodon,multistriatus,24,Feroxodon multistriatus,species,280778,Feroxodon multistriatus,Species,AUTO
+Pinguipedidae,Parapercis,multiplicata,24,Parapercis multiplicata,species,277005,Parapercis multiplicata,Species,AUTO
+Cirrhitidae,Paracirrhites,arcatus,23,Paracirrhites arcatus,species,218866,Paracirrhites arcatus,Species,AUTO
+Pomacanthidae,Centropyge,bicolor,22,Centropyge bicolor,species,211780,Centropyge bicolor,Species,AUTO
+Blenniidae,Plagiotremus,rhinorhynchos,22,Plagiotremus rhinorhynchos,species,219334,Plagiotremus rhinorhynchos,Species,AUTO
+Monacanthidae,Aluterus,scriptus,22,Aluterus scriptus,species,159491,Aluterus scriptus,Species,AUTO
+Scaridae,Scarus,forsteni,22,Scarus forsteni,species,276046,Scarus forsteni,Species,AUTO
+Labridae,Novaculichthys,taeniourus,22,Novaculichthys taeniourus,species,219035,Novaculichthys taeniourus,Species,AUTO
+Acanthuridae,Naso,lopezi,22,Naso lopezi,species,278006,Naso lopezi,Species,AUTO
+Labridae,Hologymnosus,rhodonotus,22,Hologymnosus rhodonotus,species,277558,Hologymnosus rhodonotus,Species,AUTO
+Serranidae,Gracila,albomarginata,22,Gracila albomarginata,species,218255,Gracila albomarginata,Species,AUTO
+Belonidae,Tylosurus,crocodilus,22,Tylosurus crocodilus,species,159259,Tylosurus crocodilus,Species,AUTO
+Labridae,Iniistius,pavo,22,Iniistius pavo,species,219004,Iniistius pavo,Species,AUTO
+Labridae,Choerodon,cephalotes,22,Choerodon cephalotes,species,277266,Choerodon cephalotes,Species,AUTO
+Tetraodontidae,Lagocephalus,lunaris,22,Lagocephalus lunaris,species,219957,Lagocephalus lunaris,Species,AUTO
+Serranidae,Epinephelus,merra,21,Epinephelus merra,species,218228,Epinephelus merra,Species,AUTO
+Apogonidae,,sp10,21,Apogonidae,family,125518,Apogonidae,Family,AUTO
+Pinguipedidae,Parapercis,xanthozona,20,Parapercis xanthozona,species,219144,Parapercis xanthozona,Species,AUTO
+Monacanthidae,Paramonacanthus,choirocephalus,20,Paramonacanthus choirocephalus,species,278918,Paramonacanthus choirocephalus,Species,AUTO
+Labridae,Cheilinus,undulatus,20,Cheilinus undulatus,species,218945,Cheilinus undulatus,Species,AUTO
+Labridae,Thalassoma,quinquevittatum,20,Thalassoma quinquevittatum,species,212211,Thalassoma quinquevittatum,Species,AUTO
+Monacanthidae,Cantherhines,dumerilii,20,Cantherhines dumerilii,species,276248,Cantherhines dumerilii,Species,AUTO
+Pomacentridae,Chrysiptera,glauca,20,Chrysiptera glauca,species,218783,Chrysiptera glauca,Species,AUTO
+Serranidae,Pseudanthias,evansi,20,Pseudanthias evansi,species,218281,Mirolabrichthys evansi,Species,AUTO
+Ostraciidae,Ostracion,cubicus,20,Ostracion cubicus,species,219911,Ostracion cubicum,Species,AUTO
+Monacanthidae,Monacanthus,chinensis,20,Monacanthus chinensis,species,276256,Monacanthus chinensis,Species,AUTO
+Apogonidae,Apogon,sp10,20,Apogon,genus,125913,Apogon,Genus,AUTO
+Labridae,Coris,auricularis,20,Coris auricularis,species,273548,Coris auricularis,Species,AUTO
+Chaetodontidae,Coradion,chrysozonus,20,Coradion chrysozonus,species,280391,Coradion chrysozonus,Species,AUTO
+Carcharhinidae,Carcharhinus,plumbeus,20,Carcharhinus plumbeus,species,105797,Carcharhinus plumbeus,Species,AUTO
+Rhynchobatidae,Rhynchobatus,australiae,20,Rhynchobatus australiae,species,278217,Rhynchobatus australiae,Species,AUTO
+Apogonidae,Ostorhinchus,aureus,20,Ostorhinchus aureus,species,712648,Ostorhinchus aureus,Species,AUTO
+Microdesmidae,Ptereleotris,monoptera,20,Ptereleotris monoptera,species,219621,Ptereleotris monoptera,Species,AUTO
+Chaetodontidae,Forcipiger,flavissimus,18,Forcipiger flavissimus,species,218760,Forcipiger flavissimus,Species,AUTO
+Lethrinidae,Lethrinus,erythracanthus,18,Lethrinus erythracanthus,species,212066,Lethrinus erythracanthus,Species,AUTO
+Pomacanthidae,Pomacanthus,sexstriatus,18,Pomacanthus sexstriatus,species,276026,Pomacanthus sexstriatus,Species,AUTO
+Lethrinidae,Lethrinus,lentjan,18,Lethrinus lentjan,species,212061,Lethrinus lentjan,Species,AUTO
+Carcharhinidae,Galeocerdo,cuvier,18,Galeocerdo cuvier,species,105799,Galeocerdo cuvier,Species,AUTO
+Kyphosidae,Kyphosus,bigibbus,18,Kyphosus bigibbus,species,218707,Kyphosus bigibbus,Species,AUTO
+Chaetodontidae,Hemitaurichthys,polylepis,18,Hemitaurichthys polylepis,species,277575,Hemitaurichthys polylepis,Species,AUTO
+Balistidae,Rhinecanthus,rectangulus,18,Rhinecanthus rectangulus,species,219886,Rhinecanthus rectangulus,Species,AUTO
+Pomacentridae,Plectroglyphidodon,lacrymatus,18,Plectroglyphidodon lacrymatus,species,212860,Stegastes lacrymatus,Species,AUTO
+Blenniidae,Meiacanthus,grammistes,18,Meiacanthus grammistes,species,279310,Meiacanthus grammistes,Species,AUTO
+Tetraodontidae,Arothron,hispidus,18,Arothron hispidus,species,219925,Arothron hispidus,Species,AUTO
+Labridae,Macropharyngodon,negrosensis,18,Macropharyngodon negrosensis,species,278215,Macropharyngodon negrosensis,Species,AUTO
+Labridae,Anampses,caeruleopunctatus,18,Anampses caeruleopunctatus,species,218920,Anampses caeruleopunctatus,Species,AUTO
+Lutjanidae,Lutjanus,malabaricus,18,Lutjanus malabaricus,species,218481,Lutjanus malabaricus,Species,AUTO
+Monacanthidae,Aluterus,monoceros,18,Aluterus monoceros,species,127407,Aluterus monoceros,Species,AUTO
+Acanthuridae,Acanthurus,pyroferus,16,Acanthurus pyroferus,species,219648,Acanthurus pyroferus,Species,AUTO
+Pomacanthidae,Genicanthus,lamarck,16,Genicanthus lamarck,species,211793,Genicanthus lamarck,Species,AUTO
+Chaetodontidae,Chaetodon,meyeri,16,Chaetodon meyeri,species,218752,Chaetodon meyeri,Species,AUTO
+Dasyatidae,Neotrygon,kuhlii,16,Neotrygon kuhlii,species,398330,Neotrygon kuhlii,Species,AUTO
+Serranidae,Cephalopholis,sonnerati,16,Cephalopholis sonnerati,species,218183,Cephalopholis sonnerati,Species,AUTO
+Carcharhinidae,Negaprion,acutidens,16,Negaprion acutidens,species,217356,Negaprion acutidens,Species,AUTO
+Chaetodontidae,Chaetodon,guttatissimus,16,Chaetodon guttatissimus,species,218722,Chaetodon guttatissimus,Species,AUTO
+Lethrinidae,Lethrinus,harak,16,Lethrinus harak,species,212063,Lethrinus harak,Species,AUTO
+Acanthuridae,Acanthurus,nigrofuscus,16,Acanthurus nigrofuscus,species,219640,Acanthurus nigrofuscus,Species,AUTO
+Serranidae,Epinephelus,coioides,16,Epinephelus coioides,species,218200,Epinephelus coioides,Species,AUTO
+Monacanthidae,Oxymonacanthus,longirostris,16,Oxymonacanthus longirostris,species,220063,Oxymonacanthus longirostris,Species,AUTO
+Lutjanidae,Lutjanus,russellii,16,Lutjanus russellii,species,218473,Lutjanus russellii,Species,AUTO
+Labridae,Cirrhilabrus,punctatus,15,Cirrhilabrus punctatus,species,277860,Cirrhilabrus punctatus,Species,AUTO
+Labridae,Thalassoma,jansenii,14,Thalassoma jansenii,species,273582,Thalassoma jansenii,Species,AUTO
+Pomacentridae,Plectroglyphidodon,dickii,14,Plectroglyphidodon dickii,species,212855,Plectroglyphidodon dickii,Species,AUTO
+Carangidae,Carangoides,plagiotaenia,14,Carangoides plagiotaenia,species,218399,Craterognathus plagiotaenia,Species,AUTO
+Gobiidae,,sp10,14,Gobiidae,family,125537,Gobiidae,Family,AUTO
+Lethrinidae,Lethrinus,xanthochilus,14,Lethrinus xanthochilus,species,212079,Lethrinus xanthochilus,Species,AUTO
+Microdesmidae,Ptereleotris,microlepis,14,Ptereleotris microlepis,species,219616,Ptereleotris microlepis,Species,AUTO
+Ephippidae,Platax,teira,14,Platax teira,species,218710,Platax teira,Species,AUTO
+Serranidae,Epinephelus,spilotoceps,14,Epinephelus spilotoceps,species,218244,Epinephelus spilotoceps,Species,AUTO
+Gerreidae,Gerres,longirostris,14,Gerres longirostris,species,367242,Gerres longirostris,Species,AUTO
+Pomacentridae,Chrysiptera,biocellata,14,Chrysiptera biocellata,species,218784,Chrysiptera biocellata,Species,AUTO
+Scaridae,Bolbometopon,muricatum,14,Bolbometopon muricatum,species,219074,Bolbometopon muricatum,Species,AUTO
+,,,14,,,,,,UNIDENTIFIABLE
+Chaetodontidae,Chaetodon,speculum,14,Chaetodon speculum,species,218740,Chaetodon speculum,Species,AUTO
+Labridae,,sp10,14,Labridae,family,125541,Labridae,Family,AUTO
+Hemiramphidae,Hyporhamphus,dussumieri,14,Hyporhamphus dussumieri,species,213175,Hyporhamphus dussumieri,Species,AUTO
+Labridae,Labropsis,australis,14,Labropsis australis,species,278464,Labropsis australis,Species,AUTO
+Gobiidae,,sp1,14,Gobiidae,family,125537,Gobiidae,Family,AUTO
+Labridae,Suezichthys,cyanolaemus,14,Suezichthys cyanolaemus,species,278740,Suezichthys cyanolaemus,Species,AUTO
+Pomacentridae,Amblypomacentrus,breviceps,14,Amblypomacentrus breviceps,species,279576,Amblypomacentrus breviceps,Species,AUTO
+Chaetodontidae,Forcipiger,longirostris,13,Forcipiger longirostris,species,218759,Forcipiger longirostris,Species,AUTO
+Haemulidae,Plectorhinchus,picus,12,Plectorhinchus picus,species,1841001,Plectorhinchus pica,Species,UNRESOLVED
+Labridae,Macropharyngodon,meleagris,12,Macropharyngodon meleagris,species,219028,Macropharyngodon meleagris,Species,AUTO
+Chaetodontidae,Chaetodon,adiergastos,12,Chaetodon adiergastos,species,273322,Chaetodon adiergastos,Species,AUTO
+Serranidae,Epinephelus,malabaricus,12,Epinephelus malabaricus,species,218206,Epinephelus malabaricus,Species,AUTO
+Chaetodontidae,Chaetodon,melannotus,12,Chaetodon melannotus,species,218743,Chaetodon melannotus,Species,AUTO
+Carangidae,,sp10,12,Carangidae,family,125523,Carangidae,Family,AUTO
+Scombridae,Gymnosarda,unicolor,12,Gymnosarda unicolor,species,219712,Gymnosarda unicolor,Species,AUTO
+Nemipteridae,Pentapodus,aureofasciatus,12,Pentapodus aureofasciatus,species,282203,Pentapodus aureofasciatus,Species,AUTO
+Labridae,Iniistius,aneitensis,12,Iniistius aneitensis,species,278794,Iniistius aneitensis,Species,AUTO
+Tetraodontidae,Arothron,caeruleopunctatus,12,Arothron caeruleopunctatus,species,219922,Arothron caeruleopunctatus,Species,AUTO
+Mullidae,Parupeneus,macronemus,12,Parupeneus macronemus,species,277817,Parupeneus macronemus,Species,AUTO
+Balistidae,Melichthys,sp1,12,Melichthys,genus,205415,Melichthys,Genus,AUTO
+Labridae,Anampses,melanurus,12,Anampses melanurus,species,279173,Anampses melanurus,Species,AUTO
+Plotosidae,Paraplotosus,butleri,12,Paraplotosus butleri,species,282098,Paraplotosus butleri,Species,AUTO
+Haemulidae,Plectorhinchus,unicolor,12,Plectorhinchus unicolor,species,273496,Plectorhinchus unicolor,Species,AUTO
+Acanthuridae,Naso,maculatus,12,Naso maculatus,species,278007,Naso maculatus,Species,AUTO
+Priacanthidae,Priacanthus,hamrur,12,Priacanthus hamrur,species,218360,Priacanthus hamrur,Species,AUTO
+Plotosidae,Plotosus,lineatus,12,Plotosus lineatus,species,217659,Plotosus lineatus,Species,AUTO
+Haemulidae,Plectorhinchus,vittatus,10,Plectorhinchus vittatus,species,218545,Plectorhinchus vittatus,Species,AUTO
+Pinguipedidae,Parapercis,sp10,10,Parapercis,genus,204083,Parapercis,Genus,AUTO
+Acanthuridae,Acanthurus,sp10,10,Acanthurus,genus,125908,Acanthurus,Genus,AUTO
+Carcharhinidae,Carcharhinus,albimarginatus,10,Carcharhinus albimarginatus,species,217352,Carcharhinus albimarginatus,Species,AUTO
+Ephippidae,Platax,batavianus,10,Platax batavianus,species,218713,Platax batavianus,Species,AUTO
+Scaridae,Scarus,niger,10,Scarus niger,species,219129,Scarus niger,Species,AUTO
+Serranidae,Anyperodon,leucogrammicus,10,Anyperodon leucogrammicus,species,212549,Anyperodon leucogrammicus,Species,AUTO
+Holocentridae,Sargocentron,spiniferum,10,Sargocentron spiniferum,species,217950,Sargocentron spiniferum,Species,AUTO
+Serranidae,Epinephelus,quoyanus,10,Epinephelus quoyanus,species,218252,Epinephelus quoyanus,Species,AUTO
+Labridae,Halichoeres,sp1,10,Halichoeres,genus,158813,Halichoeres,Genus,AUTO
+Chaetodontidae,Chaetodon,bennetti,10,Chaetodon bennetti,species,218735,Chaetodon bennetti,Species,AUTO
+Nemipteridae,Scolopsis,lineata,10,Scolopsis lineata,species,276786,Scolopsis lineata,Species,AUTO
+Nemipteridae,Scaevius,milii,10,Scaevius milii,species,282666,Scaevius milii,Species,AUTO
+Labridae,Pteragogus,flagellifer,10,Pteragogus flagellifer,species,219052,Pteragogus flagellifer,Species,AUTO
+Ostraciidae,Ostracion,meleagris,10,Ostracion meleagris,species,219905,Ostracion meleagris,Species,AUTO
+Grammistidae,Diploprion,bifasciatum,10,Diploprion bifasciatum,species,277235,Diploprion bifasciatus,Species,AUTO
+Monacanthidae,Pervagor,janthinosoma,10,Pervagor janthinosoma,species,220072,Pervagor janthinosoma,Species,AUTO
+Pempherididae,Pempheris,oualensis,10,Pempheris oualensis,species,218700,Pempheris oualensis,Species,AUTO
+Labridae,Stethojulis,interrupta,10,Stethojulis interrupta,species,219063,Stethojulis interrupta,Species,AUTO
+Pempherididae,Pempheris,adusta,10,Pempheris adusta,species,218704,Pempheris adusta,Species,AUTO
+Priacanthidae,Priacanthus,blochii,10,Priacanthus blochii,species,218361,Priacanthus blochii,Species,AUTO
+Gobiidae,Valenciennea,muralis,10,Valenciennea muralis,species,277033,Valenciennea muralis,Species,AUTO
+Cirrhitidae,Cirrhitichthys,falco,10,Cirrhitichthys falco,species,218854,Cirrhitichthys falco,Species,AUTO
+Labridae,Leptojulis,chrysotaenia,10,Leptojulis chrysotaenia,species,281318,Leptojulis chrysotaenia,Species,AUTO
+Dasyatidae,Taeniura,lymma,8,Taeniura lymma,species,217422,Taeniura lymma,Species,AUTO
+Opistognathidae,Opistognathus,sp10,8,Opistognathus,genus,159746,Opistognathus,Genus,AUTO
+Gobiidae,Valenciennea,strigata,8,Valenciennea strigata,species,219599,Valenciennea strigata,Species,AUTO
+Siganidae,Siganus,stellatus,8,Siganus stellatus,species,219692,Siganus stellatus,Species,AUTO
+Pomacentridae,Plectroglyphidodon,johnstonianus,8,Plectroglyphidodon johnstonianus,species,212859,Plectroglyphidodon johnstonianus,Species,AUTO
+Pinguipedidae,Parapercis,sp1,8,Parapercis,genus,204083,Parapercis,Genus,AUTO
+Labridae,Iniistius,spp,8,Iniistius spp,species,206311,Iniistius,Genus,UNRESOLVED
+Ginglymostomatidae,Nebrius,ferrugineus,8,Nebrius ferrugineus,species,220030,Nebrius ferrugineus,Species,AUTO
+Labridae,Halichoeres,marginatus,8,Halichoeres marginatus,species,218991,Halichoeres marginatus,Species,AUTO
+Carangidae,Scomberoides,commersonnianus,8,Scomberoides commersonnianus,species,218432,Scomberoides commersonnianus,Species,AUTO
+Pomacentridae,Pomacentrus,nigromanus,8,Pomacentrus nigromanus,species,277161,Pomacentrus nigromanus,Species,AUTO
+Pomacentridae,Amphiprion,clarkii,8,Amphiprion clarkii,species,212783,Amphiprion clarkii,Species,AUTO
+Rhinobatidae,Glaucostegus,typus,8,Glaucostegus typus,species,280875,Glaucostegus typus,Species,AUTO
+Carangidae,Seriola,rivoliana,8,Seriola rivoliana,species,126818,Seriola rivoliana,Species,AUTO
+Bothidae,,spp,8,Bothidae,family,125576,Bothidae,Family,AUTO
+Sillaginidae,Sillago,sp10,8,Sillago,genus,126072,Sillago,Genus,AUTO
+Tetraodontidae,Canthigaster,rivulata,8,Canthigaster rivulata,species,219937,Canthigaster rivulata,Species,AUTO
+Carangidae,Carangoides,hedlandensis,8,Carangoides hedlandensis,species,218386,Atropus hedlandensis,Species,AUTO
+Nemipteridae,Scolopsis,affinis,8,Scolopsis affinis,species,276783,Scolopsis affinis,Species,AUTO
+Lethrinidae,Lethrinus,sp10,8,Lethrinus,genus,206059,Lethrinus,Genus,AUTO
+Serranidae,Epinephelus,faveatus,7,Epinephelus faveatus,species,218219,Epinephelus faveatus,Species,AUTO
+Acanthuridae,Naso,mcdadei,6,Naso mcdadei,species,278008,Naso mcdadei,Species,AUTO
+Dasyatidae,Taeniurops,meyeni,6,Taeniurops meyeni,species,712972,Taeniurops meyeni,Species,AUTO
+Apogonidae,Apogon,sp1,6,Apogon,genus,125913,Apogon,Genus,AUTO
+Serranidae,Epinephelus,maculatus,6,Epinephelus maculatus,species,273860,Epinephelus maculatus,Species,AUTO
+Synodontidae,,sp10,6,Synodontidae,family,125449,Synodontidae,Family,AUTO
+Dasyatidae,Himantura,fai,6,Himantura fai,species,271457,Pateobatis fai,Species,AUTO
+Lutjanidae,Lutjanus,kasmira,6,Lutjanus kasmira,species,218482,Lutjanus kasmira,Species,AUTO
+Microdesmidae,Gunnellichthys,curiosus,6,Gunnellichthys curiosus,species,219608,Gunnellichthys curiosus,Species,AUTO
+Scaridae,Scarus,sp6,6,Scarus,genus,159299,Scarus,Genus,AUTO
+Chaetodontidae,Heniochus,monoceros,6,Heniochus monoceros,species,218764,Heniochus monoceros,Species,AUTO
+Serranidae,Epinephelus,hexagonatus,6,Epinephelus hexagonatus,species,218232,Epinephelus hexagonatus,Species,AUTO
+Acanthuridae,Acanthurus,unicornis,6,Acanthurus unicornis,species,301916,Naso unicornis,Species,AUTO
+Carangidae,Caranx,lugubris,6,Caranx lugubris,species,126805,Caranx lugubris,Species,AUTO
+Microdesmidae,Ptereleotris,evides,6,Ptereleotris evides,species,219622,Ptereleotris evides,Species,AUTO
+Pomacanthidae,Centropyge,flavissima,6,Centropyge flavissima,species,278836,Centropyge flavissima,Species,AUTO
+Carangidae,Decapterus,spp,6,Decapterus spp,species,125937,Decapterus,Genus,UNRESOLVED
+Scaridae,Scarus,xanthopleura,6,Scarus xanthopleura,species,276065,Scarus xanthopleura,Species,AUTO
+Blenniidae,Plagiotremus,tapeinosoma,6,Plagiotremus tapeinosoma,species,219335,Plagiotremus tapeinosoma,Species,AUTO
+Labridae,Labroides,pectoralis,6,Labroides pectoralis,species,278689,Labroides pectoralis,Species,AUTO
+Labridae,Labropsis,xanthonota,6,Labropsis xanthonota,species,219016,Labropsis xanthonota,Species,AUTO
+Labridae,Stethojulis,strigiventer,6,Stethojulis strigiventer,species,219061,Stethojulis strigiventer,Species,AUTO
+Haemulidae,Plectorhinchus,chaetodonoides,6,Plectorhinchus chaetodonoides,species,273483,Plectorhinchus chaetodonoides,Species,AUTO
+Blenniidae,,sp10,6,Blenniidae,family,125519,Blenniidae,Family,AUTO
+Haemulidae,Plectorhinchus,flavomaculatus,6,Plectorhinchus flavomaculatus,species,218549,Plectorhinchus flavomaculatus,Species,AUTO
+Apogonidae,,spp,6,Apogonidae,family,125518,Apogonidae,Family,AUTO
+Pomacentridae,Neopomacentrus,azysron,6,Neopomacentrus azysron,species,218837,Neopomacentrus azysron,Species,AUTO
+Gobiidae,Amblyeleotris,sp10,6,Amblyeleotris,genus,206516,Amblyeleotris,Genus,AUTO
+Carangidae,Selar,boops,6,Selar boops,species,126813,Selar boops,Species,AUTO
+Tetraodontidae,Canthigaster,axiologus,6,Canthigaster axiologus,species,307139,Canthigaster axiologus,Species,AUTO
+Sillaginidae,Sillago,spp,6,Sillago spp,species,126072,Sillago,Genus,UNRESOLVED
+Cirrhitidae,Cirrhitichthys,aprinus,6,Cirrhitichthys aprinus,species,218855,Cirrhitichthys aprinus,Species,AUTO
+Scaridae,Chlorurus,bleekeri,6,Chlorurus bleekeri,species,277504,Chlorurus bleekeri,Species,AUTO
+Monacanthidae,Eubalichthys,caeruleoguttatus,6,Eubalichthys caeruleoguttatus,species,280730,Eubalichthys caeruleoguttatus,Species,AUTO
+Hemiscylliidae,Chiloscyllium,punctatum,6,Chiloscyllium punctatum,species,277833,Chiloscyllium punctatum,Species,AUTO
+Acanthuridae,Acanthurus,spp,4,Acanthurus spp,species,125908,Acanthurus,Genus,UNRESOLVED
+Malacanthidae,Malacanthus,latovittatus,4,Malacanthus latovittatus,species,218377,Malacanthus latovittatus,Species,AUTO
+Balistidae,Balistoides,conspicillum,4,Balistoides conspicillum,species,219876,Balistoides conspicillum,Species,AUTO
+Cirrhitidae,Cirrhitichthys,oxycephalus,4,Cirrhitichthys oxycephalus,species,218853,Cirrhitichthys oxycephalus,Species,AUTO
+Acanthuridae,Acanthurus,bariene,4,Acanthurus bariene,species,219637,Acanthurus bariene,Species,AUTO
+Labridae,Halichoeres,chloropterus,4,Halichoeres chloropterus,species,275758,Halichoeres chloropterus,Species,AUTO
+Siganidae,Siganus,sp10,4,Siganus,genus,126071,Siganus,Genus,AUTO
+Labridae,Halichoeres,chrysus,4,Halichoeres chrysus,species,275759,Halichoeres chrysus,Species,AUTO
+Pomacanthidae,Centropyge,vrolikii,4,Centropyge vrolikii,species,278853,Centropyge vrolikii,Species,AUTO
+Lutjanidae,Symphorichthys,spilurus,4,Symphorichthys spilurus,species,282914,Symphorichthys spilurus,Species,AUTO
+Acanthuridae,Ctenochaetus,binotatus,4,Ctenochaetus binotatus,species,219655,Ctenochaetus binotatus,Species,AUTO
+Chaetodontidae,Chaetodon,selene,4,Chaetodon selene,species,218749,Chaetodon selene,Species,AUTO
+Carangidae,Trachinotus,baillonii,4,Trachinotus baillonii,species,218440,Trachinotus baillonii,Species,AUTO
+Cirrhitidae,Paracirrhites,hemistictus,4,Paracirrhites hemistictus,species,277097,Paracirrhites hemistictus,Species,AUTO
+Serranidae,Epinephelus,corallicola,4,Epinephelus corallicola,species,273844,Epinephelus corallicola,Species,AUTO
+Labridae,Cheilinus,oxycephalus,4,Cheilinus oxycephalus,species,218947,Cheilinus oxycephalus,Species,AUTO
+Chaetodontidae,Chaetodon,madagaskariensis,4,Chaetodon madagaskariensis,species,218731,Chaetodon madagaskariensis,Species,AUTO
+Pomacentridae,Amblyglyphidodon,curacao,4,Amblyglyphidodon curacao,species,277597,Amblyglyphidodon curacao,Species,AUTO
+Balistidae,Sufflamen,chrysopterus,4,Sufflamen chrysopterus,species,219895,Sufflamen chrysopterum,Species,AUTO
+Diodontidae,Diodon,hystrix,4,Diodon hystrix,species,127403,Diodon hystrix,Species,AUTO
+Muraenidae,Gymnothorax,thrysoideus,4,Gymnothorax thrysoideus,species,399889,Gymnothorax thyrsoideus,Species,AUTO
+Labridae,Halichoeres,biocellatus,4,Halichoeres biocellatus,species,275752,Halichoeres biocellatus,Species,AUTO
+Blenniidae,Ecsenius,sp10,4,Ecsenius,genus,204781,Ecsenius,Genus,AUTO
+Malacanthidae,Hoplolatilus,cuniculus,4,Hoplolatilus cuniculus,species,218374,Hoplolatilus cuniculus,Species,AUTO
+Acanthuridae,Naso,tonganus,4,Naso tonganus,species,278010,Naso tonganus,Species,AUTO
+Monacanthidae,Cantherhines,fronticinctus,4,Cantherhines fronticinctus,species,220055,Cantherhines fronticinctus,Species,AUTO
+Stegostomatidae,Stegostoma,fasciatum,4,Stegostoma fasciatum,species,220032,Stegostoma tigrinum,Species,AUTO
+Pomacentridae,,sp1,4,Pomacentridae,family,125553,Pomacentridae,Family,AUTO
+Labridae,,sp1,4,Labridae,family,125541,Labridae,Family,AUTO
+Labridae,Halichoeres,sp10,4,Halichoeres,genus,158813,Halichoeres,Genus,AUTO
+Hemigaleidae,Hemipristis,elongata,4,Hemipristis elongata,species,277427,Hemipristis elongata,Species,AUTO
+Carcharhinidae,Carcharhinus,coatesi,4,Carcharhinus coatesi,species,1014961,Carcharhinus coatesi,Species,AUTO
+Terapontidae,Terapon,jarbua,4,Terapon jarbua,species,218350,Terapon jarbua,Species,AUTO
+Monacanthidae,Chaetodermis,penicilligerus,4,Chaetodermis penicilligerus,species,280112,Chaetodermis penicilligerus,Species,AUTO
+Pseudochromidae,Pseudochromis,sp1,4,Pseudochromis,genus,205515,Pseudochromis,Genus,AUTO
+Labridae,Oxycheilinus,sp10,4,Oxycheilinus,genus,205227,Oxycheilinus,Genus,AUTO
+Glaucosomatidae,Glaucosoma,magnificum,4,Glaucosoma magnificum,species,279191,Glaucosoma magnificum,Species,AUTO
+Pomacanthidae,Pygoplites,diacanthus,2,Pygoplites diacanthus,species,211773,Pygoplites diacanthus,Species,AUTO
+Lutjanidae,Lutjanus,decussatus,2,Lutjanus decussatus,species,276530,Lutjanus decussatus,Species,AUTO
+Microdesmidae,Ptereleotris,heteroptera,2,Ptereleotris heteroptera,species,219617,Ptereleotris heteroptera,Species,AUTO
+Holocentridae,Myripristis,sp10,2,Myripristis,genus,159383,Myripristis,Genus,AUTO
+Pseudochromidae,Pseudochromis,sp10,2,Pseudochromis,genus,205515,Pseudochromis,Genus,AUTO
+Dasyatidae,Himantura,granulata,2,Himantura granulata,species,217416,Urogymnus granulatus,Species,AUTO
+Chaetodontidae,Chaetodon,sp10,2,Chaetodon,genus,125954,Chaetodon,Genus,AUTO
+Labridae,Labropsis,sp10,2,Labropsis,genus,205764,Labropsis,Genus,AUTO
+Callionymidae,,spp,2,Callionymidae,family,125522,Callionymidae,Family,AUTO
+Acanthuridae,Acanthurus,fowleri,2,Acanthurus fowleri,species,272960,Acanthurus fowleri,Species,AUTO
+Mullidae,Upeneus,moluccensis,2,Upeneus moluccensis,species,126989,Upeneus moluccensis,Species,AUTO
+Opistognathidae,,sp10,2,Opistognathidae,family,151443,Opistognathidae,Family,AUTO
+Pinguipedidae,,sp10,2,Pinguipedidae,family,151413,Pinguipedidae,Family,AUTO
+Lethrinidae,Lethrinus,semicinctus,2,Lethrinus semicinctus,species,278639,Lethrinus semicinctus,Species,AUTO
+Lutjanidae,Aprion,viriscens,2,Aprion viriscens,species,212546,Aprion virescens,Species,UNRESOLVED
+Pomacentridae,Chromis,fieldi,2,Chromis fieldi,species,835087,Pycnochromis fieldi,Species,AUTO
+Serranidae,Epinephelus,macrospilos,2,Epinephelus macrospilos,species,218202,Epinephelus macrospilos,Species,AUTO
+Percichthyidae,Epinephelus,faveatus,2,Epinephelus faveatus,species,218219,Epinephelus faveatus,Species,AUTO
+Pomacentridae,Stegastes,insularis,2,Stegastes insularis,species,276672,Plectroglyphidodon insularis,Species,AUTO
+Pomacentridae,Acanthochromis,polyacanthus,2,Acanthochromis polyacanthus,species,279469,Acanthochromis polyacanthus,Species,AUTO
+Apogonidae,Zoramia,viridiventer,2,Zoramia viridiventer,species,283230,Zoramia viridiventer,Species,AUTO
+Pomacentridae,Stegastes,albifasciatus,2,Stegastes albifasciatus,species,218847,Stegastes albifasciatus,Species,AUTO
+Pomacentridae,Plectroglyphidodon,leucozonus,2,Plectroglyphidodon leucozonus,species,212854,Plectroglyphidodon leucozona,Species,AUTO
+Carangidae,Decapterus,russelli,2,Decapterus russelli,species,218427,Decapterus russelli,Species,AUTO
+Mullidae,Parupeneus,crassilabris,2,Parupeneus crassilabris,species,277814,Parupeneus crassilabris,Species,AUTO
+Labridae,Pseudocheilinus,hexataenia,2,Pseudocheilinus hexataenia,species,208915,Pseudocheilinus hexataenia,Species,AUTO
+Holocentridae,Myripristis,kuntee,2,Myripristis kuntee,species,217915,Myripristis kuntee,Species,AUTO
+Acanthuridae,Acanthurus,thompsoni,2,Acanthurus thompsoni,species,219646,Acanthurus thompsoni,Species,AUTO
+Balistidae,Melichthys,indicus,2,Melichthys indicus,species,219882,Melichthys indicus,Species,AUTO
+Balistidae,Balistes,viridescens,2,Balistes viridescens,species,307067,Balistoides viridescens,Species,AUTO
+Chaetodontidae,Chaetodon,oxycephalus,2,Chaetodon oxycephalus,species,218725,Chaetodon oxycephalus,Species,AUTO
+Holocentridae,Sargocentron,tiere,2,Sargocentron tiere,species,217954,Sargocentron tiere,Species,AUTO
+Labridae,Pseudocheilinus,octotaenia,2,Pseudocheilinus octotaenia,species,208914,Pseudocheilinus octotaenia,Species,AUTO
+Serranidae,Cephalopholis,nigripinnis,2,Cephalopholis nigripinnis,species,313075,Cephalopholis nigripinnis,Species,AUTO
+Pomacentridae,Chromis,ternatensis,2,Chromis ternatensis,species,212810,Chromis ternatensis,Species,AUTO
+Pinguipedidae,Parapercis,queenslandica,2,Parapercis queenslandica,species,398611,Parapercis queenslandica,Species,AUTO
+Scaridae,Scarus,scaber,2,Scarus scaber,species,219114,Scarus scaber,Species,AUTO
+Labridae,Anampses,twistii,2,Anampses twistii,species,218918,Anampses twistii,Species,AUTO
+Serranidae,Epinephalis,tauvina,2,Epinephalis tauvina,species,218205,Epinephelus tauvina,Species,UNRESOLVED
+Balistidae,Xanthichthys,auromarginatus,2,Xanthichthys auromarginatus,species,219897,Xanthichthys auromarginatus,Species,AUTO
+Serranidae,Cephalopholis,spiloparaea,2,Cephalopholis spiloparaea,species,218180,Cephalopholis spiloparaea,Species,AUTO
+Serranidae,Plectropomus,leopardus,2,Plectropomus leopardus,species,218261,Plectropomus leopardus,Species,AUTO
+Haemulidae,Plectorhinchus,gibbosus,2,Plectorhinchus gibbosus,species,218539,Plectorhinchus gibbosus,Species,AUTO
+Diodontidae,Chilomycterus,reticulatus,2,Chilomycterus reticulatus,species,219964,Chilomycterus reticulatus,Species,AUTO
+Serranidae,Epinephelus,lanceolatus,2,Epinephelus lanceolatus,species,218224,Epinephelus lanceolatus,Species,AUTO
+Scorpaenidae,,spp,2,Scorpaenidae,family,125595,Scorpaenidae,Family,AUTO
+Tetraodontidae,Canthigaster,valentini,2,Canthigaster valentini,species,219947,Canthigaster valentini,Species,AUTO
+Tetraodontidae,Arothron,stellatus,2,Arothron stellatus,species,219928,Arothron stellatus,Species,AUTO
+Scorpaenidae,,sp10,2,Scorpaenidae,family,125595,Scorpaenidae,Family,AUTO
+Labridae,Bodianus,mesothorax,2,Bodianus mesothorax,species,273536,Bodianus mesothorax,Species,AUTO
+Latidae,Psammoperca,waigiensis,2,Psammoperca waigiensis,species,282395,Psammoperca waigiensis,Species,AUTO
+Synodontidae,,spp,2,Synodontidae,family,125449,Synodontidae,Family,AUTO
+Blenniidae,Meiacanthus,luteus,2,Meiacanthus luteus,species,279314,Meiacanthus luteus,Species,AUTO
+Pomacentridae,Amblyglyphidodon,leucogaster,2,Amblyglyphidodon leucogaster,species,218779,Amblyglyphidodon leucogaster,Species,AUTO
+Belonidae,Tylosurus,gavialoides,2,Tylosurus gavialoides,species,272146,Tylosurus gavialoides,Species,AUTO
+Gobiidae,,purpurascens,2,Gobiidae,family,125537,Gobiidae,Family,AUTO
+Holocentridae,Sargocentron,rubrum,2,Sargocentron rubrum,species,126400,Sargocentron rubrum,Species,AUTO
+Apogonidae,Ostorhinchus,rueppellii,2,Ostorhinchus rueppellii,species,712685,Ostorhinchus rueppellii,Species,AUTO
+Apogonidae,Cheilodipterus,macrodon,2,Cheilodipterus macrodon,species,209373,Cheilodipterus macrodon,Species,AUTO
+Carangidae,Trachinotus,blochii,2,Trachinotus blochii,species,151169,Trachinotus blochii,Species,AUTO
+Scaridae,Leptoscarus,vaigiensis,2,Leptoscarus vaigiensis,species,219091,Leptoscarus vaigiensis,Species,AUTO
+Labridae,Thalassoma,septemfasciatum,2,Thalassoma septemfasciatum,species,402495,Thalassoma septemfasciatum,Species,AUTO
+Labridae,Stethojulis,sp1,2,Stethojulis,genus,204183,Stethojulis,Genus,AUTO
+Pomacentridae,Pomacentrus,sp1,2,Pomacentrus,genus,204256,Pomacentrus,Genus,AUTO
+Elopidae,Elops,hawaiensis,2,Elops hawaiensis,species,275404,Elops hawaiensis,Species,AUTO
+Blenniidae,Aspidontus,taeniatus,2,Aspidontus taeniatus,species,219242,Aspidontus taeniatus,Species,AUTO
+Synodontidae,Synodus,sp1,2,Synodus,genus,125686,Synodus,Genus,AUTO
+Pomacentridae,Neoglyphidodon,nigroris,2,Neoglyphidodon nigroris,species,278813,Neoglyphidodon nigroris,Species,AUTO
+Microdesmidae,Ptereleotris,grammica,2,Ptereleotris grammica,species,219620,Ptereleotris grammica,Species,AUTO
+Trichonotidae,Trichonotus,sp10,2,Trichonotus,genus,206711,Trichonotus,Genus,AUTO
+Triakidae,Hemitriakis,falcata,2,Hemitriakis falcata,species,281041,Hemitriakis falcata,Species,AUTO
+Scaridae,Scarus,sp1,2,Scarus,genus,159299,Scarus,Genus,AUTO
+Blenniidae,Ecsenius,bicolor,2,Ecsenius bicolor,species,277652,Ecsenius bicolor,Species,AUTO
+Monacanthidae,,sp10,2,Monacanthidae,family,125610,Monacanthidae,Family,AUTO
+Dasyatidae,Neotrygon,leylandi,2,Neotrygon leylandi,species,398331,Neotrygon leylandi,Species,AUTO
+Labridae,,sp2,2,Labridae,family,125541,Labridae,Family,AUTO
+Apogonidae,Apogon,doederleini,2,Apogon doederleini,species,273008,Ostorhinchus doederleini,Species,AUTO
+Pomacanthidae,Centropyge,sp1,2,Centropyge,genus,206379,Centropyge,Genus,AUTO
+Lutjanidae,Aphareus,rutilans,2,Aphareus rutilans,species,218468,Aphareus rutilans,Species,AUTO
+Holocentridae,Sargocentron,caudimaculatum,2,Sargocentron caudimaculatum,species,217940,Sargocentron caudimaculatum,Species,AUTO
+Opistognathidae,Opistognathus,sp1,2,Opistognathus,genus,159746,Opistognathus,Genus,AUTO
+Tetraodontidae,Canthigaster,coronata,2,Canthigaster coronata,species,219936,Canthigaster coronata,Species,AUTO
+Ariidae,Netuma,thalassina,2,Netuma thalassina,species,281745,Netuma thalassina,Species,AUTO
+Sphyrnidae,Sphyrna,mokarran,2,Sphyrna mokarran,species,105817,Sphyrna mokarran,Species,AUTO
+Scombridae,Sarda,orientalis,2,Sarda orientalis,species,219713,Sarda orientalis,Species,AUTO
+Carcharhinidae,Carcharhinus,brevipinna,2,Carcharhinus brevipinna,species,105788,Carcharhinus brevipinna,Species,AUTO
+Mullidae,Upeneus,sundaicus,2,Upeneus sundaicus,species,273673,Upeneus sundaicus,Species,AUTO
+Pinguipedidae,Parapercis,haackei,2,Parapercis haackei,species,276998,Parapercis haackei,Species,AUTO
+Carangidae,Parastromateus,niger,2,Parastromateus niger,species,218431,Parastromateus niger,Species,AUTO
+Ostraciidae,,sp10,2,Ostraciidae,family,125611,Ostraciidae,Family,AUTO
+Myliobatidae,Aetobatus,ocellatus,2,Aetobatus ocellatus,species,278243,Aetobatus ocellatus,Species,AUTO
+Siganidae,Siganus,punctatissimus,2,Siganus punctatissimus,species,273921,Siganus punctatissimus,Species,AUTO
+Serranidae,Chromileptes,altivelis,2,Chromileptes altivelis,species,401295,Chromileptes altivelis,Species,AUTO
+Labridae,Novaculops,sp1,2,Novaculops,genus,297251,Novaculops,Genus,AUTO

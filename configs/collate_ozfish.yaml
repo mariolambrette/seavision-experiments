@@ -1,0 +1,31 @@
+name: ozfish
+uid_prefix: ozfish
+
+source_root: "N:/marineai/dataset/raw/ozfish"
+image_root_rel: "crops"
+crop_metadata_csv: "crop_metadata.csv"
+
+output_json: "N:/marineai/dataset/collated/seavision.json"
+output_image_dir: "N:/marineai/dataset/collated/images"
+taxon_map_csv: "D:/marineai/classification-experiments/sw/taxon_maps/ozfish.csv"
+lineage_cache: "D:/marineai/classification-experiments/sw/taxon_maps/worms_lineage_cache.json"
+review_csv: "N:/marineai/dataset/collated/logs/ozfish_review.csv"
+
+crop_provenance: pre_cropped
+pixel_scale_known: true
+gear: stereo-BRUV
+
+licenses:
+  - id: 3
+    name: "CC BY 3.0 AU"
+    url: "https://creativecommons.org/licenses/by/3.0/au/"
+    redistributable: true
+
+dataset_meta:
+  id: 3
+  name: ozfish
+  continent: Oceania
+  countries: [Australia]
+  ocean_basins: ["Indian Ocean", "Pacific Ocean"]
+  habitat: null
+  license_id: 3

@@ -1,0 +1,32 @@
+﻿name: fathomnet
+uid_prefix: fn
+
+source_root: "N:/marineai/dataset/raw/fathomnet"
+image_root: "N:/marineai/dataset/raw/fathomnet/images"
+manifest_dir: "N:/marineai/dataset/raw/fathomnet/manifest"
+taxon_map_csv: "D:/marineai/classification-experiments/sw/taxon_maps/fathomnet_concepts.csv"
+
+output_json: "N:/marineai/dataset/collated/seavision_fathomnet.json"
+output_image_dir: "N:/marineai/dataset/collated/images"
+lineage_cache: "D:/marineai/classification-experiments/sw/taxon_maps/worms_lineage_cache.json"
+review_csv: "N:/marineai/dataset/collated/logs/fathomnet_review.csv"
+
+crop_provenance: cut_from_frame
+pixel_scale_known: true
+gear: null
+crop_quality: 95
+
+licenses:
+  - id: 4
+    name: "CC BY-NC-ND 4.0 (images) / CC BY-NC 4.0 (annotations)"
+    url: "https://fathomnet.org/fathomnet/#/license"
+    redistributable: false
+
+dataset_meta:
+  id: 4
+  name: fathomnet
+  continent: null
+  countries: null
+  ocean_basins: null
+  habitat: null
+  license_id: 4

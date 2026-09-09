@@ -297,8 +297,9 @@ def write_manifest(cfg, coco, n_review, extra=None):
     }
     if extra:
         manifest["counts"].update(extra)
+    src = cfg.get("name") or cfg["dataset_meta"]["name"]
     path = os.path.join(os.path.dirname(cfg["output_json"]) or ".",
-                        "build_manifest.json")
+                        f"build_manifest_{src}.json")
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(manifest, fh, indent=2)
     print(f"Manifest: {path}"

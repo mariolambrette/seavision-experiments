@@ -10,3 +10,4 @@ data/
 outputs/
 .env
 scratch.ps1
+scratch.py

@@ -82,13 +82,7 @@ def is_junk(fn):
     return fn == ".DS_Store" or fn.startswith("._")
 
 
-def parse_crop(fn, label):
-    """
-    -> dict(video, frame, w, h, x, y) or None.
-
-    Anchors on the geometry suffix, then removes the label if this file uses
-    the convention that embeds it, then splits the trailing frame number.
-    """
+def parse_crop(fn, label, variants):
     stem, ext = os.path.splitext(fn)
     if ext.lower() not in (".jpg", ".jpeg"):
         return None
@@ -96,8 +90,11 @@ def parse_crop(fn, label):
     if not m:
         return None
     rest = m["rest"]
-    if rest.endswith("_" + label):
-        rest = rest[: -(len(label) + 1)]
+    binom_label = strip_variant(label, variants)[0].replace(" ", "_")
+    for cand in (label, binom_label):          # folder label, then bare binomial
+        if rest.endswith("_" + cand):
+            rest = rest[: -(len(cand) + 1)]
+            break
     f = FRAME.match(rest)
     if not f:
         return None
@@ -150,9 +147,8 @@ def load_species(path):
 
 
 def walk(cfg):
-    """Yield (label, filename, full_path, parsed) for every crop; parsed is
-    None when the filename does not match either convention."""
     root = os.path.join(cfg["source_root"], cfg["image_root_rel"])
+    variants = cfg["variant_suffixes"]
     for label in sorted(os.listdir(root)):
         d = os.path.join(root, label)
         if not os.path.isdir(d):
@@ -162,8 +158,7 @@ def walk(cfg):
                 continue
             if not fn.lower().endswith((".jpg", ".jpeg")):
                 continue
-            yield label, fn, os.path.join(d, fn), parse_crop(fn, label)
-
+            yield label, fn, os.path.join(d, fn), parse_crop(fn, label, variants)
 
 # --------------------------------------------------------------------------
 # validate
@@ -211,7 +206,7 @@ def cmd_validate(args, cfg):
     print(f"species matched to species.html {len(sp_counts)}  "
           f"labels unmatched {len(unmatched)}")
     for u in unmatched[:10]:
-        print(f"   no species.html row for label {u[0]!r} -> {u[1]!r}")
+        print(f"   {u[0]!r} not in species.html -> taxonomy from WoRMS via {u[1]!r}")
     unused = set(spec) - set(sp_counts)
     if unused:
         print(f"species.html rows with no images: {sorted(unused)[:10]}")

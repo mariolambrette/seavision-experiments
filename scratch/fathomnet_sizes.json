@@ -1,0 +1,215 @@
+[
+  {
+    "institution": "Schmidt Ocean Institute",
+    "boxes": 139462,
+    "boxes_per_image": 1.02,
+    "est_images": 136060,
+    "sample": 120,
+    "median_bytes": 9574079,
+    "p90_bytes": 11325697,
+    "ext": {
+      ".png": 120
+    },
+    "est_gb": 1302.7
+  },
+  {
+    "institution": "MBARI",
+    "boxes": 298096,
+    "boxes_per_image": 3.25,
+    "est_images": 91721,
+    "sample": 120,
+    "median_bytes": 9042514,
+    "p90_bytes": 10078595,
+    "ext": {
+      ".png": 120
+    },
+    "est_gb": 829.4
+  },
+  {
+    "institution": "Joost Daniels",
+    "boxes": 6025,
+    "boxes_per_image": 2.29,
+    "est_images": 2629,
+    "sample": 120,
+    "median_bytes": 18733557,
+    "p90_bytes": 21698553,
+    "ext": {
+      ".png": 120
+    },
+    "est_gb": 49.3
+  },
+  {
+    "institution": "NOAA Ocean Exploration",
+    "boxes": 182022,
+    "boxes_per_image": 1.02,
+    "est_images": 179038,
+    "sample": 120,
+    "median_bytes": 275249,
+    "p90_bytes": 456574,
+    "ext": {
+      ".jpg": 120
+    },
+    "est_gb": 49.3
+  },
+  {
+    "institution": "NOAA NMFS SEFSC",
+    "boxes": 640070,
+    "boxes_per_image": 5.73,
+    "est_images": 111640,
+    "sample": 120,
+    "median_bytes": 395625,
+    "p90_bytes": 452568,
+    "ext": {
+      ".jpg": 120
+    },
+    "est_gb": 44.2
+  },
+  {
+    "institution": "Universidad de Costa Rica and Schmidt Ocean Institute",
+    "boxes": 4865,
+    "boxes_per_image": 1.27,
+    "est_images": 3840,
+    "sample": 120,
+    "median_bytes": 2087584,
+    "p90_bytes": 4026162,
+    "ext": {
+      ".webp": 120
+    },
+    "est_gb": 8.0
+  },
+  {
+    "institution": "OET",
+    "boxes": 772,
+    "boxes_per_image": 1.07,
+    "est_images": 718,
+    "sample": 120,
+    "median_bytes": 3451819,
+    "p90_bytes": 4030060,
+    "ext": {
+      ".png": 120
+    },
+    "est_gb": 2.5
+  },
+  {
+    "institution": "Ocean Networks Canada",
+    "boxes": 17009,
+    "boxes_per_image": 1.57,
+    "est_images": 10856,
+    "sample": 120,
+    "median_bytes": 184747,
+    "p90_bytes": 201254,
+    "ext": {
+      ".jpg": 120
+    },
+    "est_gb": 2.0
+  },
+  {
+    "institution": "ONCS",
+    "boxes": 307,
+    "boxes_per_image": 1.49,
+    "est_images": 205,
+    "sample": 120,
+    "median_bytes": 3381937,
+    "p90_bytes": 3715062,
+    "ext": {
+      ".png": 120
+    },
+    "est_gb": 0.7
+  },
+  {
+    "institution": "CENCOOS",
+    "boxes": 7892,
+    "boxes_per_image": 1,
+    "est_images": 7892,
+    "sample": 120,
+    "median_bytes": 30560,
+    "p90_bytes": 45844,
+    "ext": {
+      ".png": 120
+    },
+    "est_gb": 0.2
+  },
+  {
+    "institution": "POSCO",
+    "boxes": 49,
+    "boxes_per_image": 1,
+    "est_images": 49,
+    "sample": 49,
+    "median_bytes": 1306150,
+    "p90_bytes": 12592664,
+    "ext": {
+      ".jpg": 49
+    },
+    "est_gb": 0.1
+  },
+  {
+    "institution": "UW NSF-OOI CSSF",
+    "boxes": 164,
+    "boxes_per_image": 1.98,
+    "est_images": 83,
+    "sample": 83,
+    "median_bytes": 1177379,
+    "p90_bytes": 4103082,
+    "ext": {
+      ".png": 83
+    },
+    "est_gb": 0.1
+  },
+  {
+    "institution": "test",
+    "boxes": 20,
+    "boxes_per_image": 1,
+    "est_images": 20,
+    "sample": 20,
+    "median_bytes": 26632,
+    "p90_bytes": 41003,
+    "ext": {
+      ".png": 20
+    },
+    "est_gb": 0.0
+  },
+  {
+    "institution": "test2",
+    "boxes": 20,
+    "boxes_per_image": 1,
+    "est_images": 20,
+    "sample": 20,
+    "median_bytes": 26632,
+    "p90_bytes": 41003,
+    "ext": {
+      ".png": 20
+    },
+    "est_gb": 0.0
+  },
+  {
+    "institution": "UHH",
+    "boxes": 0,
+    "sample": 0
+  },
+  {
+    "institution": "UniOfPlym",
+    "boxes": 57,
+    "boxes_per_image": 19,
+    "est_images": 3,
+    "sample": 3,
+    "median_bytes": 7241808,
+    "p90_bytes": 7241808,
+    "ext": {
+      ".jpg": 3
+    },
+    "est_gb": 0.0
+  },
+  {
+    "institution": "UW NSF-OOI WHOI",
+    "boxes": 66,
+    "boxes_per_image": 2.28,
+    "est_images": 29,
+    "sample": 29,
+    "median_bytes": 1128877,
+    "p90_bytes": 7348526,
+    "ext": {
+      ".png": 29
+    },
+    "est_gb": 0.0
+  }
+]
