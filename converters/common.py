@@ -19,7 +19,7 @@ import time
 
 import yaml
 
-SCHEMA_VERSION = "1.1"
+SCHEMA_VERSION = "1.2"
 WORMS = "https://www.marinespecies.org/rest"
 WORMS_UA = "SeaVision-collation/1.1 (University of Exeter)"
 LINEAGE_RANKS = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]

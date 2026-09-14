@@ -1,123 +1,328 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "SeaVision unified detection dataset",
-    "type": "object",
-    "required": ["info", "licenses", "datasets", "categories", "images", "annotations"],
-    "additionalProperties": false,
-    "properties": {
-      "info": {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SeaVision unified detection dataset",
+  "type": "object",
+  "required": [
+    "info",
+    "licenses",
+    "datasets",
+    "categories",
+    "images",
+    "annotations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "info": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "description"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.1"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "licenses": {
+      "type": "array",
+      "items": {
         "type": "object",
-        "required": ["schema_version", "description"],
+        "required": [
+          "id",
+          "name",
+          "redistributable"
+        ],
         "additionalProperties": false,
         "properties": {
-          "schema_version": {"const": "1.1"},
-          "description": {"type": "string"}
-        }
-      },
-      "licenses": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "required": ["id", "name", "redistributable"],
-          "additionalProperties": false,
-          "properties": {
-            "id": {"type": "integer"},
-            "name": {"type": "string"},
-            "url": {"type": ["string", "null"]},
-            "redistributable": {"type": "boolean"}
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "redistributable": {
+            "type": "boolean"
           }
         }
-      },
-      "datasets": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "required": ["id", "name", "license_id"],
-          "additionalProperties": false,
-          "properties": {
-            "id": {"type": "integer"},
-            "name": {"type": "string"},
-            "continent": {"type": ["string", "null"]},
-            "countries": {"type": "array", "items": {"type": "string"}},
-            "ocean_basins": {"type": "array", "items": {"type": "string"}},
-            "habitat": {"type": ["string", "null"]},
-            "license_id": {"type": ["integer", "null"]}
+      }
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "license_id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "continent": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "countries": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "ocean_basins": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "habitat": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "license_id": {
+            "type": [
+              "integer",
+              "null"
+            ]
           }
         }
-      },
-      "categories": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "required": ["id", "name", "rank", "aphia_id", "lineage"],
-          "additionalProperties": false,
-          "properties": {
-            "id": {"type": "integer"},
-            "name": {"type": "string"},
-            "rank": {"type": "string"},
-            "supercategory": {"type": "string"},
-            "aphia_id": {"type": "integer"},
-            "lineage": {"type": "object"}
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "rank",
+          "aphia_id",
+          "lineage"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "rank": {
+            "type": "string"
+          },
+          "supercategory": {
+            "type": "string"
+          },
+          "aphia_id": {
+            "type": "integer"
+          },
+          "lineage": {
+            "type": "object"
           }
         }
-      },
-      "images": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "required": ["id", "file_name", "width", "height", "dataset_id",
-                       "crop_provenance", "pixel_scale_known", "gear",
-                       "groups", "group_sources", "has_unlabelled_animal",
-                       "source_meta"],
-          "additionalProperties": false,
-          "properties": {
-            "id": {"type": "integer"},
-            "file_name": {"type": "string"},
-            "width": {"type": "integer", "minimum": 1},
-            "height": {"type": "integer", "minimum": 1},
-            "dataset_id": {"type": "integer"},
-            "crop_provenance": {"enum": ["frame", "pre_cropped"]},
-            "pixel_scale_known": {"type": "boolean"},
-            "gear": {
-              "enum": ["BRUV", "stereo-BRUV", "ROV", "AUV", "drop camera",
-                       "fixed camera", "trawl camera", "diver", null]
+      }
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "file_name",
+          "width",
+          "height",
+          "dataset_id",
+          "crop_provenance",
+          "pixel_scale_known",
+          "gear",
+          "groups",
+          "group_sources",
+          "has_unlabelled_animal",
+          "source_meta"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "dataset_id": {
+            "type": "integer"
+          },
+          "crop_provenance": {
+            "enum": [
+              "frame",
+              "pre_cropped",
+              "cut_from_frame"
+            ]
+          },
+          "pixel_scale_known": {
+            "type": "boolean"
+          },
+          "gear": {
+            "enum": [
+              "BRUV",
+              "stereo-BRUV",
+              "ROV",
+              "AUV",
+              "drop camera",
+              "fixed camera",
+              "trawl camera",
+              "diver",
+              null
+            ]
+          },
+          "groups": {
+            "type": "object",
+            "propertyNames": {
+              "enum": [
+                "region",
+                "survey",
+                "site",
+                "deployment"
+              ]
             },
-            "groups": {
-              "type": "object",
-              "propertyNames": {"enum": ["region", "survey", "site", "deployment"]},
-              "additionalProperties": {"type": "string"}
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "group_sources": {
+            "type": "object",
+            "propertyNames": {
+              "enum": [
+                "region",
+                "survey",
+                "site",
+                "deployment"
+              ]
             },
-            "group_sources": {
-              "type": "object",
-              "propertyNames": {"enum": ["region", "survey", "site", "deployment"]},
-              "additionalProperties": {"type": "string"}
-            },
-            "has_unlabelled_animal": {"type": "boolean"},
-            "lat": {"type": ["number", "null"]},
-            "lon": {"type": ["number", "null"]},
-            "datetime": {"type": ["string", "null"]},
-            "depth_m": {"type": ["number", "null"]},
-            "source_meta": {"type": "object"}
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "has_unlabelled_animal": {
+            "type": "boolean"
+          },
+          "lat": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "lon": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "datetime": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "depth_m": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "source_meta": {
+            "type": "object"
           }
         }
-      },
-      "annotations": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "required": ["id", "image_id", "category_id", "bbox", "area", "iscrowd"],
-          "additionalProperties": false,
-          "properties": {
-            "id": {"type": "integer"},
-            "image_id": {"type": "integer"},
-            "category_id": {"type": "integer"},
-            "bbox": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4},
-            "area": {"type": "number", "exclusiveMinimum": 0},
-            "iscrowd": {"enum": [0, 1]},
-            "individual_id": {"type": ["string", "null"]},
-            "track_id": {"type": ["string", "null"]}
+      }
+    },
+    "annotations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "image_id",
+          "category_id",
+          "bbox",
+          "area",
+          "iscrowd"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "image_id": {
+            "type": "integer"
+          },
+          "category_id": {
+            "type": "integer"
+          },
+          "bbox": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "area": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "iscrowd": {
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "individual_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "track_id": {
+            "type": [
+              "string",
+              "null"
+            ]
           }
         }
       }
     }
   }
+}
