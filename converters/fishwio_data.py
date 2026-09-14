@@ -373,8 +373,7 @@ def cmd_coco(args, cfg):
 
         uid = C.uid_for(path, cfg["source_root"], cfg["uid_prefix"])
         if uid in st["seen_uid"]:
-            review.append((f"{label}/{fn}", path, "duplicate UID (already ingested)"))
-            continue
+            continue          # already ingested; not a review item
 
         is_bg = label.startswith(bg_prefix)
         aid = None

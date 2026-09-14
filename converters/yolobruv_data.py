@@ -219,9 +219,7 @@ def cmd_coco(args, cfg):
             uid = C.uid_for(source_path, cfg["source_root"], cfg["uid_prefix"])
 
             if uid in st["seen_uid"]:
-                review.append((filename, source_path,
-                               "duplicate UID (already ingested)"))
-                continue
+                continue          # already ingested; not a review item
             if not os.path.exists(source_path):
                 review.append((filename, source_path,
                                "image file not found on disk"))

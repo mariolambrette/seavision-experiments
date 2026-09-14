@@ -185,6 +185,11 @@ def cmd_coco(args, cfg):
                 if cmap.get(b["concept"], ("drop", None))[0] != "drop"]
         if not keep:
             continue
+        # every crop from this frame already exists - skip before touching the
+        # file, so a re-run or crash-resume decodes no images at all
+        if all(uid_for_box(b["uuid"], cfg["uid_prefix"]) in st["seen_uid"]
+               for b in keep):
+            continue
         if not os.path.exists(src):
             review.append((rec["uuid"], src, "frame not downloaded"))
             continue
@@ -289,9 +294,9 @@ def cmd_coco(args, cfg):
         json.dump(coco, fh, separators=(",", ":"))
     C.write_review(cfg["review_csv"], review)
     C.write_manifest(cfg, coco, len(review),
-                     extra={"fathomnet_frames": n_frame,
-                            "fathomnet_crops": n_crop,
-                            "fathomnet_clamped": n_clamp})
+                     extra={"frames_this_run": n_frame,
+                            "crops_this_run": n_crop,
+                            "clamped_this_run": n_clamp})
 
     print(f"\nWrote {cfg['output_json']}")
     print(f"  frames used {n_frame:,}   crops {n_crop:,}   clamped {n_clamp:,}")
