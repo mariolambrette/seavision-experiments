@@ -335,7 +335,7 @@ def cmd_coco(args, cfg):
             review.append((fn, src, f"unresolved taxon (no AphiaID): {triple}"))
             continue
 
-        uid = C.uid_for(src, cfg["source_root"], cfg["uid_prefix"])
+        uid = C.uid_for(clean, cfg["source_root"], cfg["uid_prefix"])
         if uid in st["seen_uid"]:
             continue          # already ingested; not a review item
 
