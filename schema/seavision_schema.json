@@ -21,7 +21,10 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "1.1"
+          "enum": [
+            "1.1",
+            "1.2"
+          ]
         },
         "description": {
           "type": "string"
