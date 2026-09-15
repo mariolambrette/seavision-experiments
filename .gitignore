@@ -11,3 +11,10 @@ outputs/
 .env
 scratch.ps1
 scratch.py
+
+# FathomNet enumeration dumps: ~640 MB of machine-generated intermediates.
+# They live on disk and on the NAS; the COCO files carry the real provenance.
+scratch/fn_manifest/
+
+# No bulk data in this repo. Override with a !negation if you ever need one.
+*.jsonl
