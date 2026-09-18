@@ -42,6 +42,7 @@ Usage:
 import argparse
 import csv
 import json
+import math
 import os
 import sys
 from collections import Counter, defaultdict
@@ -123,6 +124,7 @@ class Collation:
         self.cat_src_crops = defaultdict(Counter)       # cid -> src -> n
         self.cat_src_groups = defaultdict(
             lambda: defaultdict(lambda: defaultdict(set)))
+        self.geo = Counter()        # (src, lat_bin, lon_bin) -> n images
         self.sources = {}                               # source -> dict
         self.genus_stats = Counter()
         self.cid_collisions = []
@@ -156,7 +158,7 @@ class Collation:
                 "images": 0, "annotations": 0, "categories": set(),
                 "sizes": [], "provenance": Counter(), "gear": Counter(),
                 "group_levels": Counter(), "empty_background": 0,
-                "empty_unlabelled": 0,
+                "empty_unlabelled": 0, "has_latlon": 0,
                 "unlabelled_flag": 0, "pixel_scale_known": Counter(),
                 "license": None, "redistributable": None,
             })
@@ -168,6 +170,12 @@ class Collation:
                 s["unlabelled_flag"] += 1
             for lvl in (im.get("groups") or {}):
                 s["group_levels"][lvl] += 1
+            lat, lon = im.get("lat"), im.get("lon")
+            if lat is not None and lon is not None:
+                s["has_latlon"] += 1
+                # 1-degree bins; plotting half a million raw points is neither
+                # readable nor necessary, and binning here keeps R reading CSVs
+                self.geo[(src, int(math.floor(lat)), int(math.floor(lon)))] += 1
             if s["license"] is None:
                 lid = ds_lic.get(im.get("dataset_id"))
                 if lid in lic:
@@ -284,19 +292,40 @@ def write_categories(col, out_dir):
     with open(path, "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["category_id", "aphia_id", "name", "rank", "genus",
+                    "kingdom", "phylum", "class", "order", "family",
                     "n_crops", "n_groups", "group_level", "n_sources",
                     "sources", "size_p10", "size_median", "size_p90"])
         for cid in sorted(col.cat_crops, key=lambda c: -col.cat_crops[c]):
             c = col.cats.get(cid, {})
+            lin = c.get("lineage") or {}
+            lin = {str(k).strip().lower(): v for k, v in lin.items()} \
+                if isinstance(lin, dict) else {}
             sz = col.cat_sizes.get(cid) or []
             n, lvl = group_count(col, cid)
             w.writerow([
                 cid, c.get("aphia_id"), c.get("name"), c.get("rank"),
-                col.cat_genus.get(cid), col.cat_crops[cid], n, lvl or "",
+                col.cat_genus.get(cid),
+                lin.get("kingdom", ""), lin.get("phylum", ""),
+                lin.get("class", ""), lin.get("order", ""),
+                lin.get("family", ""),
+                col.cat_crops[cid], n, lvl or "",
                 len(col.cat_sources[cid]),
                 "|".join(sorted(col.cat_sources[cid])),
                 fmt(pct(sz, 10)), fmt(pct(sz, 50)), fmt(pct(sz, 90)),
             ])
+    return path
+
+
+def write_geo(col, out_dir):
+    """1-degree binned image positions, for the map. Sources with no
+    per-image coordinates simply contribute no rows -- the figure must say
+    so rather than letting them vanish."""
+    path = os.path.join(out_dir, "wp6_geo.csv")
+    with open(path, "w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["source", "lat_bin", "lon_bin", "n_images"])
+        for (src, la, lo), n in sorted(col.geo.items()):
+            w.writerow([src, la, lo, n])
     return path
 
 
@@ -309,7 +338,8 @@ def write_sources(col, out_dir):
                     "size_p10", "size_median", "size_p90",
                     "pct_under_64px", "pct_under_32px",
                     "empty_background", "empty_unlabelled",
-                    "has_unlabelled_animal",
+                    "has_unlabelled_animal", "images_with_latlon",
+                    "pct_with_latlon",
                     "license", "redistributable"])
         for src in sorted(col.sources):
             s = col.sources[src]
@@ -324,7 +354,8 @@ def write_sources(col, out_dir):
                 fmt(pct(sz, 10)), fmt(pct(sz, 50)), fmt(pct(sz, 90)),
                 fmt(u64), fmt(u32),
                 s["empty_background"], s["empty_unlabelled"],
-                s["unlabelled_flag"],
+                s["unlabelled_flag"], s["has_latlon"],
+                fmt(100.0 * s["has_latlon"] / s["images"] if s["images"] else 0),
                 s["license"], s["redistributable"],
             ])
     return path
@@ -452,6 +483,7 @@ def main():
 
     p_cat = write_categories(col, args.out_dir)
     p_bysrc = write_category_by_source(col, args.out_dir)
+    p_geo = write_geo(col, args.out_dir)
     p_src = write_sources(col, args.out_dir)
     p_rank, by_rank, crops_by_rank = write_ranks(col, args.out_dir)
     p_gate, gate, species = gate_sweep(col, args.out_dir,
@@ -543,7 +575,7 @@ def main():
 
     print()
     print("written:")
-    for p in (p_src, p_rank, p_cat, p_bysrc, p_gate, p_gen):
+    for p in (p_src, p_rank, p_cat, p_bysrc, p_geo, p_gate, p_gen):
         print(f"  {p}")
 
 
