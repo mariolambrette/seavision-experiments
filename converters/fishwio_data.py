@@ -46,6 +46,14 @@ Source-specific facts this converter has to know:
     re-derived with different thresholds without re-ingesting. Freezing one
     guess into the master file would be a claim we have not validated.
     `validate` reports track statistics so the scale of the effect is visible.
+
+WP6a: the taxon map is now resolved to accepted AphiaIDs (C.resolve_taxon_map)
+BEFORE categories are built. Without that step a taxon map row carrying an
+unaccepted AphiaID produced a category whose id was the unaccepted id and whose
+name was the accepted name, so one species entered the collation twice.
+
+Because ids can change, do NOT rebuild into an existing output_json written by
+the old code - move it aside first.
 """
 
 from __future__ import annotations
@@ -355,8 +363,17 @@ def cmd_coco(args, cfg):
     bg_prefix = cfg["background_prefix"]
     meta = load_metadata(os.path.join(cfg["source_root"], cfg["metadata_html"]))
     spec = load_species(os.path.join(cfg["source_root"], cfg["species_html"]))
-    taxon_map = C.load_taxon_map(cfg["taxon_map_csv"])
     ds_id = cfg["dataset_meta"]["id"]
+
+    # -- taxonomy ---------------------------------------------------------
+    # Resolve BEFORE building categories. Annotations take category_id from
+    # this map, so resolution cannot happen later without leaving annotations
+    # pointing at ids that no longer exist.
+    taxon_map = C.load_taxon_map(cfg["taxon_map_csv"])
+    taxon_map, tm_changes, tm_review, tm_merges = C.resolve_taxon_map(
+        taxon_map, cfg.get("lineage_cache"))
+
+    review = list(tm_review)
 
     coco, st = C.load_or_init_coco(cfg["output_json"])
     C.register_source(coco, cfg, st)
@@ -365,8 +382,17 @@ def cmd_coco(args, cfg):
     os.makedirs(cfg["output_image_dir"], exist_ok=True)
     os.makedirs(os.path.dirname(cfg["output_json"]) or ".", exist_ok=True)
 
-    review, n_bg, n_fish = [], 0, 0
+    # --limit / --stride exist for TEST rebuilds only. stride matters most
+    # here: walk() goes label by label in sorted order, so a plain head-limit
+    # would cover two or three species out of 128.
+    limit = getattr(args, "limit", None)
+    stride = max(1, getattr(args, "stride", 1) or 1)
+    cand, n_bg, n_fish = 0, 0, 0
+
     for label, fn, path, p in walk(cfg):
+        cand += 1
+        if stride > 1 and (cand - 1) % stride:
+            continue
         if p is None:
             review.append((f"{label}/{fn}", path, "filename matched neither convention"))
             continue
@@ -469,12 +495,20 @@ def cmd_coco(args, cfg):
             })
             st["next_ann"] += 1
 
+        if limit and (n_fish + n_bg) >= limit:
+            print(f"  --limit {limit} reached after {cand} candidates")
+            break
+
     import json
     with open(cfg["output_json"], "w", encoding="utf-8") as fh:
         json.dump(coco, fh, indent=2)
     C.write_review(cfg["review_csv"], review)
-    C.write_manifest(cfg, coco, len(review),
-                     extra={"fishwio_fish": n_fish, "fishwio_background": n_bg})
+    C.write_manifest(cfg, coco, len(review), extra={
+        "fishwio_fish": n_fish, "fishwio_background": n_bg,
+        "taxon_rows_changed": len(tm_changes),
+        "taxon_ids_merged": len(tm_merges),
+        "taxon_rows_to_review": len(tm_review),
+    })
 
     print(f"Wrote {cfg['output_json']}: {len(coco['images'])} images, "
           f"{len(coco['annotations'])} annotations, "
@@ -503,6 +537,11 @@ def main():
     c.add_argument("--trust-geometry", action="store_true",
                    help="take width/height from the filename instead of opening "
                         "each image - only after validate reports 0 mismatches")
+    c.add_argument("--limit", type=int, default=None,
+                   help="stop after this many crops (test rebuilds)")
+    c.add_argument("--stride", type=int, default=1,
+                   help="take every Nth candidate, so a capped run samples "
+                        "the whole source rather than its head")
     c.set_defaults(func=cmd_coco)
 
     for p in (v, t, c):

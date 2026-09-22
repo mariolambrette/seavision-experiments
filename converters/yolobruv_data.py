@@ -27,6 +27,15 @@ Source-specific decisions, fixed during design review:
     annotations, breaking the deliberate per-export scoping.
   * `opcode` carries site and deployment, and lives in source_meta - the master
     file holds no source-specific conventions.
+
+WP6a: the taxon map is now resolved to accepted AphiaIDs (C.resolve_taxon_map)
+BEFORE categories are built. Without that step a taxon map row carrying an
+unaccepted AphiaID produced a category whose id was the unaccepted id and whose
+name was the accepted name, so one species entered the collation twice.
+
+Because ids can change, do NOT rebuild into an existing output_json written by
+the old code - move it aside first. Mixing the two would put the same species
+under two ids again, which C.check_unique_names will refuse anyway.
 """
 
 from __future__ import annotations
@@ -197,24 +206,47 @@ def cmd_coco(args, cfg):
 
     empty_genus = cfg["empty_genus"]
     ds_id = cfg["dataset_meta"]["id"]
+
+    # -- taxonomy ---------------------------------------------------------
+    # Resolve BEFORE building categories. Annotations take category_id from
+    # this map, so resolution cannot happen later without leaving annotations
+    # pointing at ids that no longer exist.
     taxon_map = C.load_taxon_map(cfg["taxon_map_csv"])
+    taxon_map, tm_changes, tm_review, tm_merges = C.resolve_taxon_map(
+        taxon_map, cfg.get("lineage_cache"))
+
+    # Rows WoRMS could not resolve safely belong in this source's review CSV,
+    # not in a separate place nobody reads.
+    review = list(tm_review)
 
     coco, st = C.load_or_init_coco(cfg["output_json"])
     C.register_source(coco, cfg, st)
     C.ensure_categories(coco, taxon_map, cfg.get("lineage_cache"))
 
-    review = []
     os.makedirs(cfg["output_image_dir"], exist_ok=True)
     os.makedirs(os.path.dirname(cfg["output_json"]) or ".", exist_ok=True)
     content_hashes = {}
 
+    # --limit / --stride exist for TEST rebuilds only. stride spreads the
+    # sample across the whole source instead of taking the head of the file
+    # walk, which would otherwise mean a handful of sites and a handful of
+    # taxa - a sample that proves much less than its size suggests.
+    limit = getattr(args, "limit", None)
+    stride = max(1, getattr(args, "stride", 1) or 1)
+    cand, n_images, stop = 0, 0, False
+
     for export_path, pic_dir in expand_exports(cfg):
+        if stop:
+            break
         if not os.path.exists(export_path):
             print(f"  [missing export] {export_path}")
             continue
         df = read_export(export_path)
 
         for filename, group in df.groupby("Filename"):
+            cand += 1
+            if stride > 1 and (cand - 1) % stride:
+                continue
             source_path = os.path.join(pic_dir, filename)
             uid = C.uid_for(source_path, cfg["source_root"], cfg["uid_prefix"])
 
@@ -310,10 +342,20 @@ def cmd_coco(args, cfg):
                 })
                 st["next_ann"] += 1
 
+            n_images += 1
+            if limit and n_images >= limit:
+                print(f"  --limit {limit} reached after {cand} candidates")
+                stop = True
+                break
+
     with open(cfg["output_json"], "w", encoding="utf-8") as fh:
         json.dump(coco, fh, indent=2)
     C.write_review(cfg["review_csv"], review)
-    C.write_manifest(cfg, coco, len(review))
+    C.write_manifest(cfg, coco, len(review), extra={
+        "taxon_rows_changed": len(tm_changes),
+        "taxon_ids_merged": len(tm_merges),
+        "taxon_rows_to_review": len(tm_review),
+    })
 
     print(f"Wrote {cfg['output_json']}: {len(coco['images'])} images, "
           f"{len(coco['annotations'])} annotations, "
@@ -333,6 +375,12 @@ def main():
         p = sub.add_parser(name, help=help_text)
         p.add_argument("--config", required=True)
         p.add_argument("--dir", help="folder holding the export .txt files")
+        if name == "coco":
+            p.add_argument("--limit", type=int, default=None,
+                           help="stop after this many images (test rebuilds)")
+            p.add_argument("--stride", type=int, default=1,
+                           help="take every Nth candidate, so a capped run "
+                                "samples the whole source rather than its head")
         p.set_defaults(func=fn)
     args = ap.parse_args()
     cfg = C.load_config(args.config, EXTRA_REQUIRED)

@@ -35,6 +35,18 @@ Source-specific facts this converter has to know:
     it is keyed on the FathomNet concept string rather than a family/genus/
     species triple, so it is read by load_concept_map here and NOT by
     C.load_taxon_map.
+
+WP6a: the concept map's AphiaIDs are now resolved to accepted ids
+(C.resolve_taxon_map) BEFORE categories are built, and the resolved ids are
+written back into the concept map so annotations use them too. Without that
+step a concept carrying an unaccepted AphiaID produced a category whose id was
+the unaccepted id and whose name was the accepted name, so one species entered
+the collation twice. Resolution is keyed on concept strings here rather than
+triples, which C.resolve_taxon_map handles.
+
+Because ids can change, do NOT rebuild into an existing output_json written by
+the old code - move it aside first. Mixing the two would put the same species
+under two ids again, which C.check_unique_names will refuse anyway.
 """
 
 from __future__ import annotations
@@ -68,13 +80,40 @@ def load_concept_map(path):
     return m
 
 
-def iter_manifest(cfg, limit=None):
-    n = 0
+def resolve_concept_map(cmap, cache_path):
+    """Resolve every 'class' concept's AphiaID to the accepted id, IN PLACE.
+
+    Returns (class_map, changes, review, merges) where class_map is what
+    C.ensure_categories should be given.
+
+    The write-back matters: this converter reads the AphiaID out of cmap again
+    when it builds each annotation, so resolving only the copy handed to
+    ensure_categories would leave every annotation pointing at the old id.
+    """
+    class_map = {concept: aid for concept, (action, aid) in cmap.items()
+                 if action == "class" and aid}
+    class_map, changes, review, merges = C.resolve_taxon_map(
+        class_map, cache_path)
+    for concept, aid in class_map.items():
+        action, _old = cmap[concept]
+        cmap[concept] = (action, aid)        # aid is None for review rows,
+                                             # which the coco loop already logs
+    return class_map, changes, review, merges
+
+
+def iter_manifest(cfg, limit=None, stride=1):
+    """stride takes every Nth record, so a capped test run samples the whole
+    manifest rather than whichever institution sorts first."""
+    stride = max(1, stride or 1)
+    cand = n = 0
     for fn in sorted(os.listdir(cfg["manifest_dir"])):
         if not fn.endswith(".jsonl"):
             continue
         with open(os.path.join(cfg["manifest_dir"], fn), encoding="utf-8") as fh:
             for line in fh:
+                cand += 1
+                if stride > 1 and (cand - 1) % stride:
+                    continue
                 yield json.loads(line)
                 n += 1
                 if limit and n >= limit:
@@ -116,7 +155,7 @@ def cmd_validate(args, cfg):
     shorts, clamped, missing, degenerate = [], 0, 0, 0
     n_rec = 0
 
-    for rec in iter_manifest(cfg, args.limit):
+    for rec in iter_manifest(cfg, args.limit, getattr(args, "stride", 1)):
         n_rec += 1
         by_inst[rec["institution"]] += 1
         if args.check_files and not os.path.exists(frame_path(cfg, rec)):
@@ -170,16 +209,23 @@ def cmd_coco(args, cfg):
     cmap = load_concept_map(cfg["taxon_map_csv"])
     ds_id = cfg["dataset_meta"]["id"]
 
+    # -- taxonomy ---------------------------------------------------------
+    # Resolve BEFORE building categories, and write the resolved ids back into
+    # cmap, because the crop loop below reads AphiaIDs out of cmap again.
+    class_map, tm_changes, tm_review, tm_merges = resolve_concept_map(
+        cmap, cfg.get("lineage_cache"))
+
+    review = list(tm_review)
+
     coco, st = C.load_or_init_coco(cfg["output_json"])
     C.register_source(coco, cfg, st)
-    C.ensure_categories(coco, {k: v[1] for k, v in cmap.items()
-                               if v[0] == "class"}, cfg.get("lineage_cache"))
+    C.ensure_categories(coco, class_map, cfg.get("lineage_cache"))
 
     os.makedirs(cfg["output_image_dir"], exist_ok=True)
     os.makedirs(os.path.dirname(cfg["output_json"]) or ".", exist_ok=True)
 
-    review, n_crop, n_frame, n_clamp = [], 0, 0, 0
-    for rec in iter_manifest(cfg, args.limit):
+    n_crop, n_frame, n_clamp = 0, 0, 0
+    for rec in iter_manifest(cfg, args.limit, getattr(args, "stride", 1)):
         src = frame_path(cfg, rec)
         keep = [b for b in rec["boxes"]
                 if cmap.get(b["concept"], ("drop", None))[0] != "drop"]
@@ -296,7 +342,10 @@ def cmd_coco(args, cfg):
     C.write_manifest(cfg, coco, len(review),
                      extra={"frames_this_run": n_frame,
                             "crops_this_run": n_crop,
-                            "clamped_this_run": n_clamp})
+                            "clamped_this_run": n_clamp,
+                            "taxon_rows_changed": len(tm_changes),
+                            "taxon_ids_merged": len(tm_merges),
+                            "taxon_rows_to_review": len(tm_review)})
 
     print(f"\nWrote {cfg['output_json']}")
     print(f"  frames used {n_frame:,}   crops {n_crop:,}   clamped {n_clamp:,}")
@@ -313,10 +362,15 @@ def main():
     v.add_argument("--check-files", action="store_true",
                    help="also confirm every frame exists on disk")
     v.add_argument("--limit", type=int, default=None)
+    v.add_argument("--stride", type=int, default=1)
     v.set_defaults(func=cmd_validate)
 
     c = sub.add_parser("coco", help="cut crops and build the COCO JSON")
-    c.add_argument("--limit", type=int, default=None)
+    c.add_argument("--limit", type=int, default=None,
+                   help="stop after this many manifest records (test rebuilds)")
+    c.add_argument("--stride", type=int, default=1,
+                   help="take every Nth record, so a capped run samples the "
+                        "whole manifest rather than its head")
     c.set_defaults(func=cmd_coco)
 
     for p in (v, c):

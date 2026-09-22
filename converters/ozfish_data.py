@@ -31,6 +31,10 @@ Source-specific facts this converter has to know:
     ANNOTATED TWICE, at a constant frame offset per deployment. A random split
     would put the two views on opposite sides. Splitting by deployment closes
     this; the camera is recorded in source_meta so the pairing stays visible.
+    Measured, September 2026: 99.3% of deployment x taxon combinations hold
+    equal counts in both cameras and 91.8% of frames align against a 5.3%
+    null, giving 36,012 pairs over 89.1% of the source and a mean cluster size
+    of 1.804.
 
   * Species values of the form 'spN' are a generic unidentified marker, not a
     species: they appear under many unrelated families. Such rows resolve to
@@ -44,6 +48,16 @@ Source-specific facts this converter has to know:
   * Original frames are not downloaded (WP7 defers a designed subset), so
     crop_provenance is 'pre_cropped'. The filename gives the box in frame
     coordinates, so pixel_scale_known is true and the geometry is preserved.
+
+WP6a: the taxon map is now resolved to accepted AphiaIDs (C.resolve_taxon_map)
+BEFORE categories are built. This source is the one where two triples mapping
+to one AphiaID was always expected, so the merge report is informative rather
+than alarming - but it is now the RESOLVED id they merge onto, which is what
+stops one species entering the collation under both an accepted and an
+unaccepted id.
+
+Because ids can change, do NOT rebuild into an existing output_json written by
+the old code - move it aside first.
 """
 
 from __future__ import annotations
@@ -311,7 +325,16 @@ def cmd_coco(args, cfg):
 
     root = os.path.join(cfg["source_root"], cfg["image_root_rel"])
     ds_id = cfg["dataset_meta"]["id"]
+
+    # -- taxonomy ---------------------------------------------------------
+    # Resolve BEFORE building categories. Annotations take category_id from
+    # this map, so resolution cannot happen later without leaving annotations
+    # pointing at ids that no longer exist.
     taxon_map = C.load_taxon_map(cfg["taxon_map_csv"])
+    taxon_map, tm_changes, tm_review, tm_merges = C.resolve_taxon_map(
+        taxon_map, cfg.get("lineage_cache"))
+
+    review = list(tm_review)
 
     coco, st = C.load_or_init_coco(cfg["output_json"])
     C.register_source(coco, cfg, st)
@@ -320,8 +343,17 @@ def cmd_coco(args, cfg):
     os.makedirs(cfg["output_image_dir"], exist_ok=True)
     os.makedirs(os.path.dirname(cfg["output_json"]) or ".", exist_ok=True)
 
-    review, n = [], 0
+    # --limit / --stride exist for TEST rebuilds only. stride spreads the
+    # sample across surveys and deployments instead of taking the head of
+    # crop_metadata.csv, which is ordered and would give one survey.
+    limit = getattr(args, "limit", None)
+    stride = max(1, getattr(args, "stride", 1) or 1)
+    cand, n = 0, 0
+
     for r, p in load_rows(cfg):
+        cand += 1
+        if stride > 1 and (cand - 1) % stride:
+            continue
         fn = str(r.file_name)
         src = src_for(root, fn)
         clean = os.path.join(root, fn)      # UID comes from the metadata name
@@ -389,10 +421,19 @@ def cmd_coco(args, cfg):
         })
         st["next_ann"] += 1
 
+        if limit and n >= limit:
+            print(f"  --limit {limit} reached after {cand} candidates")
+            break
+
     with open(cfg["output_json"], "w", encoding="utf-8") as fh:
         json.dump(coco, fh, indent=2)
     C.write_review(cfg["review_csv"], review)
-    C.write_manifest(cfg, coco, len(review), extra={"ozfish_crops": n})
+    C.write_manifest(cfg, coco, len(review), extra={
+        "ozfish_crops": n,
+        "taxon_rows_changed": len(tm_changes),
+        "taxon_ids_merged": len(tm_merges),
+        "taxon_rows_to_review": len(tm_review),
+    })
 
     print(f"Wrote {cfg['output_json']}: {len(coco['images'])} images, "
           f"{len(coco['annotations'])} annotations, "
@@ -418,6 +459,11 @@ def main():
 
     c = sub.add_parser("coco", help="build/merge the COCO JSON")
     c.add_argument("--trust-geometry", action="store_true")
+    c.add_argument("--limit", type=int, default=None,
+                   help="stop after this many crops (test rebuilds)")
+    c.add_argument("--stride", type=int, default=1,
+                   help="take every Nth candidate, so a capped run samples "
+                        "the whole source rather than its head")
     c.set_defaults(func=cmd_coco)
 
     for p in (v, t, c):

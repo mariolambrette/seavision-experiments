@@ -16,12 +16,13 @@ import os
 import subprocess
 import sys
 import time
+from collections import defaultdict
 
 import yaml
 
 SCHEMA_VERSION = "1.2"
 WORMS = "https://www.marinespecies.org/rest"
-WORMS_UA = "SeaVision-collation/1.1 (University of Exeter)"
+WORMS_UA = "SeaVision-collation/1.2 (University of Exeter)"
 LINEAGE_RANKS = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
 
 BASE_REQUIRED_KEYS = [
@@ -30,6 +31,21 @@ BASE_REQUIRED_KEYS = [
     "pixel_scale_known", "gear",
 ]
 REQUIRED_DATASET_META = ["id", "name", "license_id"]
+
+# Statuses a machine must not resolve on its own. Kept deliberately identical
+# to the set used by the WP6a migration script -- if the two ever disagree,
+# the converter and the migration will resolve the same taxon differently and
+# a rebuild will silently diverge from the migrated collation.
+NEEDS_REVIEW = {"alternate representation", "nomen dubium",
+                "taxon inquirendum", "uncertain", "interim unpublished"}
+
+# Dispositions returned by resolve_accepted().
+ACCEPTED = "accepted"               # status is accepted; use its own id
+REMAPPED = "remapped"               # followed valid_AphiaID to an accepted id
+KEPT = "kept_no_replacement"        # unaccepted, but WoRMS offers nothing else
+REVIEW = "review"                   # a person decides; do NOT build a category
+
+USABLE = (ACCEPTED, REMAPPED, KEPT)
 
 
 # --------------------------------------------------------------------------
@@ -97,51 +113,172 @@ def git_info():
 # WoRMS
 # --------------------------------------------------------------------------
 
+class WormsUnavailable(RuntimeError):
+    """WoRMS could not be reached, as distinct from WoRMS having no record.
+
+    These two must never collapse into one return value. If they do, an
+    outage mid-build looks exactly like 'this taxon does not exist', the whole
+    taxon map goes to review, and the build produces a collation with no
+    categories and a review CSV blaming WoRMS for not having common species.
+    A build should stop instead, and be re-run when the service is back.
+    """
+
+
 def _requests():
     import requests
     return requests
 
 
 def worms_json(url, params=None, tries=4, timeout=60):
-    """GET and parse JSON with retries. None for 'no record' or persistent
-    failure. A non-JSON body is retried, not raised - an intercepting proxy or
-    an error page should not surface as a JSONDecodeError."""
+    """GET and parse JSON with retries.
+
+    Returns None ONLY when WoRMS answers definitively that there is no record
+    (204/404). Raises WormsUnavailable when the service could not be reached
+    or kept answering unusably. A non-JSON body is retried rather than raised
+    as a JSONDecodeError - an intercepting proxy or an error page should not
+    surface as a parse error.
+    """
     requests = _requests()
-    delay = 2
+    delay, last = 2, "no attempt made"
     for attempt in range(1, tries + 1):
         try:
             resp = requests.get(
                 url, params=params, timeout=timeout,
                 headers={"User-Agent": WORMS_UA, "Accept": "application/json"})
             if resp.status_code in (204, 404):
-                return None
+                return None                     # definitive: no such record
             if resp.status_code != 200:
-                print(f"    ! WoRMS HTTP {resp.status_code} ({attempt}/{tries}) {url}")
+                last = f"HTTP {resp.status_code}"
+                print(f"    ! WoRMS {last} ({attempt}/{tries}) {url}")
             else:
                 try:
                     return resp.json()
                 except ValueError:
-                    print(f"    ! WoRMS non-JSON ({attempt}/{tries}): "
-                          f"{resp.headers.get('content-type')} {resp.text[:120]!r}")
-        except Exception:                               # noqa: BLE001
+                    last = f"non-JSON {resp.headers.get('content-type')}"
+                    print(f"    ! WoRMS {last} ({attempt}/{tries}): "
+                          f"{resp.text[:120]!r}")
+        except Exception as exc:                        # noqa: BLE001
+            last = f"{type(exc).__name__}: {exc}"
             print(f"    ! WoRMS request failed ({attempt}/{tries}) {url}")
         if attempt < tries:
             time.sleep(delay)
             delay *= 2
-    return None
+    raise WormsUnavailable(
+        f"WoRMS unreachable after {tries} attempts ({last}): {url}. This is "
+        f"NOT the same as the taxon not existing - re-run when the service is "
+        f"back rather than accepting a build made without it.")
+
+
+def _cached_record(aphia_id, cache):
+    """AphiaRecordByAphiaID, cached under a 'rec:' key so it shares the lineage
+    cache file without colliding with lineage entries. Only the fields the
+    resolver needs are stored, so the cache does not balloon."""
+    key = f"rec:{aphia_id}"
+    if cache is not None and key in cache:
+        return cache[key]
+    rec = worms_json(f"{WORMS}/AphiaRecordByAphiaID/{aphia_id}")
+    if rec is None:
+        return None
+    slim = {"AphiaID": rec.get("AphiaID"),
+            "status": rec.get("status"),
+            "valid_AphiaID": rec.get("valid_AphiaID"),
+            "valid_name": rec.get("valid_name"),
+            "scientificname": rec.get("scientificname"),
+            "rank": rec.get("rank"),
+            "fetched": datetime.date.today().isoformat()}
+    if cache is not None:
+        cache[key] = slim
+    return slim
+
+
+def resolve_accepted(aphia_id, cache=None, depth=5):
+    """Resolve an AphiaID to the id a category should actually be built under.
+
+    Returns (disposition, resolved_id, origin_status, note).
+
+        ACCEPTED  status is accepted; resolved_id == aphia_id
+        REMAPPED  followed valid_AphiaID to an accepted record
+        KEPT      unaccepted, but WoRMS offers no replacement, so the original
+                  id is the best available identity. resolved_id == aphia_id
+        REVIEW    a person must decide; resolved_id is None
+
+    Two things here are deliberate and were got wrong before:
+
+    *   KEPT exists so that an unaccepted taxon with no valid_AphiaID (e.g.
+        Thecosomata) keeps its crops instead of being dropped to review. A fix
+        for a data-integrity fault must not quietly lose data.
+    *   NEEDS_REVIEW stops on the ORIGIN's status, not the final record's. An
+        alternate representation is a real taxonomic decision, not a redirect,
+        and following it would make the machine choose.
+    """
+    seen, cur, origin_status = [], int(aphia_id), None
+    for _ in range(depth):
+        rec = _cached_record(cur, cache)
+        if rec is None:
+            return REVIEW, None, origin_status, f"no WoRMS record for AphiaID {cur}"
+
+        status = str(rec.get("status") or "").strip().lower()
+        valid = rec.get("valid_AphiaID")
+        has_choice = bool(valid) and int(valid) != cur
+
+        if origin_status is None:
+            origin_status = status
+            # A doubtful status only needs a person when WoRMS actually offers
+            # an alternative. 'taxon inquirendum' with nowhere to go presents
+            # no decision to make, and sending it to review does not buy a
+            # judgement -- it just drops the category and its crops.
+            if status in NEEDS_REVIEW and has_choice:
+                return (REVIEW, None, status,
+                        f"status '{status}' with a replacement offered "
+                        f"({valid}) needs a human decision")
+
+        if status == "accepted":
+            acc = int(rec["AphiaID"])
+            disp = ACCEPTED if acc == int(aphia_id) else REMAPPED
+            return disp, acc, origin_status, ""
+
+        if not has_choice:
+            # Unaccepted with nowhere to go. Keep the original identity.
+            return (KEPT, int(aphia_id), origin_status,
+                    f"status '{status}' with no replacement offered")
+
+        seen.append(cur)
+        if int(valid) in seen:
+            return REVIEW, None, origin_status, "circular valid_AphiaID"
+        cur = int(valid)
+
+    return (REVIEW, None, origin_status,
+            f"valid_AphiaID chain deeper than {depth}")
 
 
 def worms_by_name(name):
+    """Exact-name lookup, resolved to the id a category would be built under.
+
+    marine_only is false: every taxon here is marine by construction, and
+    like=false plus the single-match requirement already sends a homonym to
+    review. Setting it true only adds a way to fail. It also matches the WP6a
+    migration script, which must resolve names identically.
+    """
     records = worms_json(f"{WORMS}/AphiaRecordsByName/{name}",
-                         params={"like": "false", "marine_only": "true"})
+                         params={"like": "false", "marine_only": "false"})
     if not records:
         return None
-    accepted = [r for r in records if r.get("status") == "accepted"]
-    pool = accepted or records
-    if len(pool) != 1:
+    exact = [r for r in records
+             if str(r.get("scientificname", "")).strip() == str(name).strip()]
+    if not exact:
         return None
-    r = pool[0]
-    return r["AphiaID"], r.get("valid_name") or r.get("scientificname"), r.get("rank")
+    accepted = [r for r in exact if r.get("status") == "accepted"]
+    pool = accepted or exact
+    if len(pool) != 1:
+        return None                            # ambiguous: a person decides
+
+    disp, rid, _status, _note = resolve_accepted(pool[0]["AphiaID"])
+    if disp not in USABLE:
+        return None
+    rec = _cached_record(rid, None)
+    if rec is None:
+        return None
+    return rid, rec.get("valid_name") or rec.get("scientificname"), rec.get("rank")
 
 
 def load_lineage_cache(path):
@@ -190,16 +327,88 @@ def worms_lineage(aphia_id, cache=None):
     return rank, valid, lineage
 
 
-def ensure_categories(coco, taxon_map, cache_path):
+def _key_label(key):
+    """Taxon-map keys are (family, genus, species) triples in three of the
+    converters and plain concept strings in the FathomNet one. Joining a bare
+    string character by character is not a helpful review row."""
+    if isinstance(key, (tuple, list)):
+        return "|".join(str(k) for k in key)
+    return str(key)
+
+
+def resolve_taxon_map(taxon_map, cache_path, verbose=True):
+    """Rewrite every AphiaID in the taxon map to the id a category should be
+    built under. MUST run before ensure_categories.
+
+    Skipping this step is what let one species enter the collation twice: the
+    category id came from the taxon map (unaccepted) while the category name
+    came from valid_name (accepted), so two ids carried one name and the
+    annotations split between them.
+
+    Returns (resolved, changes, review, merges). Two map rows collapsing onto
+    one id is EXPECTED - that is the duplication being removed at source - so
+    it is reported, not treated as an error.
+    """
+    cache = load_lineage_cache(cache_path)
+    resolved, changes, review = {}, [], []
+    try:
+        for key, aid in taxon_map.items():
+            if not aid:
+                resolved[key] = aid
+                continue
+            disp, rid, status, note = resolve_accepted(aid, cache)
+            if disp not in USABLE:
+                resolved[key] = None
+                review.append((_key_label(key), f"aphia_id={aid}",
+                               f"unresolved taxonomy ({status}): {note}"))
+                continue
+            resolved[key] = rid
+            if disp == REMAPPED:
+                changes.append((key, int(aid), rid, status))
+            elif disp == KEPT:
+                changes.append((key, int(aid), rid, f"{status} (kept)"))
+    finally:
+        save_lineage_cache(cache_path, cache)
+
+    by_id = defaultdict(list)
+    for key, aid in resolved.items():
+        if aid:
+            by_id[aid].append(key)
+    merges = {a: ks for a, ks in by_id.items() if len(ks) > 1}
+
+    if verbose:
+        n_remap = sum(1 for c in changes if not str(c[3]).endswith("(kept)"))
+        print(f"  taxon map: {n_remap} id(s) remapped to accepted, "
+              f"{len(changes) - n_remap} kept without replacement, "
+              f"{len(merges)} id(s) now reached by >1 map row, "
+              f"{len(review)} sent to review")
+        for key, old, new, status in changes:
+            arrow = "==" if old == new else "->"
+            print(f"    {_key_label(key)}: {old} ({status}) {arrow} {new}")
+        for aid, keys in sorted(merges.items()):
+            print(f"    merge onto {aid}: " +
+                  "; ".join(_key_label(k) for k in keys))
+    return resolved, changes, review, merges
+
+
+def ensure_categories(coco, taxon_map, cache_path, strict=True):
     """Add a category for every AphiaID in the taxon map that is not already
-    present. The cache is saved even if a fetch fails part way, so a re-run
-    resumes rather than restarting."""
+    present. The taxon map MUST already have been through resolve_taxon_map.
+    """
     cat_ids = {c["id"] for c in coco["categories"]}
     cache = load_lineage_cache(cache_path)
     try:
         for aid in sorted({a for a in taxon_map.values() if a}):
             if aid in cat_ids:
                 continue
+            # Belt and braces: refuse an id that resolve_taxon_map would have
+            # changed, even if the caller forgot to call it. The absence of
+            # this check is what produced the WP6a duplicate-species fault.
+            disp, rid, status, note = resolve_accepted(aid, cache)
+            if disp not in USABLE or rid != aid:
+                sys.exit(f"ensure_categories: AphiaID {aid} resolves to "
+                         f"{disp}/{rid} (status '{status}'; {note}). Run "
+                         f"resolve_taxon_map on the taxon map first.")
             was_cached = str(aid) in cache
             rank, valid, lineage = worms_lineage(aid, cache)
             if not was_cached:
@@ -209,10 +418,33 @@ def ensure_categories(coco, taxon_map, cache_path):
                 "id": aid, "name": valid, "rank": rank,
                 "supercategory": lineage.get("family", ""),
                 "aphia_id": aid, "lineage": lineage,
+                "worms_status": status,
             })
             cat_ids.add(aid)
     finally:
         save_lineage_cache(cache_path, cache)
+
+    check_unique_names(coco, strict=strict)
+
+
+def check_unique_names(coco, strict=True):
+    """One name, one category.
+
+    Two ids sharing a name IS the WP6a fault. It should stop a build rather
+    than be found months later by an audit.
+    """
+    names = defaultdict(list)
+    for c in coco["categories"]:
+        names[str(c.get("name", "")).strip().lower()].append(c["id"])
+    dupes = {n: sorted(ids) for n, ids in names.items() if len(ids) > 1}
+    if not dupes:
+        return {}
+    msg = "; ".join(f"{n} -> {ids}" for n, ids in sorted(dupes.items())[:10])
+    more = "" if len(dupes) <= 10 else f" (+{len(dupes) - 10} more)"
+    if strict:
+        sys.exit(f"duplicate category name(s): {len(dupes)} found: {msg}{more}")
+    print(f"  ! WARNING: {len(dupes)} duplicate category name(s): {msg}{more}")
+    return dupes
 
 
 # --------------------------------------------------------------------------
@@ -234,12 +466,22 @@ def uid_for(source_path, source_root, uid_prefix):
 
 
 def load_taxon_map(path):
-    mapping = {}
+    """Taxon map, refusing duplicate keys.
+
+    Two rows with the same (family, genus, species) and different aphia_ids
+    used to overwrite silently, so which id won depended on row order.
+    """
+    mapping, seen = {}, {}
     with open(path, newline="", encoding="utf-8") as fh:
-        for row in csv.DictReader(fh):
+        for n, row in enumerate(csv.DictReader(fh), start=2):
             key = (norm(row["family"]), norm(row["genus"]), norm(row["species"]))
             aid = row.get("aphia_id", "").strip()
-            mapping[key] = int(aid) if aid else None
+            val = int(aid) if aid else None
+            if key in mapping and mapping[key] != val:
+                sys.exit(f"{path} line {n}: duplicate taxon key {key} with a "
+                         f"different aphia_id ({mapping[key]} vs {val}); "
+                         f"first seen on line {seen[key]}")
+            mapping[key], seen[key] = val, n
     return mapping
 
 
@@ -268,13 +510,19 @@ def register_source(coco, cfg, state):
     for lic in cfg.get("licenses", []):
         if lic["id"] not in {l["id"] for l in coco["licenses"]}:
             coco["licenses"].append(dict(lic))
-    if cfg["dataset_meta"]["id"] not in state["ds_ids"]:
+    ds_id = cfg["dataset_meta"]["id"]
+    if ds_id not in state["ds_ids"]:
         coco["datasets"].append(dict(cfg["dataset_meta"]))
+        state["ds_ids"].add(ds_id)      # was missing: a second call in one run
+                                        # appended the same dataset twice
 
 
 def write_review(path, rows):
-    if not rows:
-        return
+    """Always written, even when empty.
+
+    Previously a run with nothing to review wrote no file, so the PREVIOUS
+    run's CSV stayed on disk and read as current.
+    """
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
