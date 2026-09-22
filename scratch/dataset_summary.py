@@ -22,10 +22,18 @@ Design notes, because they affect how the numbers should be read:
 *   Group values are namespaced by source. Two sources can both call something
     "deployment 1" and they are not the same deployment.
 
-*   Genus is read from the category's lineage by case-insensitive key match.
-    Where that fails and the rank is species, the first token of the name is
-    used as a fallback. The number of times the fallback fires is reported --
-    if it is large, the lineage data is not what we think it is.
+*   Genus is read from the category's lineage by case-insensitive key match,
+    and there is NO fallback to splitting the binomial. WoRMS can accept a
+    species whose name implies a genus it is not classified in, so the first
+    token of a name is not a genus. A species-rank category with no lineage
+    genus is reported as the data fault it is.
+
+*   The gate counts only crops that carry the grouping level it is testing at.
+    Counting collation-wide crops would let a species clear the crop bar on
+    FathomNet -- which has no groups, and is therefore out of scope for any
+    held-out-group experiment -- while drawing its groups from OzFish. Both
+    figures are emitted so the size of that inflation is visible rather than
+    silently removed.
 
 *   The gate is reported as a SWEEP over thresholds, not at one chosen value.
     Picking a single threshold after seeing the data is indistinguishable from
@@ -124,6 +132,10 @@ class Collation:
         self.cat_src_crops = defaultdict(Counter)       # cid -> src -> n
         self.cat_src_groups = defaultdict(
             lambda: defaultdict(lambda: defaultdict(set)))
+        # crops per category AT each grouping level. A crop counts towards a
+        # level only if its own image carries that level, so a source with no
+        # groups contributes nothing -- which is the point.
+        self.cat_crops_lvl = defaultdict(Counter)       # cid -> level -> n
         self.geo = Counter()        # (src, lat_bin, lon_bin) -> n images
         self.sources = {}                               # source -> dict
         self.genus_stats = Counter()
@@ -209,6 +221,7 @@ class Collation:
             for lvl, val in (im.get("groups") or {}).items():
                 self.cat_groups[cid][lvl].add((src, str(val)))
                 self.cat_src_groups[cid][src][lvl].add(str(val))
+                self.cat_crops_lvl[cid][lvl] += 1
 
         for im_id, im in imgs.items():
             if im_id not in annotated:
@@ -378,7 +391,19 @@ def write_ranks(col, out_dir):
 
 
 def gate_sweep(col, out_dir, crop_thresholds, group_thresholds):
-    """Genera holding >=2 species that each clear (min_crops, min_groups)."""
+    """Genera holding >=2 species that each clear (min_crops, min_groups).
+
+    The crop bar is applied to GROUPED crops -- those carrying the grouping
+    level the species is being counted at -- not to its collation-wide total.
+    The two differ whenever a species appears both in a grouped source and in
+    an ungrouped one, and the difference is not cosmetic: the ungrouped crops
+    cannot take part in the held-out-group experiment the gate exists to
+    justify, so counting them inflates the answer to the question actually
+    being asked.
+
+    Both are computed and both are written out. Removing a figure silently is
+    how a correction becomes indistinguishable from a mistake.
+    """
     species = []
     for cid, n in col.cat_crops.items():
         c = col.cats.get(cid, {})
@@ -387,8 +412,15 @@ def gate_sweep(col, out_dir, crop_thresholds, group_thresholds):
         g = col.cat_genus.get(cid)
         if not g:
             continue
-        ng, _ = group_count(col, cid)
-        species.append((g, cid, n, ng))
+        ng, lvl = group_count(col, cid)
+        n_grouped = col.cat_crops_lvl[cid][lvl] if lvl else 0
+        species.append((g, cid, n, n_grouped, ng, lvl))
+
+    def genera(keep):
+        per = Counter(s[0] for s in keep)
+        g2 = [g for g, k in per.items() if k >= 2]
+        g3 = [g for g, k in per.items() if k >= 3]
+        return len(g2), len(g3), sum(per[g] for g in g2)
 
     path = os.path.join(out_dir, "wp6_gate.csv")
     table = []
@@ -397,43 +429,59 @@ def gate_sweep(col, out_dir, crop_thresholds, group_thresholds):
         w.writerow(["min_crops", "min_groups", "qualifying_species",
                     "genera_with_2plus", "genera_with_3plus",
                     "species_in_those_genera",
-                    "species_lost_to_missing_groups"])
+                    "species_lost_to_missing_groups",
+                    "qualifying_species_allcrops",
+                    "genera_with_2plus_allcrops",
+                    "species_inflated_by_ungrouped_crops"])
         for mc in crop_thresholds:
             for mg in group_thresholds:
-                by_crops = [s for s in species if s[2] >= mc]
-                keep = [s for s in by_crops if s[3] >= mg]
-                # species that clear the crop bar but are excluded ONLY
-                # because their source carries no grouping variable at all
-                lost = sum(1 for s in by_crops if s[3] == 0) if mg >= 1 else 0
-                per_genus = Counter(s[0] for s in keep)
-                g2 = [g for g, k in per_genus.items() if k >= 2]
-                g3 = [g for g, k in per_genus.items() if k >= 3]
-                sp_in_g2 = sum(per_genus[g] for g in g2)
-                row = [mc, mg, len(keep), len(g2), len(g3), sp_in_g2, lost]
+                # min_groups == 0 IS the grouping-ignored baseline -- the row
+                # WP5b's "grouping ignored" column is read from. Applying the
+                # grouped-crop bar there would make the row contradict its own
+                # purpose, so at mg == 0 the crop bar ignores grouping too.
+                bar = 2 if mg == 0 else 3
+                keep = [s for s in species if s[bar] >= mc and s[4] >= mg]
+                loose = [s for s in species if s[2] >= mc and s[4] >= mg]
+                # species excluded ONLY because their source carries no
+                # grouping variable at all
+                lost = (sum(1 for s in species if s[2] >= mc and s[4] == 0)
+                        if mg >= 1 else 0)
+                g2, g3, sp_in_g2 = genera(keep)
+                lg2, _lg3, _ = genera(loose)
+                row = [mc, mg, len(keep), g2, g3, sp_in_g2, lost,
+                       len(loose), lg2, len(loose) - len(keep)]
                 w.writerow(row)
                 table.append(row)
     return path, table, species
 
 
 def write_genera(col, species, out_dir, min_crops, min_groups):
-    """The actual genera behind one reference cell, so they can be eyeballed."""
+    """The actual genera behind one reference cell, so they can be eyeballed.
+
+    Qualification is on grouped crops; the collation-wide count is written
+    alongside so a species carried largely by ungrouped crops is visible at a
+    glance rather than having to be inferred.
+    """
     path = os.path.join(out_dir, "wp6_genera.csv")
-    keep = [s for s in species if s[2] >= min_crops and s[3] >= min_groups]
+    keep = [s for s in species if s[3] >= min_crops and s[4] >= min_groups]
     per_genus = defaultdict(list)
-    for g, cid, n, ng in keep:
-        per_genus[g].append((cid, n, ng))
+    for g, cid, n_all, n_grp, ng, lvl in keep:
+        per_genus[g].append((cid, n_all, n_grp, ng, lvl))
     with open(path, "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
-        w.writerow(["genus", "n_species", "species", "crops_each", "groups_each"])
+        w.writerow(["genus", "n_species", "species", "grouped_crops_each",
+                    "all_crops_each", "groups_each", "group_level"])
         rows = [(g, v) for g, v in per_genus.items() if len(v) >= 2]
         rows.sort(key=lambda r: (-len(r[1]), r[0]))
         for g, v in rows:
-            v.sort(key=lambda t: -t[1])
+            v.sort(key=lambda t: -t[2])
             w.writerow([
                 g, len(v),
-                "|".join(str(col.cats.get(cid, {}).get("name")) for cid, _, _ in v),
-                "|".join(str(n) for _, n, _ in v),
-                "|".join(str(ng) for _, _, ng in v),
+                "|".join(str(col.cats.get(cid, {}).get("name")) for cid, *_ in v),
+                "|".join(str(t[2]) for t in v),
+                "|".join(str(t[1]) for t in v),
+                "|".join(str(t[3]) for t in v),
+                "|".join(str(t[4] or "") for t in v),
             ])
     return path, len(rows)
 
@@ -551,14 +599,22 @@ def main():
     print("THE GATE -- genera holding 2+ species, each clearing a threshold")
     print("=" * 72)
     print(f"{'crops':>7}{'groups':>8}{'species':>10}{'genera>=2':>11}"
-          f"{'genera>=3':>11}{'lost:nogrp':>12}")
-    for mc, mg, nsp, g2, g3, _, lost in gate:
-        print(f"{mc:>7}{mg:>8}{nsp:>10,}{g2:>11,}{g3:>11,}{lost:>12,}")
+          f"{'genera>=3':>11}{'lost:nogrp':>12}{'was':>8}{'infl':>7}")
+    for (mc, mg, nsp, g2, g3, _, lost, nsp_all, g2_all, infl) in gate:
+        print(f"{mc:>7}{mg:>8}{nsp:>10,}{g2:>11,}{g3:>11,}{lost:>12,}"
+              f"{g2_all:>8,}{infl:>7,}")
     print()
     print("  groups=0 ignores grouping entirely. 'lost:nogrp' counts species")
     print("  that clear the crop bar but are excluded because their source")
     print("  carries NO grouping variable -- for FathomNet that is every")
     print("  species, until the deferred image-set-upload pass runs.")
+    print()
+    print("  The crop bar counts only crops carrying the grouping level the")
+    print("  species is counted at. 'was' is genera>=2 under the old rule,")
+    print("  which counted crops across the whole collation; 'infl' is how")
+    print("  many species that rule admitted on crops they cannot use in a")
+    print("  held-out-group experiment. If 'infl' is 0 the two rules agree")
+    print("  and the earlier figures stand unchanged.")
 
     print()
     print(f"  R1 asked for three genera with two or more well-populated "
