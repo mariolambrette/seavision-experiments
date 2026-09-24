@@ -1,0 +1,21 @@
+category_id,name,rank,crops,missing_ranks
+22742,Psamminidae,Family,1054,order
+987094,Chelonioidea,Superfamily,503,class
+143770,Zosteraceae,Family,81,phylum
+123461,Benthothuria,Genus,50,family
+1268,Sipuncula,Order,33,class
+528619,Hansenothuria,Genus,22,family
+171713,Heterorete,Genus,21,family
+233983,Myzostomida,Order,9,class
+754493,Phyllochaetopterus gigas,Species,9,order
+298341,Epimenia,Genus,8,order
+845453,Paulasterias,Genus,7,order
+529029,Hansenothuria benti,Species,6,family
+137206,Chelonia mydas,Species,5,class
+137207,Eretmochelys imbricata,Species,5,class
+136999,Cheloniidae,Family,4,class
+137928,Elysia,Genus,2,order
+979,Sabellariidae,Family,1,order
+137929,Thuridilla,Genus,1,order
+605520,Chaetopterus pugaporcinus,Species,1,order
+845455,Paulasterias mcclaini,Species,1,order

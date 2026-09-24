@@ -1,0 +1,51 @@
+# The `square` shard sets (plan 10.2, geometry decided 25 September 2026).
+#
+# Square expansion widens each box to a square and takes in REAL pixels from
+# around the animal, so unlike letterbox and distort it cannot be done at load
+# time from a stored crop -- it needs the frame. Hence its own build.
+#
+# TWO SETS, NOT ONE DERIVED FROM THE OTHER. A smaller margin is only a centre
+# crop of a larger one while both stay centred on the box. Shifting a square
+# to fit inside the frame deliberately breaks that, so each margin is cut for
+# real. Measured cost of not deriving: nothing but disk.
+
+name: square
+
+# side = max(w, h) * (1 + margin). The 10% set matches the first experiment's
+# geometry so its results stay comparable.
+margins:
+  m00: 0.0
+  m10: 0.10
+
+coco:
+  - "D:/marineai/dataset/collated/seavision.json"
+  - "D:/marineai/dataset/collated/seavision_fathomnet.json"
+
+# PrePARED's frames ARE its collated images (crop_provenance: frame).
+image_dir: "D:/marineai/dataset/collated/images"
+
+# The other two sources store crops; their frames live in raw/ and are found
+# per source. FishWIO has no frames and is absent from these sets entirely --
+# 114,687 records, so any comparison against the `crops` set must inner-join
+# on key rather than assume the same population.
+frame_roots:
+  fathomnet: "D:/marineai/dataset/raw/fathomnet/images"
+  ozfish:    "D:/marineai/dataset/raw/ozfish/frames"
+frame_layout:
+  fathomnet: "{institution}/{uuid}.jpg"
+# OzFish is keyed on (video, camera, frame) with NO container token: the crop
+# filenames say .mp4 where the archive says .MP4, and the container identifies
+# nothing a video, camera and frame index do not already fix.
+
+out_root: "D:/marineai/classification-experiments/shards"
+
+# Same cap as the crops set. A square's short side equals its long side, so
+# the 64 px short-side floor can never bind here and is not used.
+cap_long_side: 1024
+jpeg_quality: 95
+shard_bytes: 1073741824
+
+# Mid grey, used only where no square fits at all -- profiled at 1.35% of
+# records, margin-invariant. Those carry pad_fraction so an experiment config
+# can exclude them by a declared rule (plan 10.5) rather than by taste.
+pad_rgb: [128, 128, 128]
