@@ -1,16 +1,27 @@
+# Paths moved to the workstation copy, 22 September 2026.
+#
+# source_root changed from N: to D:. This is SAFE and changes no UID:
+# uid_for() hashes the path RELATIVE to source_root, so as long as the tree
+# below it is identical -- which the copy guarantees -- every UID is unchanged.
+# That is the same property that survived the NAS move in WP0b.
+#
+# Authoritative copies after this change:
+#   raw/        NAS. The D: copy is read-only and refreshed NAS -> D:.
+#   collated/   D:.  The NAS copy is a backup, pushed D: -> NAS after a build.
+
 name: fishwio
 uid_prefix: fishwio
 
-source_root: "N:/marineai/dataset/raw/fishwio"
+source_root: "D:/marineai/dataset/raw/fishwio"
 image_root_rel: "data_paper_dataset"
 metadata_html: "metadata.html"
 species_html: "species.html"
 
-output_json: "N:/marineai/dataset/collated/seavision.json"
-output_image_dir: "N:/marineai/dataset/collated/images"
+output_json: "D:/marineai/dataset/collated/seavision.json"
+output_image_dir: "D:/marineai/dataset/collated/images"
 taxon_map_csv: "D:/marineai/classification-experiments/sw/taxon_maps/fishwio.csv"
 lineage_cache: "D:/marineai/classification-experiments/sw/taxon_maps/worms_lineage_cache.json"
-review_csv: "N:/marineai/dataset/collated/logs/fishwio_review.csv"
+review_csv: "D:/marineai/dataset/collated/logs/fishwio_review.csv"
 
 crop_provenance: pre_cropped
 pixel_scale_known: true

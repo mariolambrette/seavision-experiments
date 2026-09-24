@@ -1,0 +1,33 @@
+# The `crops` shard set (plan 10.2).
+#
+# Serves distort AND letterbox at any resolution, because both are pure
+# functions of the stored crop and are applied on the GPU at load time. Square
+# expansion is a separate set: it needs pixels from outside the box.
+
+name: crops
+
+coco:
+  - "D:/marineai/dataset/collated/seavision.json"
+  - "D:/marineai/dataset/collated/seavision_fathomnet.json"
+image_dir: "D:/marineai/dataset/collated/images"
+out_dir:   "D:/marineai/classification-experiments/shards/crops"
+
+# Measured, not chosen: scratch/crop_size_profile.py on the built collation
+# gives 2.09% of crops above 1024 on the long side, and a 64 px short-side
+# floor leaves 3 of those oversized rather than resampling them below the size
+# at which a species is still legible.
+cap_long_side: 1024
+min_short_side: 64
+
+# Only used when a crop must be re-encoded. Crops within the cap are copied
+# byte for byte and never touch this.
+jpeg_quality: 95
+
+shard_bytes: 1073741824      # ~1 GB per tar
+
+# Only the audit reads these. Frames for sources stored as cut crops are not
+# in image_dir, so the route to them lives here rather than in code.
+frame_roots:
+  fathomnet: "D:/marineai/dataset/raw/fathomnet/images"
+frame_layout:
+  fathomnet: "{institution}/{uuid}.jpg"
