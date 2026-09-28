@@ -471,6 +471,41 @@ def build(cfg):
     return 0
 
 
+def source_boxes(cfg, keys):
+    """-> {key: (x0, y0, w, h)} for the requested keys, exact, from the COCO.
+
+    Same key rule as the builder, and the same box choice per provenance, so
+    the two agree on WHICH box; the point is that the VALUES come from the
+    collation rather than from a rounded round-trip through the shard.
+    """
+    out = {}
+    for path in cfg["coco"]:
+        with open(path, encoding="utf-8") as fh:
+            doc = json.load(fh)
+        by_image = defaultdict(list)
+        for an in doc.get("annotations", []):
+            by_image[an["image_id"]].append(an)
+        for im in doc.get("images", []):
+            uid = os.path.splitext(im["file_name"])[0]
+            sm = im.get("source_meta") or {}
+            prov = im.get("crop_provenance")
+            if prov == "frame":
+                for an in by_image.get(im["id"], []):
+                    k = f"{uid}-a{an['id']}"
+                    b = an.get("bbox") or []
+                    if k in keys and len(b) >= 4:
+                        out[k] = (float(b[0]), float(b[1]),
+                                  float(b[2]), float(b[3]))
+            elif uid in keys:
+                fb = (sm.get("frame_bbox_used") or sm.get("frame_bbox")
+                      if prov == "cut_from_frame" else sm.get("frame_bbox"))
+                if fb and len(fb) >= 4:
+                    out[uid] = (float(fb[0]), float(fb[1]),
+                                float(fb[2]), float(fb[3]))
+        del doc, by_image
+    return out
+
+
 # ----------------------------------------------------------------- verify
 
 def verify(cfg, crops_dir=None, sample_n=300):
@@ -540,14 +575,27 @@ def verify(cfg, crops_dir=None, sample_n=300):
         rc |= 1 if (bad or dupes) else 0
 
         print("\nLEVEL 2  the stored numbers obey the rule")
+        # The box must come from the COCO, not from square_origin +
+        # box_in_square. Both of those are stored as integers, so recovering
+        # the box from them round-trips a rounding: a yolo-bruv bbox of
+        # w=58.6 comes back as 59, and 59 * 1.1 is a different side from
+        # 58.6 * 1.1. That produced off-by-one "failures" confined entirely
+        # to the one source with fractional boxes -- an artefact of the
+        # check, not of the build. Reading the source box also makes this a
+        # comparison against something OUTSIDE the shard, which is what a
+        # verification should be.
+        want = {k for k, _b in reservoir}
+        boxes = source_boxes(cfg, want)
+        print(f"  {len(boxes):,}/{len(want):,} sampled boxes recovered from "
+              f"the collation")
         wrong = 0
         for key, b in reservoir:
             m = b.get("meta") or {}
             fw, fh = m.get("frame_size", [0, 0])
-            bis = m.get("box_in_square") or [0, 0, 0, 0]
-            sq = square_for(m["square_origin"][0] + bis[0],
-                            m["square_origin"][1] + bis[1],
-                            bis[2], bis[3], fw, fh, m.get("margin", 0.0))
+            if key not in boxes:
+                continue
+            x0, y0, bw, bh = boxes[key]
+            sq = square_for(x0, y0, bw, bh, fw, fh, m.get("margin", 0.0))
             if not sq or sq["side"] != m.get("square_side_native") or \
                     [sq["x"], sq["y"]] != m.get("square_origin"):
                 wrong += 1
@@ -556,7 +604,7 @@ def verify(cfg, crops_dir=None, sample_n=300):
                           f"{m.get('square_side_native')} origin "
                           f"{m.get('square_origin')}, rule says "
                           f"{sq and sq['side']} / {sq and [sq['x'], sq['y']]}")
-        print(f"  {len(reservoir) - wrong:,}/{len(reservoir):,} consistent")
+        print(f"  {len(boxes) - wrong:,}/{len(boxes):,} consistent")
         print("  (this shares the builder's rule, so it catches a slip in the")
         print("   bookkeeping, not a misreading of the geometry -- level 3 is")
         print("   the one that could)")
@@ -580,6 +628,7 @@ def verify(cfg, crops_dir=None, sample_n=300):
             if len(crops) >= len(want):
                 break
         checked = close = 0
+        diffs = []
         for key, b in reservoir:
             if key not in crops:
                 continue
@@ -603,6 +652,7 @@ def verify(cfg, crops_dir=None, sample_n=300):
             mean = sum(c * i for i, c in enumerate(diff.convert("L")
                                                    .histogram())) / \
                 max(1, sub.size[0] * sub.size[1])
+            diffs.append((mean, key))
             if mean < 12:            # JPEG re-encode + resample, not content
                 close += 1
             elif checked - close <= 5:
@@ -610,6 +660,27 @@ def verify(cfg, crops_dir=None, sample_n=300):
                       f"the crops set")
         print(f"  {close:,}/{checked:,} squares reproduce their crop at the "
               f"recorded offset")
+        # A pass/fail against a hand-picked threshold cannot tell a real
+        # outlier from a continuum the bar happens to cut. The distribution
+        # can. If the top of the spread sits far above p99 the failures are
+        # outliers and mean something; if p90 is already near the bar, the
+        # bar is arbitrary and the right response is to look at the crops,
+        # not to move it.
+        if diffs:
+            diffs.sort()
+            q = lambda f: diffs[min(len(diffs) - 1, int(len(diffs) * f))][0]
+            print(f"  difference spread: p50 {q(0.5):.1f}  p90 {q(0.9):.1f}  "
+                  f"p99 {q(0.99):.1f}  max {diffs[-1][0]:.1f}"
+                  f"   (threshold 12.0)")
+            if q(0.99) < 12 <= diffs[-1][0]:
+                print("  -> the flagged rows sit above p99, so they are "
+                      "outliers rather than the tail of a continuum. Look at "
+                      "them before dismissing them.")
+            elif q(0.9) > 8:
+                print("  -> p90 is already close to the threshold, so this is "
+                      "a continuum and the threshold is arbitrary. The "
+                      "flagged rows are not special; judge the method, not "
+                      "the rows.")
         if checked and close / checked < 0.95:
             print("  FAIL: the animal is not where the metadata says. The")
             print("  square is being cut from the wrong place, or the offset")

@@ -76,6 +76,17 @@ BACKGROUND SAMPLING -- the production rule, not a convenience
     -- that residual is exactly the number this is trying to bound.
 
 USAGE
+    # Contamination on the BUILT background set -- the figure for a methods
+    # section. The annotation tiles are blinding ballast: a sheet a reviewer
+    # knows is all background gets scored as all background.
+    python scratch/annotation_audit.py sample --config configs/shards_crops.yaml \
+        --out "D:/marineai/_audit_bg" --per-source 40 \
+        --background-shards 200 \
+        --shard-dir "D:/marineai/classification-experiments/shards/background"
+
+    # Pre-build form, kept for reference. It RE-DRAWS candidates rather than
+    # reading the built set, so its rates describe a population nothing is
+    # trained on. Do not mix its figures with the above in one table.
     python scratch/annotation_audit.py sample --config configs/shards_crops.yaml \
         --out "D:/marineai/_audit" --per-source 200 --background 200
 
@@ -166,6 +177,7 @@ def sample_annotations(cfg, n_default, per_source, rng):
 
     print("pass 1: listing shard members")
     by_source = defaultdict(list)            # source -> [(tar, key, ext)]
+    per_tar = {}
     for t in tars:
         src = source_of_shard(t, set_name)
         n = 0
@@ -176,7 +188,27 @@ def sample_annotations(cfg, n_default, per_source, rng):
                     continue
                 by_source[src].append((t, key, ext))
                 n += 1
+        per_tar[t] = n
         print(f"  {t}: {n:,} records  ({src})")
+
+    # A sample is only uniform over the records this pass actually SAW. If a
+    # tar yields nothing, or fewer records than it holds, the pool silently
+    # over-represents the shards that were read -- and because shards rotate
+    # on BYTES, a shard's record count is inversely related to its crop size,
+    # so losing the low-count shards skews the sample small. That is exactly
+    # the shape of a discrepancy found in the WP7 review, so it is asserted
+    # here rather than assumed. Compare these totals with the per-shard
+    # counts from `build_shards.py --verify`; they must agree exactly.
+    empty = [t for t, n in per_tar.items() if n == 0]
+    if empty:
+        sys.exit(f"{len(empty)} shard(s) yielded NO records: {empty[:5]}. "
+                 f"The pool is not the shard set, so nothing drawn from it "
+                 f"is a uniform sample. Fix this before sampling.")
+    print("  pooled totals (compare against build_shards --verify):")
+    for src in sorted(by_source):
+        n_t = sum(1 for t in per_tar if source_of_shard(t, set_name) == src)
+        print(f"    {src:<12} {len(by_source[src]):>10,} records "
+              f"from {n_t} shard(s)")
 
     unknown = set(per_source) - set(by_source)
     if unknown:
@@ -495,13 +527,101 @@ def sample_backgrounds(cfg, n_default, per_source, rng, margin=8, tries=60):
     return rows
 
 
+def sample_background_shards(shard_dir, n_default, per_source, rng):
+    """-> rows drawn from the BUILT background shard set.
+
+    `sample_backgrounds` above re-draws candidates with its own copy of the
+    placement logic. That was the only option before the set existed, and it
+    is the wrong one now: it measures a different sample, produced by
+    different code, from the thing that will actually be trained on. Two of
+    the three earlier contamination figures were measured that way, and the
+    background builder's size distribution has changed twice since -- once to
+    stop it substituting a smaller box after a failed placement, once to draw
+    absolute sizes keyed on frame size. If contamination scales with box size,
+    and `breakdown` exists because it might, those figures do not transfer.
+
+    So this reads the shards. A uniform reservoir per source, so the review
+    describes the set rather than the first tiles in the tar.
+    """
+    tars = sorted(f for f in os.listdir(shard_dir) if f.endswith(".tar"))
+    if not tars:
+        sys.exit(f"no .tar files in {shard_dir}")
+
+    res = defaultdict(list)     # source -> reservoir of (key, bytes, meta)
+    seen = Counter()
+    for t in tars:
+        with tarfile.open(os.path.join(shard_dir, t)) as tf:
+            pend = {}
+            for m in tf:
+                stem, ext = os.path.splitext(m.name)
+                if ext not in (".jpg", ".json"):
+                    continue
+                blob = tf.extractfile(m).read()
+                slot = pend.setdefault(stem, {})
+                slot[ext] = blob
+                if len(slot) < 2:
+                    continue
+                meta = json.loads(slot[".json"])
+                rec = (stem, slot[".jpg"], meta)
+                del pend[stem]
+
+                src = meta.get("source") or "unknown"
+                want = per_source.get(src, n_default)
+                if want <= 0:
+                    continue
+                seen[src] += 1
+                if len(res[src]) < want:
+                    res[src].append(rec)
+                else:
+                    j = rng.randrange(seen[src])
+                    if j < want:
+                        res[src][j] = rec
+        print(f"  {t}: read", flush=True)
+
+    unknown = set(per_source) - set(seen)
+    if unknown:
+        sys.exit(f"--background-shards names source(s) absent from the built "
+                 f"set: {sorted(unknown)}. Present: {sorted(seen)}")
+
+    rows = []
+    for src in sorted(res):
+        print(f"  {src}: {len(res[src]):,} sampled from {seen[src]:,}")
+        for stem, blob, meta in res[src]:
+            fb = meta.get("frame_bbox") or []
+            rows.append({
+                "kind": "background",
+                "source": src,
+                "key": stem,
+                "category_id": "",
+                "category_name": "",
+                "detail": ",".join(str(v) for v in fb),
+                "bytes": blob,
+            })
+    return rows
+
+
 def cmd_sample(args):
     cfg = load_config(args.config)
     rng = random.Random(args.seed)
     ann_n, ann_per = parse_counts(args.per_source, 200)
     bg_n, bg_per = parse_counts(args.background, 0)
+    sh_n, sh_per = parse_counts(args.background_shards, 0)
+    # Validate BEFORE sampling anything. Reading the crops shards takes
+    # minutes; discovering a missing flag afterwards wastes all of it.
+    if (bg_n or bg_per) and (sh_n or sh_per):
+        sys.exit("--background re-draws candidates and --background-shards "
+                 "reads the built set. Mixing them in one review would put "
+                 "two populations under one rate. Pick one.")
+    if (sh_n or sh_per) and not args.shard_dir:
+        sys.exit("--background-shards needs --shard-dir")
+    if (sh_n or sh_per) and not os.path.isdir(args.shard_dir):
+        sys.exit(f"--shard-dir is not a directory: {args.shard_dir}")
+
     rows = sample_annotations(cfg, ann_n, ann_per, rng)
-    if bg_n or bg_per:
+    if sh_n or sh_per:
+        print(f"reading built background shards from {args.shard_dir}")
+        rows += sample_background_shards(args.shard_dir, sh_n, sh_per, rng)
+    elif bg_n or bg_per:
         rows += sample_backgrounds(cfg, bg_n, bg_per, rng)
 
     rng.shuffle(rows)                          # the blinding
@@ -597,15 +717,44 @@ def cmd_sheets(args):
 
 # ---------------------------------------------------------------- scoring
 
-def parse_indices(text):
+def parse_indices(text, base=None):
     """'3,17,22-25 101' -> {3,17,22,23,24,25,101}. Accepts commas, spaces,
     newlines and ranges, because a reviewer writing 400 numbers will use all
-    four and should not have to care."""
+    four and should not have to care.
+
+    Also accepts a PATH to a file of them, resolved against `base` (the review
+    directory) as well as the working directory -- the same courtesy --scores
+    already extended. The scores belong to that review, and typing the review
+    path twice on one command line is how one review's numbers get scored
+    against another's manifest.
+
+    Lines beginning `#` are dropped, so a reviewer can keep their notes in the
+    same file as their numbers. That is where the definitions end up recorded,
+    and separating them into a file nobody opens is how a definition gets lost.
+    """
     if not text:
         return set()
-    if os.path.exists(text):
-        with open(text, encoding="utf-8") as fh:
-            text = fh.read()
+
+    cands = [text]
+    if base and not os.path.isabs(text):
+        cands.append(os.path.join(base, text))
+    for c in cands:
+        if os.path.exists(c):
+            with open(c, encoding="utf-8") as fh:
+                text = fh.read()
+            break
+    else:
+        # It never had to be a path -- but if it looks like one, say the
+        # useful thing rather than complaining that a filename is not a
+        # number, which is true and unhelpful.
+        if re.search(r"[\\/]|\.\w+$", text.strip().split()[0] if text.strip()
+                     else ""):
+            sys.exit(f"no file at '{text}'"
+                     + (f" or '{os.path.join(base, text)}'" if base else "")
+                     + "\n  (a bare filename is looked for in the review "
+                       "directory as well as here)")
+
+    text = re.sub(r"(?m)^\s*#.*$", "", text)
     out = set()
     for tok in re.split(r"[,\s]+", text.strip()):
         if not tok:
@@ -727,9 +876,32 @@ def cmd_score(args):
             sys.exit(f"no score file at '{args.scores}' or "
                      f"'{os.path.join(args.out, args.scores)}'")
         animal, no_animal, unsure = parse_sheet_scores(sp, len(man))
+    elif args.animal:
+        # The reviewer listed the tiles that DO hold an animal, scoring by tile
+        # number rather than by sheet position. Safer than a sheet grid --
+        # there is no row to drop and no offset to propagate -- but it forces a
+        # binary call, because a tile left off the list is indistinguishable
+        # from a tile nobody could decide about. So there is no `unsure` set
+        # here, and the rates below are point estimates with no enrichment
+        # bound around them. Say so rather than letting the missing column
+        # read as "nothing was ambiguous".
+        animal = parse_indices(args.animal, args.out)
+        stray_a = sorted(animal - set(man))
+        if stray_a:
+            sys.exit(f"--animal names indices not in the manifest: "
+                     f"{stray_a[:10]} (manifest holds 1..{max(man)})")
+        no_animal = set(man) - animal
+        unsure = set()
+        print(f"--animal: {len(animal):,} of {len(man):,} tiles hold an "
+              f"animal; the other {len(no_animal):,} are taken as not holding "
+              f"one.\n! NO UNCLEAR CATEGORY. Every ambiguous tile has been "
+              f"forced into one of the two buckets, so these are point\n"
+              f"  estimates with no bound around them, unlike a sheet-scored "
+              f"review. Whichever way the ambiguous ones went is a\n"
+              f"  systematic shift, not noise, and it does not shrink with n.")
     else:
-        no_animal = parse_indices(args.no_animal)
-        unsure = parse_indices(args.unsure)
+        no_animal = parse_indices(args.no_animal, args.out)
+        unsure = parse_indices(args.unsure, args.out)
         animal = set(man) - no_animal - unsure
     stray = sorted((no_animal | unsure) - set(man))
     if stray:
@@ -1064,10 +1236,22 @@ def main():
     s.add_argument("--per-source", default="200",
                    help="annotation crops: a flat number, or "
                         "src=n,src=n to weight")
-    s.add_argument("--background", default="200",
-                   help="background candidates: a flat number applied to "
-                        "every frame-carrying source, or src=n,src=n to "
-                        "weight. 0 to skip")
+    s.add_argument("--background", default="0",
+                   help="RE-DRAW background candidates with this script's own "
+                        "placement logic: a flat number applied to every "
+                        "frame-carrying source, or src=n,src=n to weight. "
+                        "0 to skip. Prefer --background-shards now that the "
+                        "set is built -- re-drawing measures a population "
+                        "nothing will be trained on")
+    s.add_argument("--background-shards", default="0",
+                   help="sample background tiles from the BUILT set instead, "
+                        "uniformly per source: a flat number or src=n,src=n. "
+                        "Needs --shard-dir. This is the figure that belongs "
+                        "in a methods section")
+    s.add_argument("--shard-dir",
+                   help="the built background set, e.g. "
+                        "D:/marineai/classification-experiments/shards/"
+                        "background")
     s.add_argument("--seed", type=int, default=0)
     s.set_defaults(fn=cmd_sample)
 
@@ -1086,6 +1270,13 @@ def main():
                         "--no-animal: every tile is scored explicitly, so a "
                         "dropped value is caught instead of silently read as "
                         "'animal'")
+    s.add_argument("--animal", default="",
+                   help="the inverse of --no-animal: indices (or a file of "
+                        "them) of tiles that DO hold an animal, everything "
+                        "else taken as not holding one. Scoring by tile "
+                        "number has no row to drop and no offset to "
+                        "propagate, but it admits no unclear category, so the "
+                        "rates come out as point estimates with no bound")
     s.add_argument("--no-animal", default="",
                    help="indices, ranges, or a path to a file of them")
     s.add_argument("--unsure", default="")
@@ -1112,3 +1303,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

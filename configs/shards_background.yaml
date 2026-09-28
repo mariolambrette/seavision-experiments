@@ -1,0 +1,53 @@
+# The `background` shard set (plan 6.1).
+#
+# Background is an ORDINARY LABELLED CLASS, not an exotic detection problem
+# (plan 6.1, first row). The collation holds only 2,059 genuinely empty
+# images, so negatives are sampled from box-free regions of frames that do
+# contain animals -- the most representative source, and the one that fixes
+# PrePARED's empty frames spanning only 4 of its 18 sites.
+
+name: background
+
+coco:
+  - "D:/marineai/dataset/collated/seavision.json"
+  - "D:/marineai/dataset/collated/seavision_fathomnet.json"
+image_dir: "D:/marineai/dataset/collated/images"
+
+frame_roots:
+  fathomnet: "D:/marineai/dataset/raw/fathomnet/images"
+  ozfish:    "D:/marineai/dataset/raw/ozfish/frames"
+frame_layout:
+  fathomnet: "{institution}/{uuid}.jpg"
+
+out_root: "D:/marineai/classification-experiments/shards"
+
+# BUILD MORE THAN ANY ONE EXPERIMENT NEEDS AND CHOOSE THE MIXTURE LATER, which
+# is what 10.5 already does for everything else. A background class drawn
+# mostly from shallow water would make "looks deep-sea" evidence for "animal",
+# because the model would never see deep-sea background -- 6.1's
+# separable-by-something-other-than-content warning in different clothes. So
+# both are built and the experiment config picks.
+targets:
+  fathomnet: 50000
+  ozfish:    50000
+  yolo-bruv:  8000
+
+# PrePARED has 2,667 frames against FathomNet's 469,046. Without a per-frame
+# cap, an equal count would mean a dozen crops from every PrePARED frame and
+# 0.07 from each FathomNet one -- the same number of crops behind a 176-fold
+# difference in distinct scenes. Every record carries its frame key so the
+# design effect (7.4) is measurable rather than assumed.
+max_per_frame:
+  fathomnet: 1
+  ozfish:    2
+  yolo-bruv: 3
+
+# Reject a candidate that comes within this many pixels of any annotation on
+# its frame.
+margin_px: 8
+placement_tries: 60
+
+cap_long_side: 1024
+jpeg_quality: 95
+shard_bytes: 1073741824
+seed: 0
