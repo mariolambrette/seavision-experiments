@@ -1,0 +1,44 @@
+order,source,deployment,institution,derived_level,crops,units
+1,fathomnet,MBARI:DocRicketts:D852,MBARI,dive,3506,574
+2,fathomnet,MBARI:DocRicketts:D574,MBARI,dive,1264,295
+3,fathomnet,MBARI:DocRicketts:D442,MBARI,dive,1007,205
+4,fathomnet,MBARI:DocRicketts:D724,MBARI,dive,238,150
+5,fathomnet,MBARI:DocRicketts:D998,MBARI,dive,2309,487
+6,fathomnet,MBARI:Ventana:D3488,MBARI,dive,308,139
+7,fathomnet,NOAA:EX2301:D7,NOAA Ocean Exploration,dive,1139,131
+8,fathomnet,MBARI:DocRicketts:D1262,MBARI,dive,738,138
+9,fathomnet,MBARI:DocRicketts:D1134,MBARI,dive,127,105
+10,fathomnet,MBARI:DocRicketts:D782,MBARI,dive,198,121
+11,fathomnet,MBARI:DocRicketts:D725,MBARI,dive,150,94
+12,fathomnet,MBARI:DocRicketts:D858,MBARI,dive,178,96
+13,fathomnet,MBARI:DocRicketts:D295,MBARI,dive,902,288
+14,fathomnet,MBARI:DocRicketts:D594,MBARI,dive,135,84
+15,fathomnet,MBARI:DocRicketts:D620,MBARI,dive,2140,417
+16,fathomnet,MBARI:Ventana:D2777,MBARI,dive,123,76
+17,fathomnet,MBARI:DocRicketts:D716,MBARI,dive,421,74
+18,fathomnet,MBARI:DocRicketts:D315,MBARI,dive,111,94
+19,fathomnet,MBARI:DocRicketts:D665,MBARI,dive,107,73
+20,fathomnet,MBARI:Ventana:D3861,MBARI,dive,149,72
+21,fathomnet,MBARI:DocRicketts:D241,MBARI,dive,141,101
+22,fathomnet,MBARI:Ventana:D4261,MBARI,dive,522,121
+23,fathomnet,MBARI:DocRicketts:D486,MBARI,dive,673,282
+24,fathomnet,MBARI:Tiburon:D1026,MBARI,dive,185,80
+25,fathomnet,MBARI:MiniROV:D40,MBARI,dive,132,57
+26,fathomnet,MBARI:Tiburon:D1040,MBARI,dive,112,85
+27,fathomnet,MBARI:DocRicketts:D566,MBARI,dive,2566,62
+28,fathomnet,MBARI:DocRicketts:D734,MBARI,dive,706,62
+29,fathomnet,MBARI:DocRicketts:D352,MBARI,dive,1928,69
+30,fathomnet,MBARI:Ventana:D3405,MBARI,dive,66,52
+31,fathomnet,MBARI:DocRicketts:D434,MBARI,dive,92,64
+32,fathomnet,MBARI:DocRicketts:D613,MBARI,dive,175,80
+33,fathomnet,MBARI:DocRicketts:D668,MBARI,dive,161,89
+34,fathomnet,SOI:S529,Universidad de Costa Rica and Schmidt Ocean Institute,dive,4842,49
+35,fathomnet,MBARI:DocRicketts:D703,MBARI,dive,2254,95
+36,fathomnet,MBARI:DocRicketts:D870,MBARI,dive,930,362
+37,fathomnet,MBARI:DocRicketts:D564,MBARI,dive,1099,143
+38,fathomnet,NOAA:EX2301:D6,NOAA Ocean Exploration,dive,3232,107
+39,fathomnet,MBARI:DocRicketts:D713,MBARI,dive,86,45
+40,fathomnet,MBARI:DocRicketts:D883,MBARI,dive,714,299
+41,fathomnet,MBARI:DocRicketts:D935,MBARI,dive,142,62
+42,fathomnet,MBARI:Ventana:D3998,MBARI,dive,89,62
+43,fathomnet,MBARI:Tiburon:D1024,MBARI,dive,96,74
