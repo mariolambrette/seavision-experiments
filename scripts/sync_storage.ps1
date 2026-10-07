@@ -20,6 +20,15 @@
       shards/      D: is authoritative.   D: -> NAS   (push)
       embeddings/  D: is authoritative.   D: -> NAS   (push)
 
+      splits/      D: is authoritative.   D: -> NAS   (push, /E -- NOT /MIR)
+                   Development/held-out splits (WP8 onwards), one folder per
+                   version (dev_v1, dev_v2, ...). Pushed with /E so a split
+                   deleted on D: is never deleted from the NAS: results are
+                   scored against these, and keeping every version costs
+                   megabytes. The /MIR argument below does not apply --
+                   versions are distinguished by folder name, so an old
+                   split cannot be mistaken for a current one.
+
     WHY /MIR ON collated/ AND NOT /E
     An /E push never deletes, so the NAS would accumulate crops from
     superseded builds with nothing to distinguish them from current ones --
@@ -69,6 +78,7 @@ $MinFiles = @{
     'collated'   = 1000000     # 1,471,937 at the time of writing
     'shards'     = 1
     'embeddings' = 1
+    'splits'     = 1           # dev_v1 holds 5 files
 }
 
 function Test-MinFiles {
@@ -179,6 +189,11 @@ if ($Task -in @('push-derived', 'all')) {
                 -Source "$WS\classification-experiments\embeddings" `
                 -Dest "$NAS\classification-experiments\embeddings" `
                 -Mirror -GuardSource -MinSourceFiles $MinFiles['embeddings']
+    # No -Mirror: /E never deletes on the NAS (see the header).
+    Invoke-Sync -Name 'splits (workstation to NAS)' `
+                -Source "$WS\classification-experiments\splits" `
+                -Dest "$NAS\classification-experiments\splits" `
+                -GuardSource -MinSourceFiles $MinFiles['splits']
 }
 
 Write-Host ""

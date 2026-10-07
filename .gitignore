@@ -11,6 +11,7 @@ outputs/
 .env
 scratch.ps1
 scratch.py
+models/
 
 # FathomNet enumeration dumps: ~640 MB of machine-generated intermediates.
 # They live on disk and on the NAS; the COCO files carry the real provenance.

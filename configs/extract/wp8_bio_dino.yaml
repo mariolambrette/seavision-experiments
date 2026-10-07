@@ -1,0 +1,12 @@
+# WP8 readout sweep, bio_dino, development set only.
+# Resolution levels decided 5 October 2026 (schedule, WP8 step 8): matched on
+# patch-token count -- 256 (16x16), 576 (24x24), 1,024 (32x32) where native.
+# 224 = 256 tokens, native; 336 = 576 tokens, INTERPOLATED from the 224 checkpoint.
+backbone: bio_dino
+sizes: [224, 336]
+geometries: [letterbox, distort, square_m00, square_m10]
+dev_shards: D:/marineai/scratch/wp8_sweep/dev_shards
+out: D:/marineai/scratch/wp8_sweep/emb
+batch_size: 128
+num_workers: 8
+device: cuda:0

@@ -1,0 +1,12 @@
+# WP8 readout sweep: evaluation settings. Fixed before any readout is scored.
+labels: D:/marineai/scratch/wp8_sweep/labels.csv
+draws_dir: D:/marineai/scratch/wp8_sweep/draws
+emb: D:/marineai/scratch/wp8_sweep/emb
+seed: 20261005
+n_draws: 10            # label draws per (readout, k); results are reported as a spread
+k: [1, 5, 20]          # reference examples per species, nested within a draw
+k_max: 20              # a species is evaluable if it can supply k_max references ...
+q_min: 10              # ... and q_min queries, from different deployments
+probe_k: [5, 20]       # linear probe (decision-rule stability check); degenerate at k = 1
+leak_pairs: 20000      # sampled pairs per type for the deployment-leakage diagnostic
+device: cuda:0

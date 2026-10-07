@@ -1,0 +1,19 @@
+# WP8 readout sweep: how the readout is CHOSEN. Fixed before the results are
+# read (proposed 5 October 2026; confirmed, with the paired-test rule,
+# 7 October 2026 -- the first run's output was not read before this change).
+emb: D:/marineai/scratch/wp8_sweep/emb
+decision_pool: ozfish_fishwio    # largest pool; crops geometries only
+geometry_pool: ozfish            # the only pool present in every geometry
+decision_rule: prototype         # linear_probe is the stability check
+decision_k: 5                    # 1 and 20 are the stability check
+# 'Within noise' = not significantly worse than the best on a paired t-test
+# over the draws (two-sided). The winner is the highest mean over levels.
+alpha: 0.05
+all_k: [1, 5, 20]
+# Geometry is Experiment A's axis, so the readout is chosen on its mean over
+# each backbone's crops geometries (paired: same draws); square geometries
+# are the geometry stability check.
+crops_geometries: [letterbox, distort, native]
+# Panels A and B display (not decide): agreed as within-genus for display.
+panel_a_level: species
+panel_a_mode: constrained

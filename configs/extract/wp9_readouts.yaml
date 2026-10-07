@@ -1,0 +1,60 @@
+# WP9: which readout(s) to extract from each backbone, as decided in WP8
+# (7 October 2026; schedule WP8 step 11, plan section 5.3). This file IS the
+# WP8 decision in machine-readable form; WP9's extraction configs are built
+# from it and must not differ from it without a recorded decision.
+#
+# Conventions, identical to the WP8 sweep so nothing drifts:
+#   size     the input size: pixels for fixed-size models, the patch budget
+#            for SigLIP 2 NaFlex.
+#   token    cls | patch_mean | patch_mean_normed | cls+patch_mean, or a
+#            pooled output name (layer: pooled). A "+" readout is built at
+#            evaluation time by L2-normalising each half and concatenating, so
+#            WP9 stores the two halves (here cls and patch_mean at that
+#            layer), never the concatenation.
+#   layer    0-based transformer block index, as in the sweep arrays; or
+#            "pooled" for the model's own output.
+# Geometries: every geometry each backbone was swept on goes to Experiment A
+# (geometry is Experiment A's question, not WP8's).
+# Development-split scores and the reason each readout is here:
+#   D:/marineai/scratch/wp8_sweep/summary/decision.csv, stability.csv
+
+backbones:
+  bio_dino:                       # 224 px checkpoint; bio_dino_ckpt336 dropped
+    size: 224
+    geometries: [letterbox, distort, square_m00, square_m10]
+    readouts:
+      - {token: cls, layer: 14}
+  bioclip2:
+    size: 224
+    geometries: [letterbox, distort, square_m00, square_m10]
+    readouts:
+      - {token: post_projection, layer: pooled}
+      - {token: pre_projection, layer: pooled}     # linear-probe check
+  bioclip25_huge:
+    size: 224
+    geometries: [letterbox, distort, square_m00, square_m10]
+    readouts:
+      - {token: post_projection, layer: pooled}
+  clip_laion2b:
+    size: 224
+    geometries: [letterbox, distort, square_m00, square_m10]
+    readouts:
+      - {token: post_projection, layer: pooled}
+  dinov3_vitl16:
+    size: 512
+    geometries: [letterbox, distort, square_m00, square_m10]
+    readouts:
+      - {token: pooler_output, layer: pooled}
+  dinov3_vith16plus:              # gate fired; all three kept
+    size: 512
+    geometries: [letterbox, distort, square_m00, square_m10]
+    readouts:
+      - {token: cls+patch_mean, layer: 31}         # decision winner
+      - {token: cls, layer: 30}                    # best at species
+      - {token: pooler_output, layer: pooled}      # best under most checks
+  siglip2_naflex:                 # gate fired; both kept
+    size: 256
+    geometries: [letterbox, distort, native, square_m00, square_m10]
+    readouts:
+      - {token: attention_pool, layer: pooled}     # decision winner
+      - {token: patch_mean, layer: 19}             # better at species on letterbox/native
