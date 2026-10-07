@@ -29,6 +29,12 @@
                    versions are distinguished by folder name, so an old
                    split cannot be mistaken for a current one.
 
+      results/     D: is authoritative.   D: -> NAS   (push, /E -- NOT /MIR)
+                   Scored results, decisions and summaries (WP8 onwards), one
+                   folder per experiment. NOT regenerable once the embeddings
+                   behind them are deleted (as WP8's were), so a deletion on
+                   D: must never reach the NAS. Small: hundreds of MB.
+
     WHY /MIR ON collated/ AND NOT /E
     An /E push never deletes, so the NAS would accumulate crops from
     superseded builds with nothing to distinguish them from current ones --
@@ -79,6 +85,7 @@ $MinFiles = @{
     'shards'     = 1
     'embeddings' = 1
     'splits'     = 1           # dev_v1 holds 5 files
+    'results'    = 1           # wp8_readout_sweep holds 311 files
 }
 
 function Test-MinFiles {
@@ -194,6 +201,12 @@ if ($Task -in @('push-derived', 'all')) {
                 -Source "$WS\classification-experiments\splits" `
                 -Dest "$NAS\classification-experiments\splits" `
                 -GuardSource -MinSourceFiles $MinFiles['splits']
+    # No -Mirror: results cannot be regenerated, so nothing is ever deleted
+    # on the NAS (see the header).
+    Invoke-Sync -Name 'results (workstation to NAS)' `
+                -Source "$WS\classification-experiments\results" `
+                -Dest "$NAS\classification-experiments\results" `
+                -GuardSource -MinSourceFiles $MinFiles['results']
 }
 
 Write-Host ""
