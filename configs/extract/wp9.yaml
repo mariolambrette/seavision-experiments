@@ -1,0 +1,22 @@
+# WP9: main extraction of the readouts WP8 chose (schedule WP9).
+# WHAT is extracted per backbone is in wp9_readouts.yaml; this file says
+# where from, where to, and how fast.
+spec: configs/extract/wp9_readouts.yaml
+shards: D:/marineai/classification-experiments/shards
+out: D:/marineai/classification-experiments/embeddings
+
+# Background crops are box regions of donor frames, so they exist only for
+# the crops-type geometries (no square version). Embedded for Experiment B,
+# where background is an ordinary class (decided 7 October 2026).
+background_geometries: [letterbox, distort, native]
+
+# Workers: (logical CPUs - 1) shared between the runs going at once (one per
+# GPU). Changes only how many processes read files, never the outputs.
+num_workers: auto
+concurrent_runs: 2
+
+batch_size: 128
+batch_size_overrides:             # as in the WP8 sweep
+  dinov3_vith16plus: 64
+  bioclip25_huge: 64
+device: cuda:0
