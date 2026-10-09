@@ -67,6 +67,11 @@ BACKBONES = {
                                                   num_hidden_layers=32,
                                                   num_attention_heads=20,
                                                   intermediate_size=5120)),
+    # Added after WP8 closed (schedule WP8b). Native 518 px (37x37 learned
+    # grid); 224 is probed first because the sweep sizes all interpolate.
+    "dinov2_vitl14_reg": dict(lib="hf_dinov2",
+                              weights="facebook/dinov2-with-registers-large",
+                              sizes=[518, 224, 336, 448]),
     "bio_dino": dict(lib="birder",
                      weights="vit_reg4_so150m_p14_ls_dino-v2-bio-224px",
                      net="vit_reg4_so150m_p14_ls", sizes=[224, 336]),
@@ -217,6 +222,29 @@ def load_hf_dinov3(spec, dev, no_weights):
     return model, fwd, info
 
 
+def load_hf_dinov2(spec, dev, no_weights):
+    from transformers import (AutoModel, Dinov2WithRegistersConfig,
+                              Dinov2WithRegistersModel)
+    if no_weights:
+        cfg = Dinov2WithRegistersConfig(
+            patch_size=14, image_size=518, num_register_tokens=4,
+            hidden_size=1024, num_hidden_layers=24, num_attention_heads=16)
+        model = Dinov2WithRegistersModel(cfg)
+    else:
+        model = AutoModel.from_pretrained(spec["weights"])
+    model = model.eval().to(dev)
+    c = model.config
+
+    def fwd(x):
+        o = model(pixel_values=x)
+        return {"pooler_output (CLS after layernorm)": o.pooler_output}
+    info = {"config": {k: getattr(c, k, None) for k in (
+        "hidden_size", "num_hidden_layers", "patch_size",
+        "num_register_tokens", "image_size")},
+        "params": n_params(model)}
+    return model, fwd, info
+
+
 def load_birder(spec, dev, no_weights):
     import birder
     from birder.model_registry import registry
@@ -241,6 +269,7 @@ def load_birder(spec, dev, no_weights):
 
 def probe_square(name, spec, args, dev):
     loader = {"open_clip": load_open_clip, "hf_dinov3": load_hf_dinov3,
+              "hf_dinov2": load_hf_dinov2,
               "birder": load_birder}[spec["lib"]]
     root, fwd, info = loader(spec, dev, args.no_weights)
     bname, blocks = find_blocks(root)

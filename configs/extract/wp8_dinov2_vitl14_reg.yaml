@@ -1,0 +1,13 @@
+# WP8b readout sweep, dinov2_vitl14_reg, development set only (schedule
+# WP8b, decided 7 October 2026). Same resolution rule as WP8 step 8: matched
+# on patch-token count -- 256 (16x16), 576 (24x24), 1,024 (32x32).
+# 224 / 336 / 448 px at patch 14. The checkpoint's learned position grid is
+# 37x37 (518 px), so ALL THREE sizes are interpolated and labelled so.
+backbone: dinov2_vitl14_reg
+sizes: [224, 336, 448]
+geometries: [letterbox, distort, square_m00, square_m10]
+dev_shards: D:/marineai/scratch/wp8_sweep/dev_shards
+out: D:/marineai/scratch/wp8_sweep/emb
+batch_size: 128
+num_workers: 8
+device: cuda:0

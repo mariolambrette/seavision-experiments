@@ -1,9 +1,10 @@
 """Backbone registry. One entry per backbone in plan section 5.3.
 
-All seven are implemented. The registry is the single place the set of
-backbones is defined.
+All eight are implemented (DINOv2 added after WP8 closed; schedule WP8b).
+The registry is the single place the set of backbones is defined.
 """
 from .birder_adapter import BirderAdapter
+from .dinov2_adapter import DINOv2Adapter
 from .dinov3_adapter import DINOv3Adapter
 from .openclip_adapter import OpenClipAdapter
 from .siglip2_adapter import Siglip2Adapter
@@ -23,6 +24,11 @@ REGISTRY = {
         "dinov3_vith16plus", "facebook/dinov3-vith16plus-pretrain-lvd1689m",
         no_weights_cfg=dict(hidden_size=1280, num_hidden_layers=32,
                             num_attention_heads=20, intermediate_size=5120)),
+    # Learned 37x37 position grid (518 px); every sweep size interpolates.
+    "dinov2_vitl14_reg": lambda: DINOv2Adapter(
+        "dinov2_vitl14_reg", "facebook/dinov2-with-registers-large",
+        no_weights_cfg=dict(hidden_size=1024, num_hidden_layers=24,
+                            num_attention_heads=16, mlp_ratio=4)),
     # 224 px checkpoint; other sizes interpolate unless the config maps a
     # size to one of birder's 252/336 px checkpoints (a resolution decision).
     "bio_dino": lambda: BirderAdapter(
