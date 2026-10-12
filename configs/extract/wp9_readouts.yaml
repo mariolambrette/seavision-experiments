@@ -58,3 +58,8 @@ backbones:
     readouts:
       - {token: attention_pool, layer: pooled}     # decision winner
       - {token: patch_mean, layer: 19}             # better at species on letterbox/native
+  dinov2_vitl14_reg:              # WP8b, 12 Oct 2026; case 1, every check passes
+    size: 448                     # 1,024 tokens; interpolated from the 518 px grid
+    geometries: [letterbox, distort, square_m00, square_m10]
+    readouts:
+      - {token: cls, layer: 21}
