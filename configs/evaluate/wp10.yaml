@@ -1,0 +1,97 @@
+# WP10: which taxonomic levels transfer between sources.
+# Every setting here was decided on 13 October 2026 from counts and design
+# logic only, before any embedding was scored (record: project doc
+# "WP10 config decisions"). Commit before the first result. Decision numbers
+# in comments refer to that record.
+
+# ---- records (9b): locked test set only; the training pool is never read
+split_dir: D:/marineai/classification-experiments/splits/lock_v1
+use_splits: [lock, heldout]
+coco: [D:/marineai/dataset/collated/seavision.json,
+       D:/marineai/dataset/collated/seavision_fathomnet.json]
+embeddings: D:/marineai/classification-experiments/embeddings
+readouts: configs/extract/wp9_readouts.yaml   # (8) all 12 readouts
+out_dir: D:/marineai/classification-experiments/results/wp10
+
+# ---- pairs and direction (2): every pair, both directions, each against its
+# own within-source baseline; reported separately and averaged (the average
+# only ever shown beside the two directions)
+# (14) yolo-bruv x OzFish and yolo-bruv x FishWIO dropped: <= 2 shared orders
+# (none after size matching); yolo-bruv x FathomNet kept at order level only
+pairs:
+  - [ozfish, fishwio]
+  - [ozfish, fathomnet]
+  - [fishwio, fathomnet]
+  - [yolo-bruv, fathomnet]
+pair_levels:
+  "yolo-bruv,fathomnet": [order]
+directions: both
+fathomnet_reported_separately: true      # inferred groups
+
+# ---- geometries (8): every geometry both sources in a pair hold
+# (FishWIO has no square sets; native exists for SigLIP 2 only)
+geometries: [letterbox, distort, native, square_m00, square_m10]
+
+# ---- what competes (1, 12)
+levels: [species, genus, family, order]
+labels_at_level: level_or_finer          # (12) e.g. family: species-, genus- and family-labelled crops
+arms:
+  whole_taxon:                           # (1b) the result decisions rest on
+    pairs: all
+  shared_children:                       # (1a) control: species both sources hold
+    pairs: [[ozfish, fishwio]]
+    labels_at_level: species_only
+candidates: shared_testable              # the taxa testable in both sources at that level and k
+min_candidates: 3                        # (14) a cell with < 3 candidate taxa is not scored; its count is still reported
+reference_weighting: proportional        # (1) within a taxon, in proportion to species abundance in the reference source
+
+# ---- units (13): one representative crop per unit
+units:
+  ozfish: one_camera_per_deployment_category   # camera with more crops; left if tied
+  fathomnet: one_crop_per_collapsed_unit       # SEFSC video-second, else frame; first by key
+  fishwio: crop                                # tracks unresolved: overstates individuals
+  yolo-bruv: crop
+
+# ---- k and minimums (3, 4)
+k: [1, 5, 20, 50, 100]                   # nested within a draw
+q_min: 10                                # query units per taxon
+query_rule: wp8_usable                   # query source: units >= k + q_min and >= q_min outside its largest deployment
+ref_min_groups: 2                        # reference source: >= k units in >= 2 deployments
+ref_draw: across_deployments_proportional
+query_cap: null                          # (5) no cap; query units per taxon reported
+taxon_sets: [per_k, fixed_k50, fixed_k100]   # (3) report all three
+
+# ---- size matching (6)
+size_matching:
+  primary: matched
+  secondary: unmatched
+  rule: shape            # match the distribution's shape, not the counts (corrected 13 October)
+  short_side_bins: [0, 24, 32, 48, 64, 96, 128, 192, 256, 384, 512, 1000000000]
+  unit_size: representative_crop_short_side
+  min_matched_share: null                # matched share reported per taxon instead
+  applies_to_both_arms: true             # the baseline uses the matched pool too
+
+# ---- classifier (7)
+classifier: nearest_prototype_l2
+preprocessing: raw                       # centring is a recorded follow-up, not an arm
+
+# ---- metric and draws (9)
+metric: macro_recall
+report: [cross, baseline, difference, ratio, chance]   # difference primary
+n_draws: 20
+seed: 20261031
+save_draws: true
+
+# ---- source-against-species (10): source-level leakage margin on shared taxa
+leakage:
+  pairs_per_type: 20000
+
+# ---- OzFish surveys (11): pooled; survey composition per taxon reported
+ozfish_survey_composition: true
+# (14) the pre-agreed trigger fired (wp10_counts_v1: 6 taxa > 50% survey E),
+# so a sensitivity run excluding survey E is added for the OzFish pairs,
+# matched and unmatched
+sensitivity:
+  exclude_ozfish_survey_E:
+    pairs: [[ozfish, fishwio], [ozfish, fathomnet]]
+    matching: [matched, unmatched]
