@@ -1,0 +1,247 @@
+{
+ "decided": "2026-10-13",
+ "args": {
+  "dev_split": "D:\\marineai\\classification-experiments\\splits\\dev_v1",
+  "coco_main": "D:\\marineai\\dataset\\collated\\seavision.json",
+  "coco_fn": "D:\\marineai\\dataset\\collated\\seavision_fathomnet.json",
+  "out": "D:\\marineai\\classification-experiments\\splits\\lock_v1",
+  "lock_frac": 0.3,
+  "holdout_genera": 5,
+  "seed": 20261013,
+  "max_attempts": 10,
+  "r1": "60,12,15",
+  "r2": "10,5",
+  "r3": 100,
+  "r4": 19000,
+  "r5": "0.20,0.40"
+ },
+ "hashes": {
+  "seavision.json": "a3ef5eadda1a116bd0b2d0bcc8bafe8acb691bbc108747ffc89edddef310356b",
+  "seavision_fathomnet.json": "fd45e26bce1513585795e50dd88df47c9567a012defe1a3a167f7ebafb4f9b4d",
+  "dev_v1/split_crops.csv.gz": "f6b6df908cc9d18b0f82e24a25881ef68c49a7f4b159928084b9f118aeb24a21",
+  "dev_v1/split_square-m00.csv.gz": "c81790f024e38597340a7f74ec6352f1562bb5b042ea8bbb5ee32fef83b66d30",
+  "dev_v1/split_square-m10.csv.gz": "f04f39b09faa830177f1368d2e83a8d68a4322505c1db8c0ef3c17c7de4b0ebb",
+  "dev_v1/split_background.csv.gz": "1c7996ee57b57ba1fbe0818343d7498b61d33296b79b5b02ab2ce2556ab24bf1"
+ },
+ "attempts": [
+  {
+   "attempt": 0,
+   "seed": 20261013,
+   "results": {
+    "R1": [
+     68,
+     18,
+     19
+    ],
+    "R2": [
+     11,
+     4
+    ],
+    "R3": 124,
+    "R4": 21226,
+    "R5": 0.2968
+   },
+   "failed": [
+    "R2"
+   ],
+   "held_out_genera": [
+    "Bodianus",
+    "Cephalopholis",
+    "Chaetodontoplus",
+    "Labroides",
+    "Pterocaesio"
+   ]
+  },
+  {
+   "attempt": 1,
+   "seed": 20261014,
+   "results": {
+    "R1": [
+     68,
+     16,
+     15
+    ],
+    "R2": [
+     19,
+     3
+    ],
+    "R3": 132,
+    "R4": 21454,
+    "R5": 0.2886
+   },
+   "failed": [
+    "R2"
+   ],
+   "held_out_genera": [
+    "Cephalopholis",
+    "Epinephelus",
+    "Oxycheilinus",
+    "Scarus",
+    "Sufflamen"
+   ]
+  },
+  {
+   "attempt": 2,
+   "seed": 20261015,
+   "results": {
+    "R1": [
+     72,
+     19,
+     18
+    ],
+    "R2": [
+     18,
+     6
+    ],
+    "R3": 108,
+    "R4": 20690,
+    "R5": 0.303
+   },
+   "failed": [],
+   "held_out_genera": [
+    "Abudefduf",
+    "Chromis",
+    "Epinephelus",
+    "Pomacanthus",
+    "Siganus"
+   ]
+  }
+ ],
+ "eligible_genera": [
+  "Abudefduf",
+  "Acanthurus",
+  "Bodianus",
+  "Caesio",
+  "Carangoides",
+  "Carcharhinus",
+  "Cephalopholis",
+  "Chaetodon",
+  "Chaetodontoplus",
+  "Cheilinus",
+  "Chlorurus",
+  "Choerodon",
+  "Chromis",
+  "Cirrhilabrus",
+  "Coris",
+  "Dascyllus",
+  "Epinephelus",
+  "Halichoeres",
+  "Labroides",
+  "Lethrinus",
+  "Lutjanus",
+  "Melichthys",
+  "Naso",
+  "Oxycheilinus",
+  "Parupeneus",
+  "Pentapodus",
+  "Plectroglyphidodon",
+  "Pomacanthus",
+  "Pomacentrus",
+  "Pterocaesio",
+  "Pycnochromis",
+  "Scarus",
+  "Scolopsis",
+  "Siganus",
+  "Sufflamen",
+  "Thalassoma",
+  "Variola"
+ ],
+ "passed": true,
+ "seed_used": 20261015,
+ "held_out_genera": [
+  "Abudefduf",
+  "Chromis",
+  "Epinephelus",
+  "Pomacanthus",
+  "Siganus"
+ ],
+ "checks": {
+  "C1": {
+   "ok": true,
+   "detail": "record counts and dev/ungrouped counts unchanged"
+  },
+  "C2": {
+   "ok": true,
+   "detail": "0 groups in both train and lock"
+  },
+  "C3": {
+   "ok": true,
+   "detail": "0 held-out-genus records labelled train"
+  },
+  "C4": {
+   "ok": true,
+   "detail": "0 keys with different labels across sets"
+  },
+  "C5": {
+   "ok": true,
+   "detail": "0 FishWIO/yolo-bruv train records"
+  },
+  "C6": {
+   "ok": true,
+   "detail": "0 strata off the 30% rule"
+  },
+  "C7": {
+   "ok": true,
+   "detail": "0 OzFish background records with an unknown deployment, 0 in a different partition from their deployment's crops (203 sit in training-pool deployments whose crops are all held-out genera: legitimate, reported)"
+  },
+  "C8": {
+   "ok": true,
+   "detail": "hashes recorded in lock_selection.json"
+  }
+ },
+ "counts": {
+  "crops": {
+   "fathomnet/dev": 36193,
+   "fathomnet/heldout": 30828,
+   "fathomnet/lock": 304429,
+   "fathomnet/train": 862229,
+   "fathomnet/ungrouped": 40095,
+   "fishwio/dev": 11174,
+   "fishwio/lock": 102399,
+   "fishwio/ungrouped": 1114,
+   "ozfish/dev": 13687,
+   "ozfish/heldout": 4152,
+   "ozfish/lock": 20346,
+   "ozfish/train": 42624,
+   "yolo-bruv/lock": 15945
+  },
+  "square-m00": {
+   "fathomnet/dev": 36193,
+   "fathomnet/heldout": 30828,
+   "fathomnet/lock": 304429,
+   "fathomnet/train": 862229,
+   "fathomnet/ungrouped": 40095,
+   "ozfish/dev": 13687,
+   "ozfish/heldout": 4152,
+   "ozfish/lock": 20346,
+   "ozfish/train": 42624,
+   "yolo-bruv/lock": 15945
+  },
+  "square-m10": {
+   "fathomnet/dev": 36193,
+   "fathomnet/heldout": 30828,
+   "fathomnet/lock": 304429,
+   "fathomnet/train": 862229,
+   "fathomnet/ungrouped": 40095,
+   "ozfish/dev": 13687,
+   "ozfish/heldout": 4152,
+   "ozfish/lock": 20346,
+   "ozfish/train": 42624,
+   "yolo-bruv/lock": 15945
+  },
+  "background": {
+   "fathomnet/dev": 972,
+   "fathomnet/lock": 14176,
+   "fathomnet/train": 31217,
+   "fathomnet/ungrouped": 1781,
+   "ozfish/dev": 7902,
+   "ozfish/lock": 12805,
+   "ozfish/train": 29231,
+   "yolo-bruv/lock": 7955
+  }
+ },
+ "lock_groups": {
+  "ozfish": 442,
+  "fathomnet": 958
+ }
+}
